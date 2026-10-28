@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islam Master Formula v11.23 - Central Management System</title>
+    <title>Islam Master Formula v11.23 - Full Engine & Voice</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -44,13 +44,13 @@
 
         <div class="text-center">
             <h1 class="text-islamic-gold font-bold text-sm md:text-base tracking-wider">ISLAM MASTER FORMULA</h1>
-            <span class="text-[10px] text-islamic-lightgold/70 tracking-widest block">v11.23 | Central Rules: 99 | F11 Engine Active</span>
+            <span class="text-[10px] text-islamic-lightgold/70 tracking-widest block">v11.23 | Central Rules: 99 | Voice & Full-Page Active</span>
         </div>
 
         <div class="flex items-center gap-2">
             <select id="langSelector" class="bg-islamic-dark border border-islamic-gold/40 text-islamic-lightgold text-xs rounded-lg px-2 py-1">
-                <option value="hi">Roman Urdu / Hindi</option>
-                <option value="en">English</option>
+                <option value="hi-IN">हिन्दी / Roman Urdu (Indian Voice)</option>
+                <option value="en-US">English (Anglo Voice)</option>
             </select>
         </div>
     </header>
@@ -64,10 +64,10 @@
         </div>
 
         <!-- SEARCH BOX & FORMULA PROMPTS HYPERLINKS -->
-        <div class="bg-islamic-card border border-islamic-gold/40 p-5 rounded-2xl shadow-2xl space-y-4">
-            <label class="block text-sm font-bold text-islamic-lightgold">🔍 मास्टर फॉर्मूला सर्च इंजन & Q&A (Auto-Verification):</label>
+        <div id="search-section" class="bg-islamic-card border border-islamic-gold/40 p-5 rounded-2xl shadow-2xl space-y-4">
+            <label class="block text-sm font-bold text-islamic-lightgold">🔍 मास्टर फॉर्मूला सर्च इंजन & Q&A (Voice Enabled):</label>
             <div class="flex gap-2">
-                <input type="text" id="userQueryInput" placeholder="अपना प्रश्न या कमांड लिखें (उदा. F1, NN, N5, hadith verification, F11)..." 
+                <input type="text" id="userQueryInput" placeholder="अपना प्रश्न या कमांड लिखें (उदा. F1, NN, hadith verification, F11)..." 
                        class="flex-grow bg-islamic-dark border border-islamic-gold/40 rounded-xl px-4 py-2.5 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-islamic-gold">
                 <button onclick="processSearchQuery()" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-6 py-2.5 rounded-xl text-sm transition">
                     खोजें (Search)
@@ -112,11 +112,28 @@
                     <p class="text-xs text-gray-300 mt-1">Formula 11 स्टेटस, Central Rules 99, Amendments AB, AC, AG, AH, AK.</p>
                 </div>
             </div>
+        </div>
 
-            <!-- Response Display Area -->
-            <div id="qna-response-area" class="hidden space-y-4">
-                <h3 id="response-title" class="text-lg font-bold text-islamic-gold border-b border-islamic-gold/20 pb-2">मास्टर फॉर्मूला रिजल्ट & ऑटोमैटिक वेरिफिकेशन:</h3>
-                <div id="qna-response-content" class="bg-islamic-card border border-islamic-gold/30 p-5 rounded-xl space-y-3"></div>
+        <!-- VIEW: FULL-PAGE ANSWER & VOICE READER -->
+        <div id="qna-response-area" class="hidden space-y-4">
+            <div class="flex justify-between items-center border-b border-islamic-gold/30 pb-3">
+                <h3 id="response-title" class="text-xl font-bold text-islamic-gold">मास्टर फॉर्मूला फुल-पेज रिजल्ट:</h3>
+                <button onclick="backToHome()" class="bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/40 px-3 py-1 rounded-lg text-xs font-semibold">
+                    ← वापस होम पर जाएं (Back)
+                </button>
+            </div>
+            
+            <div class="bg-islamic-card border border-islamic-gold/40 p-6 rounded-2xl shadow-2xl space-y-4">
+                <div class="flex justify-between items-center">
+                    <span id="result-grading" class="bg-emerald-900 text-emerald-300 px-3 py-1 rounded-lg text-xs font-bold">🟢 VERIFIED / ACTIVE</span>
+                    
+                    <!-- VOICE SPEAKER BUTTON -->
+                    <button onclick="speakAnswerText()" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-4 py-2 rounded-xl text-sm flex items-center gap-2 shadow-lg transition">
+                        🔊 <span id="speak-btn-text">सुनें (Read Aloud)</span>
+                    </button>
+                </div>
+
+                <div id="qna-response-content" class="space-y-3 text-gray-200 text-sm md:text-base leading-relaxed"></div>
             </div>
         </div>
 
@@ -157,15 +174,17 @@
 
     <!-- Footer -->
     <footer class="bg-islamic-card border-t border-islamic-gold/20 py-4 text-center text-xs text-gray-400">
-        Islam Master Formula v11.23 | Central Management System & Local Database Active
+        Islam Master Formula v11.23 | Central Management System & Voice Reader Active
     </footer>
 
-    <!-- Comprehensive Logic & Engine Script -->
+    <!-- Comprehensive Logic, Voice & Full-Page Script -->
     <script>
         let userData = {
             name: localStorage.getItem('imf_user_name') || 'Mustafa',
             history: JSON.parse(localStorage.getItem('imf_qna_history') || '[]')
         };
+
+        let lastSpokenText = "";
 
         document.getElementById('user-display-name').innerText = userData.name;
         document.getElementById('profileName').value = userData.name;
@@ -183,11 +202,16 @@
 
         function showSection(section) {
             document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('search-section').classList.add('hidden');
             document.getElementById('view-profile').classList.add('hidden');
             document.getElementById('view-qna-history').classList.add('hidden');
             document.getElementById('view-reading-progress').classList.add('hidden');
+            document.getElementById('qna-response-area').classList.add('hidden');
 
-            if(section === 'home') document.getElementById('view-home').classList.remove('hidden');
+            if(section === 'home') {
+                document.getElementById('view-home').classList.remove('hidden');
+                document.getElementById('search-section').classList.remove('hidden');
+            }
             if(section === 'profile') {
                 document.getElementById('view-profile').classList.remove('hidden');
                 document.getElementById('profile-history-count').innerText = userData.history.length;
@@ -199,7 +223,11 @@
             if(section === 'reading-progress') document.getElementById('view-reading-progress').classList.remove('hidden');
         }
 
-        // Full Formula Database including F11 Master & Rules
+        function backToHome() {
+            window.speechSynthesis.cancel(); // Stop talking if active
+            showSection('home');
+        }
+
         const formulaMasterData = {
             11: {
                 name: "Formula 11 — Master Formula (All Formula Combined)",
@@ -264,34 +292,4 @@
             15: {
                 name: "Formula 15: Classroom",
                 purpose: "Ten-student teaching and records (Amendment AH).",
-                rules: ["10 students per active batch with permanent sequential roll numbers", "All-ten interaction completion gate"]
-            },
-            16: {
-                name: "Formula 16: Qiyamat Ki Nishaniyan",
-                purpose: "Minor signs first, verification, then major signs.",
-                rules: ["First 60 points preliminary", "Compare similar reports"]
-            },
-            17: {
-                name: "Formula 17: Sher-o-Shayari v1.2",
-                purpose: "Automatic jawabi sher with 11 rules and No-Reply mode.",
-                rules: ["Roman Hindi/Urdu default script", "Preserve central meaning, add new punchline"]
-            }
-        };
-
-        function processSearchQuery() {
-            const query = document.getElementById('userQueryInput').value.trim();
-            if(!query) return;
-            executeSearchEngine(query, "Master Search & Auto-Verification (F11)");
-        }
-
-        function triggerFormula(fNum) {
-            const fData = formulaMasterData[fNum];
-            const promptText = `Active Protocol: ${fData.name}`;
-            document.getElementById('userQueryInput').value = promptText;
-            executeSearchEngine(promptText, fData.name, fData);
-        }
-
-        function executeSearchEngine(query, modeTitle, fData = null) {
-            const responseArea = document.getElementById('qna-response-area');
-            const responseContent = document.getElementById('qna-response-content');
-            const responseTitle = document.getElementById(
+        
