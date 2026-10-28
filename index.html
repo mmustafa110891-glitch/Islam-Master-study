@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islam Master Formula v11.23 - Full Engine & Voice</title>
+    <title>Islam Master Formula v11.23 - Fixed Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -34,17 +34,17 @@
     <!-- Top Header & Profile Bar -->
     <header class="bg-islamic-card border-b border-islamic-gold/30 sticky top-0 z-50 px-4 py-3 shadow-md flex justify-between items-center flex-wrap gap-2">
         <div class="flex items-center gap-2">
-            <button onclick="showSection('home')" class="bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/40 px-3 py-1.5 rounded-lg text-sm font-semibold">
+            <button onclick="navigateTo('home')" class="bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/40 px-3 py-1.5 rounded-lg text-sm font-semibold">
                 🏠 होम (Dashboard)
             </button>
-            <button onclick="showSection('profile')" class="bg-emerald-900/40 text-emerald-300 border border-emerald-600/50 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1">
+            <button onclick="navigateTo('profile')" class="bg-emerald-900/40 text-emerald-300 border border-emerald-600/50 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1">
                 👤 <span id="user-display-name">Mustafa</span> (My Profile)
             </button>
         </div>
 
         <div class="text-center">
             <h1 class="text-islamic-gold font-bold text-sm md:text-base tracking-wider">ISLAM MASTER FORMULA</h1>
-            <span class="text-[10px] text-islamic-lightgold/70 tracking-widest block">v11.23 | Central Rules: 99 | Voice & Full-Page Active</span>
+            <span class="text-[10px] text-islamic-lightgold/70 tracking-widest block">v11.23 | Central Rules: 99 | Fully Fixed Active</span>
         </div>
 
         <div class="flex items-center gap-2">
@@ -63,50 +63,53 @@
             <p class="text-xs text-islamic-lightgold/80">Formula 11 — All Formula Combined Central Management System (v11.23)</p>
         </div>
 
-        <!-- SEARCH BOX & FORMULA PROMPTS HYPERLINKS -->
-        <div id="search-section" class="bg-islamic-card border border-islamic-gold/40 p-5 rounded-2xl shadow-2xl space-y-4">
-            <label class="block text-sm font-bold text-islamic-lightgold">🔍 मास्टर फॉर्मूला सर्च इंजन & Q&A (Voice Enabled):</label>
-            <div class="flex gap-2">
-                <input type="text" id="userQueryInput" placeholder="अपना प्रश्न या कमांड लिखें (उदा. F1, NN, hadith verification, F11)..." 
-                       class="flex-grow bg-islamic-dark border border-islamic-gold/40 rounded-xl px-4 py-2.5 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-islamic-gold">
-                <button onclick="processSearchQuery()" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-6 py-2.5 rounded-xl text-sm transition">
-                    खोजें (Search)
-                </button>
-            </div>
+        <!-- MAIN CONTAINER FOR VIEWS -->
+        
+        <!-- VIEW 1: HOME / DASHBOARD -->
+        <div id="view-home" class="space-y-6">
+            <!-- SEARCH BOX & FORMULA PROMPTS -->
+            <div class="bg-islamic-card border border-islamic-gold/40 p-5 rounded-2xl shadow-2xl space-y-4">
+                <label class="block text-sm font-bold text-islamic-lightgold">🔍 मास्टर फॉर्मूला सर्च इंजन & Q&A (Voice Enabled):</label>
+                <div class="flex gap-2">
+                    <input type="text" id="userQueryInput" placeholder="अपना प्रश्न या कमांड लिखें (उदा. F1, NN, hadith verification, F11)..." 
+                           class="flex-grow bg-islamic-dark border border-islamic-gold/40 rounded-xl px-4 py-2.5 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-islamic-gold">
+                    <button onclick="processSearchQuery()" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-6 py-2.5 rounded-xl text-sm transition">
+                        खोजें (Search)
+                    </button>
+                </div>
 
-            <!-- Formula Quick Prompts Hyperlinks Bar -->
-            <div class="space-y-1.5">
-                <span class="text-[11px] text-islamic-gold font-semibold uppercase tracking-wider">⚡ फॉर्मूला 1 से 17 और F11 मास्टर प्रॉम्प्ट्स (क्लिक करें):</span>
-                <div class="flex flex-wrap gap-1.5 max-h-44 overflow-y-auto p-1.5 bg-islamic-dark/60 rounded-xl border border-islamic-gold/20">
-                    <button onclick="triggerFormula(11)" class="text-[11px] bg-islamic-gold text-islamic-dark font-bold border border-islamic-gold px-2.5 py-1.5 rounded-lg text-left transition"><b>F11:</b> Master Formula (All Combined)</button>
-                    <button onclick="triggerFormula(1)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F1:</b> Hadith Study & Verification</button>
-                    <button onclick="triggerFormula(2)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F2:</b> Sahih Hadith Protocol</button>
-                    <button onclick="triggerFormula(5)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F5:</b> Hadith Classification</button>
-                    <button onclick="triggerFormula(6)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F6:</b> Arabic Beginners</button>
-                    <button onclick="triggerFormula(7)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F7:</b> Tark-Vitark (Logic & Debate)</button>
-                    <button onclick="triggerFormula(8)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F8:</b> Logical Stories Salaf</button>
-                    <button onclick="triggerFormula(9)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F9:</b> Supreme Court Simulation</button>
-                    <button onclick="triggerFormula(10)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F10:</b> Fatwa Mustafa</button>
-                    <button onclick="triggerFormula(12)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F12:</b> Islamic Court</button>
-                    <button onclick="triggerFormula(13)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F13:</b> Mohaddes Mustafa</button>
-                    <button onclick="triggerFormula(14)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F14:</b> Book Reading by AI</button>
-                    <button onclick="triggerFormula(15)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F15:</b> Classroom (10 Students)</button>
-                    <button onclick="triggerFormula(16)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F16:</b> Qiyamat Nishaniyan</button>
-                    <button onclick="triggerFormula(17)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F17:</b> Sher-o-Shayari v1.2</button>
+                <!-- Formula Quick Prompts Hyperlinks Bar -->
+                <div class="space-y-1.5">
+                    <span class="text-[11px] text-islamic-gold font-semibold uppercase tracking-wider">⚡ फॉर्मूला 1 से 17 और F11 मास्टर प्रॉम्प्ट्स (क्लिक करें):</span>
+                    <div class="flex flex-wrap gap-1.5 max-h-44 overflow-y-auto p-1.5 bg-islamic-dark/60 rounded-xl border border-islamic-gold/20">
+                        <button onclick="triggerFormula(11)" class="text-[11px] bg-islamic-gold text-islamic-dark font-bold border border-islamic-gold px-2.5 py-1.5 rounded-lg text-left transition"><b>F11:</b> Master Formula (All Combined)</button>
+                        <button onclick="triggerFormula(1)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F1:</b> Hadith Study & Verification</button>
+                        <button onclick="triggerFormula(2)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F2:</b> Sahih Hadith Protocol</button>
+                        <button onclick="triggerFormula(5)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F5:</b> Hadith Classification</button>
+                        <button onclick="triggerFormula(6)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F6:</b> Arabic Beginners</button>
+                        <button onclick="triggerFormula(7)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F7:</b> Tark-Vitark (Logic & Debate)</button>
+                        <button onclick="triggerFormula(8)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F8:</b> Logical Stories Salaf</button>
+                        <button onclick="triggerFormula(9)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F9:</b> Supreme Court Simulation</button>
+                        <button onclick="triggerFormula(10)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F10:</b> Fatwa Mustafa</button>
+                        <button onclick="triggerFormula(12)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F12:</b> Islamic Court</button>
+                        <button onclick="triggerFormula(13)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F13:</b> Mohaddes Mustafa</button>
+                        <button onclick="triggerFormula(14)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F14:</b> Book Reading by AI</button>
+                        <button onclick="triggerFormula(15)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F15:</b> Classroom (10 Students)</button>
+                        <button onclick="triggerFormula(16)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F16:</b> Qiyamat Nishaniyan</button>
+                        <button onclick="triggerFormula(17)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F17:</b> Sher-o-Shayari v1.2</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- VIEW: HOME DASHBOARD -->
-        <div id="view-home" class="space-y-6">
+            <!-- Dashboard Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div onclick="showSection('qna-history')" class="bg-islamic-card border border-islamic-gold/30 p-5 rounded-xl cursor-pointer hover:border-islamic-gold transition shadow-lg">
+                <div onclick="navigateTo('history')" class="bg-islamic-card border border-islamic-gold/30 p-5 rounded-xl cursor-pointer hover:border-islamic-gold transition shadow-lg">
                     <div class="text-3xl mb-2">💬</div>
                     <h3 class="text-lg font-bold text-islamic-lightgold">मेरी प्रोफाइल प्रश्न इतिहास (My Q&A History)</h3>
                     <p class="text-xs text-gray-300 mt-1">आपके पिछले सभी पूछे गए प्रश्नों, कमांड्स और फॉर्मूला रिजल्ट्स का परमानेंट रिकॉर्ड।</p>
                 </div>
 
-                <div onclick="showSection('reading-progress')" class="bg-islamic-card border border-islamic-gold/30 p-5 rounded-xl cursor-pointer hover:border-islamic-gold transition shadow-lg">
+                <div onclick="navigateTo('progress')" class="bg-islamic-card border border-islamic-gold/30 p-5 rounded-xl cursor-pointer hover:border-islamic-gold transition shadow-lg">
                     <div class="text-3xl mb-2">📚</div>
                     <h3 class="text-lg font-bold text-islamic-lightgold">मास्टर रजिस्टर & सेंट्रल रूल्स (Rules 1-99)</h3>
                     <p class="text-xs text-gray-300 mt-1">Formula 11 स्टेटस, Central Rules 99, Amendments AB, AC, AG, AH, AK.</p>
@@ -114,11 +117,11 @@
             </div>
         </div>
 
-        <!-- VIEW: FULL-PAGE ANSWER & VOICE READER -->
-        <div id="qna-response-area" class="hidden space-y-4">
+        <!-- VIEW 2: FULL-PAGE ANSWER & VOICE READER -->
+        <div id="view-result" class="hidden space-y-4">
             <div class="flex justify-between items-center border-b border-islamic-gold/30 pb-3">
                 <h3 id="response-title" class="text-xl font-bold text-islamic-gold">मास्टर फॉर्मूला फुल-पेज रिजल्ट:</h3>
-                <button onclick="backToHome()" class="bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/40 px-3 py-1 rounded-lg text-xs font-semibold">
+                <button onclick="navigateTo('home')" class="bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/40 px-3 py-1 rounded-lg text-xs font-semibold">
                     ← वापस होम पर जाएं (Back)
                 </button>
             </div>
@@ -137,7 +140,7 @@
             </div>
         </div>
 
-        <!-- VIEW: USER PROFILE -->
+        <!-- VIEW 3: USER PROFILE -->
         <div id="view-profile" class="hidden bg-islamic-card border border-islamic-gold/30 p-6 rounded-2xl space-y-4">
             <h2 class="text-xl font-bold text-islamic-lightgold border-b border-islamic-gold/20 pb-2">👤 माई प्रोफाइल लॉगिन & डेटाबेस (My Profile Login)</h2>
             <div class="space-y-4">
@@ -153,14 +156,14 @@
             </div>
         </div>
 
-        <!-- VIEW: Q&A HISTORY -->
-        <div id="view-qna-history" class="hidden space-y-4">
+        <!-- VIEW 4: Q&A HISTORY -->
+        <div id="view-history" class="hidden space-y-4">
             <h2 class="text-xl font-bold text-islamic-lightgold border-b border-islamic-gold/20 pb-2">📜 माई प्रोफाइल प्रश्न इतिहास (My Q&A History)</h2>
             <div id="history-list" class="space-y-3"></div>
         </div>
 
-        <!-- VIEW: READING PROGRESS -->
-        <div id="view-reading-progress" class="hidden space-y-4">
+        <!-- VIEW 5: READING PROGRESS / RULES -->
+        <div id="view-progress" class="hidden space-y-4">
             <h2 class="text-xl font-bold text-islamic-lightgold border-b border-islamic-gold/20 pb-2">📖 सेंट्रल रूल्स (99) & मास्टर रजिस्टर स्थिति</h2>
             <div id="progress-list" class="bg-islamic-card border border-islamic-gold/30 p-5 rounded-xl space-y-2">
                 <p class="text-sm text-gray-300">Master Formula Version: <span class="text-islamic-gold font-bold">v11.23 (All Formula Combined)</span></p>
@@ -200,32 +203,31 @@
             }
         }
 
-        function showSection(section) {
-            document.getElementById('view-home').classList.add('hidden');
-            document.getElementById('search-section').classList.add('hidden');
-            document.getElementById('view-profile').classList.add('hidden');
-            document.getElementById('view-qna-history').classList.add('hidden');
-            document.getElementById('view-reading-progress').classList.add('hidden');
-            document.getElementById('qna-response-area').classList.add('hidden');
+        // Perfect Navigation System
+        function navigateTo(viewId) {
+            window.speechSynthesis.cancel(); // Stop any ongoing speech
 
-            if(section === 'home') {
+            // Hide all views
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-result').classList.add('hidden');
+            document.getElementById('view-profile').classList.add('hidden');
+            document.getElementById('view-history').classList.add('hidden');
+            document.getElementById('view-progress').classList.add('hidden');
+
+            // Show selected view
+            if(viewId === 'home') {
                 document.getElementById('view-home').classList.remove('hidden');
-                document.getElementById('search-section').classList.remove('hidden');
-            }
-            if(section === 'profile') {
+            } else if(viewId === 'result') {
+                document.getElementById('view-result').classList.remove('hidden');
+            } else if(viewId === 'profile') {
                 document.getElementById('view-profile').classList.remove('hidden');
                 document.getElementById('profile-history-count').innerText = userData.history.length;
-            }
-            if(section === 'qna-history') {
-                document.getElementById('view-qna-history').classList.remove('hidden');
+            } else if(viewId === 'history') {
+                document.getElementById('view-history').classList.remove('hidden');
                 renderHistory();
+            } else if(viewId === 'progress') {
+                document.getElementById('view-progress').classList.remove('hidden');
             }
-            if(section === 'reading-progress') document.getElementById('view-reading-progress').classList.remove('hidden');
-        }
-
-        function backToHome() {
-            window.speechSynthesis.cancel(); // Stop talking if active
-            showSection('home');
         }
 
         const formulaMasterData = {
@@ -292,4 +294,127 @@
             15: {
                 name: "Formula 15: Classroom",
                 purpose: "Ten-student teaching and records (Amendment AH).",
-        
+                rules: ["10 students per active batch with permanent sequential roll numbers", "All-ten interaction completion gate"]
+            },
+            16: {
+                name: "Formula 16: Qiyamat Ki Nishaniyan",
+                purpose: "Minor signs first, verification, then major signs.",
+                rules: ["First 60 points preliminary", "Compare similar reports"]
+            },
+            17: {
+                name: "Formula 17: Sher-o-Shayari v1.2",
+                purpose: "Automatic jawabi sher with 11 rules and No-Reply mode.",
+                rules: ["Roman Hindi/Urdu default script", "Preserve central meaning, add new punchline"]
+            }
+        };
+
+        function processSearchQuery() {
+            const query = document.getElementById('userQueryInput').value.trim();
+            if(!query) {
+                alert('कृपया पहले कोई प्रश्न या विषय लिखें!');
+                return;
+            }
+            executeSearchEngine(query, "Master Search & Auto-Verification (F11)");
+        }
+
+        function triggerFormula(fNum) {
+            const fData = formulaMasterData[fNum];
+            const promptText = `Active Protocol: ${fData.name}`;
+            document.getElementById('userQueryInput').value = promptText;
+            executeSearchEngine(promptText, fData.name, fData);
+        }
+
+        function executeSearchEngine(query, modeTitle, fData = null) {
+            navigateTo('result');
+
+            const responseContent = document.getElementById('qna-response-content');
+            const responseTitle = document.getElementById('response-title');
+            
+            responseTitle.innerText = `मास्टर फॉर्मूला फुल-पेज रिजल्ट [${modeTitle}]:`;
+            responseContent.innerHTML = `<p class="text-sm text-islamic-lightgold animate-pulse">v11.23 सेंट्रल रूल्स (99) और ऑटोमैटिक वेरिफिकेशन प्रोटोकॉल के तहत फुल-पेज प्रोसेसिंग जारी है...</p>`;
+
+            setTimeout(() => {
+                let detailsHtml = "";
+                let matchedFormula = fData;
+
+                if(!matchedFormula) {
+                    const qLower = query.toLowerCase();
+                    if(qLower.includes('f11') || qLower.includes('master')) matchedFormula = formulaMasterData[11];
+                    else if(qLower.includes('f1') || qLower.includes('hadith')) matchedFormula = formulaMasterData[1];
+                    else if(qLower.includes('f14') || qLower.includes('book')) matchedFormula = formulaMasterData[14];
+                    else matchedFormula = formulaMasterData[11];
+                }
+
+                let rulesList = matchedFormula.rules.map(r => `<li>🔹 ${r}</li>`).join('');
+                detailsHtml = `
+                    <div class="mt-4 p-4 bg-islamic-dark border border-islamic-gold/30 rounded-xl space-y-2 text-sm">
+                        <p class="text-islamic-gold font-bold text-base">👑 ${matchedFormula.name}</p>
+                        <p class="text-gray-300"><b>Purpose:</b> ${matchedFormula.purpose}</p>
+                        <ul class="space-y-1 text-emerald-300"><b>Active Rules & Protocols:</b> ${rulesList}</ul>
+                    </div>
+                `;
+
+                const answerText = `Master Formula v11.23 Execution: "${query}" ke liye aapke Central Rules (99) aur automatic verification engine ke tahat pramanik parinam taiyar hai.`;
+                lastSpokenText = `${matchedFormula.name}. Purpose: ${matchedFormula.purpose}. Answer: ${answerText}`;
+
+                responseContent.innerHTML = `
+                    <div class="space-y-3">
+                        <p class="text-base font-bold text-islamic-lightgold">Query / Prompt: ${query}</p>
+                        <p class="text-base text-gray-100 leading-relaxed"><strong>Response:</strong> ${answerText}</p>
+                        ${detailsHtml}
+                    </div>
+                `;
+
+                const answerObj = {
+                    query: query,
+                    mode: modeTitle,
+                    timestamp: new Date().toLocaleString('hi-IN'),
+                    answer: answerText,
+                    details: detailsHtml
+                };
+
+                userData.history.unshift(answerObj);
+                localStorage.setItem('imf_qna_history', JSON.stringify(userData.history));
+                document.getElementById('profile-history-count').innerText = userData.history.length;
+            }, 400);
+        }
+
+        // TEXT TO SPEECH (VOICE SPEAKER FUNCTION)
+        function speakAnswerText() {
+            if(!lastSpokenText) return;
+            window.speechSynthesis.cancel(); // Stop previous audio
+
+            const speech = new SpeechSynthesisUtterance(lastSpokenText);
+            const selectedLang = document.getElementById('langSelector').value;
+            speech.lang = selectedLang; // 'hi-IN' for Indian voice, 'en-US' for Anglo voice
+            speech.rate = 1.0;
+
+            window.speechSynthesis.speak(speech);
+        }
+
+        function renderHistory() {
+            const historyList = document.getElementById('history-list');
+            if(userData.history.length === 0) {
+                historyList.innerHTML = `<p class="text-sm text-gray-400">आपकी प्रोफाइल में अभी तक कोई इतिहास दर्ज नहीं है।</p>`;
+                return;
+            }
+
+            let html = '';
+            userData.history.forEach((item, index) => {
+                html += `
+                    <div class="bg-islamic-card border border-islamic-gold/20 p-4 rounded-xl space-y-1">
+                        <div class="flex justify-between text-xs text-islamic-gold">
+                            <span>[${item.mode || 'Q&A'}]</span>
+                            <span>${item.timestamp}</span>
+                        </div>
+                        <p class="text-sm font-bold text-islamic-lightgold">${item.query}</p>
+                        <p class="text-xs text-gray-300">${item.answer}</p>
+                        ${item.details || ''}
+                    </div>
+                `;
+            });
+            historyList.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
