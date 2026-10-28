@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islam Master Formula v11.23 - AI Engine & Voice Search</title>
+    <title>Islam Master Formula v11.23 - AI Chat & Research Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -34,22 +34,22 @@
         .custom-scroll::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 6px; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Top Header & Profile Bar -->
-    <header class="bg-islamic-card border-b border-islamic-gold/30 sticky top-0 z-50 px-4 py-3 shadow-md flex justify-between items-center flex-wrap gap-2">
+    <!-- Top Navigation Header -->
+    <header class="bg-islamic-card/90 backdrop-blur border-b border-islamic-gold/30 sticky top-0 z-50 px-4 py-3 shadow-md flex justify-between items-center flex-wrap gap-2">
         <div class="flex items-center gap-2">
-            <button onclick="navigateTo('home')" class="bg-islamic-gold/20 text-islamic-lightgold hover:bg-islamic-gold/30 border border-islamic-gold/40 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition">
-                🏠 होम (Dashboard)
+            <button onclick="clearChatScreen()" class="bg-islamic-gold/20 hover:bg-islamic-gold/30 text-islamic-lightgold border border-islamic-gold/40 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition flex items-center gap-1">
+                ➕ <span>नया चैट (New Chat)</span>
             </button>
-            <button onclick="navigateTo('profile')" class="bg-emerald-900/40 text-emerald-300 hover:bg-emerald-800/50 border border-emerald-600/50 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold flex items-center gap-1 transition">
-                👤 <span id="user-display-name">Mustafa</span> (My Profile)
+            <button onclick="toggleProfileModal()" class="bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-300 border border-emerald-600/50 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold flex items-center gap-1 transition">
+                👤 <span id="user-display-name">Mustafa</span>
             </button>
         </div>
 
         <div class="text-center">
             <h1 class="text-islamic-gold font-bold text-sm md:text-base tracking-wider">ISLAM MASTER FORMULA</h1>
-            <span class="text-[10px] text-islamic-lightgold/70 tracking-widest block">v11.23 | Central Rules: 99 | Live AI Search Active</span>
+            <span class="text-[10px] text-islamic-lightgold/70 tracking-widest block">v11.23 | Rules 1–99 | AI Engine Active</span>
         </div>
 
         <div class="flex items-center gap-2">
@@ -60,318 +60,205 @@
         </div>
     </header>
 
-    <main class="flex-grow max-w-5xl w-full mx-auto p-4 space-y-6">
-
-        <!-- Bismillah Banner Header -->
-        <div class="text-center bg-islamic-card/80 border border-islamic-gold/30 p-5 rounded-2xl shadow-xl">
-            <h2 class="arabic-font text-3xl text-islamic-gold mb-1">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
-            <p class="text-xs text-islamic-lightgold/80">Formula 11 — All Formula Combined Central Management System (v11.23)</p>
+    <!-- Chat Message Container (Continuous Scroll Stream) -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 space-y-6 overflow-y-auto">
+        
+        <!-- Bismillah Header -->
+        <div class="text-center bg-islamic-card/60 border border-islamic-gold/30 p-4 rounded-2xl shadow-xl">
+            <h2 class="arabic-font text-2xl md:text-3xl text-islamic-gold mb-1">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
+            <p class="text-xs text-islamic-lightgold/80">Formula 11 — All Formula Combined Central AI Research Engine (v11.23)</p>
         </div>
 
-        <!-- VIEW 1: HOME DASHBOARD & SEARCH -->
-        <div id="view-home" class="space-y-6">
-            
-            <!-- SEARCH ENGINE & VOICE MIC BOX -->
-            <div class="bg-islamic-card border border-islamic-gold/40 p-5 rounded-2xl shadow-2xl space-y-4">
-                <div class="flex justify-between items-center">
-                    <label class="block text-sm font-bold text-islamic-lightgold">🔍 मास्टर फॉर्मूला AI सर्च इंजन & वॉइस सर्च:</label>
-                    <span id="voice-status" class="text-xs text-emerald-400 hidden animate-pulse">🎙️ माइक सुन रहा है... (Listening)</span>
+        <!-- Chat History Stream -->
+        <div id="chat-stream" class="space-y-6 pb-24">
+            <!-- Welcome Bot Message -->
+            <div class="flex gap-3 items-start">
+                <div class="w-8 h-8 rounded-xl bg-islamic-gold/20 border border-islamic-gold/40 flex items-center justify-center text-islamic-gold font-bold text-xs shrink-0">
+                    AI
                 </div>
-                
-                <div class="flex gap-2">
-                    <div class="relative flex-grow">
-                        <input type="text" id="userQueryInput" 
-                               onkeydown="if(event.key === 'Enter') processSearchQuery()"
-                               placeholder="अपना प्रश्न लिखें या बोलें (उदा. Hadees qudsi, Niyyat ki ahamiyat, F1, F11)..." 
-                               class="w-full bg-islamic-inner border border-islamic-gold/40 rounded-xl pl-4 pr-12 py-3 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-islamic-gold">
-                        <!-- Mic Button inside Search Bar -->
-                        <button onclick="toggleVoiceInput()" id="mic-btn" title="Click to speak (Voice Input)" 
-                                class="absolute right-2 top-1/2 -translate-y-1/2 bg-islamic-gold/20 hover:bg-islamic-gold/40 text-islamic-gold p-2 rounded-lg transition">
-                            🎙️
-                        </button>
-                    </div>
-                    
-                    <button onclick="processSearchQuery()" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-6 py-3 rounded-xl text-sm transition shadow-lg flex items-center gap-1">
-                        <span>खोजें</span>
-                    </button>
+                <div class="bg-islamic-card border border-islamic-gold/30 p-4 rounded-2xl rounded-tl-none space-y-2 text-sm max-w-3xl shadow-lg">
+                    <p class="text-islamic-lightgold font-bold">अस्सलामुआलैकुम व रहमतुल्लाह!</p>
+                    <p class="text-gray-200 leading-relaxed">मैं <b>Islam Master Formula v11.23</b> AI असिस्टेंट हूँ। आप मुझसे कोई भी इस्लामिक प्रश्न, हदीस सत्यापन, फिक़्ह सवाल या सूरह तफ़सीर पूछ सकते हैं। सिस्टम आपके प्रश्न के अनुसार सही फॉर्मूला (F1-F17) खुद-ब-खुद अप्लाई करके प्रामाणिक उत्तर देगा।</p>
                 </div>
-
-                <!-- Formula Quick Prompt Chips (Hyperlinks) -->
-                <div class="space-y-1.5">
-                    <span class="text-[11px] text-islamic-gold font-semibold uppercase tracking-wider">⚡ फॉर्मूला 1 से 17 और F11 मास्टर प्रॉम्प्ट्स (क्लिक करें):</span>
-                    <div class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto custom-scroll p-2 bg-islamic-inner rounded-xl border border-islamic-gold/20">
-                        <button onclick="triggerFormula(11)" class="text-[11px] bg-islamic-gold text-islamic-dark font-bold border border-islamic-gold px-2.5 py-1.5 rounded-lg text-left transition hover:scale-105"><b>F11:</b> Master Formula (All Combined)</button>
-                        <button onclick="triggerFormula(1)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F1:</b> Hadith Verification</button>
-                        <button onclick="triggerFormula(2)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F2:</b> Sahih Hadith Protocol</button>
-                        <button onclick="triggerFormula(5)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F5:</b> Hadith Classification</button>
-                        <button onclick="triggerFormula(6)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F6:</b> Arabic Beginners</button>
-                        <button onclick="triggerFormula(7)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F7:</b> Tark-Vitark (Logic & Debate)</button>
-                        <button onclick="triggerFormula(8)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F8:</b> Logical Stories Salaf</button>
-                        <button onclick="triggerFormula(9)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F9:</b> Supreme Court Simulation</button>
-                        <button onclick="triggerFormula(10)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F10:</b> Fatwa Mustafa</button>
-                        <button onclick="triggerFormula(12)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F12:</b> Islamic Court</button>
-                        <button onclick="triggerFormula(13)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F13:</b> Mohaddes Mustafa</button>
-                        <button onclick="triggerFormula(14)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F14:</b> Book Reading by AI</button>
-                        <button onclick="triggerFormula(15)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F15:</b> Classroom (10 Students)</button>
-                        <button onclick="triggerFormula(16)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F16:</b> Qiyamat Nishaniyan</button>
-                        <button onclick="triggerFormula(17)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F17:</b> Sher-o-Shayari v1.2</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dashboard Navigation Quick Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div onclick="navigateTo('history')" class="bg-islamic-card border border-islamic-gold/30 p-5 rounded-2xl cursor-pointer hover:border-islamic-gold transition shadow-lg">
-                    <div class="text-3xl mb-2">💬</div>
-                    <h3 class="text-lg font-bold text-islamic-lightgold">मेरी प्रोफाइल प्रश्न इतिहास (My Q&A History)</h3>
-                    <p class="text-xs text-gray-300 mt-1">आपके पिछले सभी पूछे गए प्रश्नों, कमांड्स और AI उत्तरों का परमानेंट रिकॉर्ड।</p>
-                </div>
-
-                <div onclick="navigateTo('progress')" class="bg-islamic-card border border-islamic-gold/30 p-5 rounded-2xl cursor-pointer hover:border-islamic-gold transition shadow-lg">
-                    <div class="text-3xl mb-2">📚</div>
-                    <h3 class="text-lg font-bold text-islamic-lightgold">मास्टर रजिस्टर & सेंट्रल रूल्स (Rules 1-99)</h3>
-                    <p class="text-xs text-gray-300 mt-1">Formula 11 स्टेटस, Central Rules 99, Amendments AB, AC, AG, AH, AK.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- VIEW 2: FULL-PAGE AI RESPONSE VIEW & READ ALOUD VOICE -->
-        <div id="view-result" class="hidden space-y-4">
-            <div class="flex justify-between items-center border-b border-islamic-gold/30 pb-3">
-                <h3 id="response-title" class="text-lg md:text-xl font-bold text-islamic-gold">मास्टर फॉर्मूला AI उत्तर:</h3>
-                <button onclick="navigateTo('home')" class="bg-islamic-gold/20 text-islamic-lightgold hover:bg-islamic-gold/30 border border-islamic-gold/40 px-4 py-1.5 rounded-lg text-xs font-semibold transition">
-                    ← वापस होम पर जाएं (Back)
-                </button>
-            </div>
-            
-            <div class="bg-islamic-card border border-islamic-gold/40 p-6 rounded-2xl shadow-2xl space-y-5">
-                <div class="flex justify-between items-center flex-wrap gap-2">
-                    <span id="result-grading" class="bg-emerald-900/80 text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-lg text-xs font-bold">
-                        🟢 SAHIH / VERIFIED PROTOCOL
-                    </span>
-                    
-                    <!-- VOICE READ ALOUD BUTTON -->
-                    <button onclick="speakAnswerText()" id="speak-btn" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-4 py-2 rounded-xl text-xs md:text-sm flex items-center gap-2 shadow-lg transition">
-                        🔊 <span id="speak-btn-text">उत्तर सुनें (Read Aloud)</span>
-                    </button>
-                </div>
-
-                <div id="qna-response-content" class="space-y-4 text-gray-100 text-sm md:text-base leading-relaxed"></div>
-            </div>
-        </div>
-
-        <!-- VIEW 3: USER PROFILE -->
-        <div id="view-profile" class="hidden bg-islamic-card border border-islamic-gold/30 p-6 rounded-2xl space-y-4">
-            <h2 class="text-xl font-bold text-islamic-lightgold border-b border-islamic-gold/20 pb-2">👤 माई प्रोफाइल लॉगिन & डेटाबेस (My Profile Login)</h2>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs text-gray-300 mb-1">स्कॉलर / यूजर का नाम:</label>
-                    <input type="text" id="profileName" class="bg-islamic-inner border border-islamic-gold/40 rounded-lg px-3 py-2 text-sm text-gray-100 w-full md:w-1/2 focus:outline-none focus:ring-1 focus:ring-islamic-gold">
-                </div>
-                <div>
-                    <p class="text-xs text-islamic-lightgold"><b>कुल रिकॉर्डेड प्रश्न / प्रॉम्प्ट्स:</b> <span id="profile-history-count" class="font-bold text-emerald-400">0</span></p>
-                    <p class="text-xs text-gray-400 mt-1">आपका पूरा डेटा सुरक्षित रूप से आपके डिवाइस के LocalStorage डेटाबेस में सेव है।</p>
-                </div>
-                <button onclick="saveProfile()" class="bg-islamic-gold text-islamic-dark font-bold px-4 py-2 rounded-lg text-sm">प्रोफाइल सेव करें (Save Profile)</button>
-            </div>
-        </div>
-
-        <!-- VIEW 4: Q&A HISTORY -->
-        <div id="view-history" class="hidden space-y-4">
-            <h2 class="text-xl font-bold text-islamic-lightgold border-b border-islamic-gold/20 pb-2">📜 माई प्रोफाइल प्रश्न इतिहास (My Q&A History)</h2>
-            <div id="history-list" class="space-y-3"></div>
-        </div>
-
-        <!-- VIEW 5: READING PROGRESS / RULES REGISTER -->
-        <div id="view-progress" class="hidden space-y-4">
-            <h2 class="text-xl font-bold text-islamic-lightgold border-b border-islamic-gold/20 pb-2">📖 सेंट्रल रूल्स (99) & मास्टर रजिस्टर स्थिति</h2>
-            <div id="progress-list" class="bg-islamic-card border border-islamic-gold/30 p-5 rounded-2xl space-y-3 text-sm">
-                <p class="text-gray-300">Master Formula System: <span class="text-islamic-gold font-bold">v11.23 Consolidated Central Management</span></p>
-                <p class="text-gray-300">Central Rules Count: <span class="text-islamic-gold font-bold">99 (Strictly Enforced, Unchanged)</span></p>
-                <p class="text-gray-300">Formula Directory: <span class="text-emerald-400 font-bold">Formulas 1–17 Integrated</span></p>
-                <p class="text-gray-300">Amendments: <span class="text-emerald-400 font-bold">AB (Hadith), AC (F14 Book Reading), AG (Access), AH (Classroom) Active</span></p>
-                <p class="text-gray-300">Doctor Formula Boundary: <span class="text-red-400 font-bold">⛔ Entirely Excluded from Formula 11 Directory</span></p>
             </div>
         </div>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-islamic-card border-t border-islamic-gold/20 py-4 text-center text-xs text-gray-400">
-        Islam Master Formula v11.23 | Central Management System & AI Engine Active
+    <!-- Bottom Fixed Input Bar & Formula Chips -->
+    <footer class="bg-islamic-card/95 backdrop-blur border-t border-islamic-gold/30 sticky bottom-0 z-40 p-3 md:p-4">
+        <div class="max-w-4xl mx-auto space-y-3">
+            
+            <!-- Quick Formula Prompt Chips (Horizontal Scroll Bar) -->
+            <div class="flex items-center gap-1.5 overflow-x-auto custom-scroll pb-1 text-xs whitespace-nowrap">
+                <span class="text-[11px] text-islamic-gold font-semibold uppercase tracking-wider shrink-0 pr-1">⚡ फॉर्मूला:</span>
+                <button onclick="triggerFormulaPrompt(11)" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-2.5 py-1 rounded-lg transition shrink-0">F11: Master</button>
+                <button onclick="triggerFormulaPrompt(1)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F1: Hadith Study</button>
+                <button onclick="triggerFormulaPrompt(2)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F2: Sahih Protocol</button>
+                <button onclick="triggerFormulaPrompt(5)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F5: Classification</button>
+                <button onclick="triggerFormulaPrompt(6)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F6: Arabic Class</button>
+                <button onclick="triggerFormulaPrompt(7)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F7: Tark-Vitark</button>
+                <button onclick="triggerFormulaPrompt(8)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F8: Salaf Stories</button>
+                <button onclick="triggerFormulaPrompt(10)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F10: Fatwa Mustafa</button>
+                <button onclick="triggerFormulaPrompt(12)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F12: Islamic Court</button>
+                <button onclick="triggerFormulaPrompt(13)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F13: Mohaddes</button>
+                <button onclick="triggerFormulaPrompt(14)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F14: Book Reading</button>
+                <button onclick="triggerFormulaPrompt(16)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F16: Qiyamat Signs</button>
+                <button onclick="triggerFormulaPrompt(17)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F17: Shayari v1.2</button>
+            </div>
+
+            <!-- Input Box & Mic Button -->
+            <div class="relative flex items-center gap-2">
+                <div class="relative flex-grow">
+                    <input type="text" id="userQueryInput" 
+                           onkeydown="if(event.key === 'Enter') handleSendQuery()"
+                           placeholder="अपना प्रश्न लिखें या माइक से बोलें (उदा. Hadees qudsi, Niyyat ki ahamiyat)..." 
+                           class="w-full bg-islamic-inner border border-islamic-gold/40 rounded-xl pl-4 pr-12 py-3 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-islamic-gold">
+                    
+                    <!-- Mic Button -->
+                    <button onclick="toggleVoiceInput()" id="mic-btn" title="Click to Speak (Voice Search)" 
+                            class="absolute right-2 top-1/2 -translate-y-1/2 bg-islamic-gold/20 hover:bg-islamic-gold/40 text-islamic-gold p-2 rounded-lg transition">
+                        🎙️
+                    </button>
+                </div>
+                
+                <button onclick="handleSendQuery()" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-5 py-3 rounded-xl text-sm transition shadow-lg shrink-0 flex items-center gap-1">
+                    <span>पूछें</span>
+                </button>
+            </div>
+
+            <!-- Voice Listening Indicator -->
+            <div id="voice-status" class="hidden text-xs text-center text-emerald-400 font-semibold animate-pulse">
+                🎙️ माइक सुन रहा है... (Listening...)
+            </div>
+
+        </div>
     </footer>
 
-    <!-- Logic, Voice Recognition, TTS & Gemini AI Script -->
+    <!-- Profile Modal Dialog -->
+    <div id="profile-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-islamic-card border border-islamic-gold/40 p-6 rounded-2xl max-w-md w-full space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-islamic-gold/20 pb-2">
+                <h3 class="text-lg font-bold text-islamic-lightgold">👤 स्कॉलर प्रोफाइल डेटाबेस</h3>
+                <button onclick="toggleProfileModal()" class="text-gray-400 hover:text-white">✕</button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1">आपका नाम:</label>
+                    <input type="text" id="profileName" class="w-full bg-islamic-inner border border-islamic-gold/40 rounded-lg px-3 py-2 text-gray-100 focus:outline-none focus:ring-1 focus:ring-islamic-gold">
+                </div>
+                <div>
+                    <p class="text-xs text-islamic-lightgold"><b>कुल दर्ज प्रश्न:</b> <span id="profile-history-count" class="font-bold text-emerald-400">0</span></p>
+                    <p class="text-xs text-gray-400 mt-1">आपका चैट रिकॉर्ड आपके ब्राउज़र के LocalStorage डेटाबेस में सुरक्षित है।</p>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="clearSavedHistory()" class="bg-red-900/60 hover:bg-red-800 text-red-200 text-xs px-3 py-2 rounded-lg transition">इतिहास साफ़ करें</button>
+                <button onclick="saveProfile()" class="bg-islamic-gold text-islamic-dark font-bold text-xs px-4 py-2 rounded-lg transition">सेव करें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Logic & API Script -->
     <script>
-        // State Management
+        // State & LocalStorage Management
         let userData = {
             name: localStorage.getItem('imf_user_name') || 'Mustafa',
             history: JSON.parse(localStorage.getItem('imf_qna_history') || '[]')
         };
 
-        let lastSpokenText = "";
         let recognition = null;
         let isListening = false;
 
-        // Initialize UI Elements
         document.getElementById('user-display-name').innerText = userData.name;
         document.getElementById('profileName').value = userData.name;
         document.getElementById('profile-history-count').innerText = userData.history.length;
 
-        // Save User Profile
+        // Render previous saved history into chat on load if exists
+        window.addEventListener('DOMContentLoaded', () => {
+            if (userData.history.length > 0) {
+                // Show last 5 conversations smoothly
+                const recent = userData.history.slice(0, 10).reverse();
+                recent.forEach(item => {
+                    appendUserBubble(item.query, false);
+                    appendAIBubble(item.answer, item.formulaName, false);
+                });
+                scrollToBottom();
+            }
+        });
+
+        function toggleProfileModal() {
+            document.getElementById('profile-modal').classList.toggle('hidden');
+        }
+
         function saveProfile() {
             const newName = document.getElementById('profileName').value.trim();
-            if(newName) {
+            if (newName) {
                 userData.name = newName;
                 localStorage.setItem('imf_user_name', newName);
                 document.getElementById('user-display-name').innerText = newName;
-                alert('माई प्रोफाइल सफलता से अपडेट और सेव हो गई!');
+                toggleProfileModal();
             }
         }
 
-        // Navigation Controller
-        function navigateTo(viewId) {
-            window.speechSynthesis.cancel(); // Stop TTS audio if playing
-
-            document.getElementById('view-home').classList.add('hidden');
-            document.getElementById('view-result').classList.add('hidden');
-            document.getElementById('view-profile').classList.add('hidden');
-            document.getElementById('view-history').classList.add('hidden');
-            document.getElementById('view-progress').classList.add('hidden');
-
-            if(viewId === 'home') {
-                document.getElementById('view-home').classList.remove('hidden');
-            } else if(viewId === 'result') {
-                document.getElementById('view-result').classList.remove('hidden');
-            } else if(viewId === 'profile') {
-                document.getElementById('view-profile').classList.remove('hidden');
-                document.getElementById('profile-history-count').innerText = userData.history.length;
-            } else if(viewId === 'history') {
-                document.getElementById('view-history').classList.remove('hidden');
-                renderHistory();
-            } else if(viewId === 'progress') {
-                document.getElementById('view-progress').classList.remove('hidden');
+        function clearSavedHistory() {
+            if (confirm('क्या आप अपना पिछला पूरा प्रश्न इतिहास मिटाना चाहते हैं?')) {
+                userData.history = [];
+                localStorage.removeItem('imf_qna_history');
+                document.getElementById('profile-history-count').innerText = 0;
+                clearChatScreen();
+                toggleProfileModal();
             }
         }
 
-        // Formula Directory Meta
-        const formulaMasterData = {
-            11: {
-                name: "Formula 11 — Master Formula (All Formula Combined)",
-                purpose: "Central Management System coordinating all 1-17 formulas, enforcing 99 Central Rules, preserving sequence, auto-verifying authentic sources.",
-                rules: ["Central Rules 1-99 strictly enforced", "Doctor Formula excluded", "NN/N5 navigation rules active", "Duplicate matn control enabled"]
-            },
-            1: {
-                name: "Formula 1: Hadith Study & Verification",
-                purpose: "Source, sanad, matn, authenticity, parallel narrations verification.",
-                rules: ["Identify original source & number", "Separate sanad and matn", "Verify each narration independently"]
-            },
-            2: {
-                name: "Formula 2: Sahih Hadith Protocol",
-                purpose: "Evidence-based Sahih Hadith verification.",
-                rules: ["Check authentic chains", "Distinguish text from commentary", "Highlight uncertainty clearly"]
-            },
-            5: {
-                name: "Formula 5: Automatic Hadith Classification",
-                purpose: "Translation, authenticity, and classification presentation.",
-                rules: ["Provide complete Hindi/Roman translation", "Arabic matn only when requested"]
-            },
-            6: {
-                name: "Formula 6: Arabic Speaking for Beginners",
-                purpose: "Hindi-based Arabic learning, Levels 1-9.",
-                rules: ["Exactly 5 lessons and 5 revision questions per chapter"]
-            },
-            7: {
-                name: "Formula 7: Tark-Vitark (Logic & Debate)",
-                purpose: "Logic, debate, puzzles, case studies, wisdom.",
-                rules: ["Start with substantive claims", "Provide counterargument space", "Direct concise responses"]
-            },
-            8: {
-                name: "Formula 8: Logical Stories Analysis from Salaf",
-                purpose: "Historical source verification and logical analysis.",
-                rules: ["Separate historical authenticity from logical lesson", "Flag unverified details"]
-            },
-            9: {
-                name: "Formula 9: Supreme Court Simulation",
-                purpose: "Indian courtroom simulation (User = Judge, AI = Junior Judge).",
-                rules: ["Use current Indian law and verified legal precedents"]
-            },
-            10: {
-                name: "Formula 10: Fatwa Mustafa",
-                purpose: "Fiqh questions and scholarly positions analysis.",
-                rules: ["Qur'an, Sunnah and recognized scholarship roshni", "Preserve user arguments"]
-            },
-            12: {
-                name: "Formula 12: Islamic Court",
-                purpose: "Islamic judicial/fiqh disputes (User = Chief Justice).",
-                rules: ["Evidence-based arguments from primary sources"]
-            },
-            13: {
-                name: "Formula 13: Mohaddes Mustafa",
-                purpose: "Compare Hadith scholars' gradings (Amendment AK).",
-                rules: ["Prominently display SAHIH, HASAN, DA'IF, MAWDU'", "Verify each scholar's source"]
-            },
-            14: {
-                name: "Formula 14: Book Reading by AI",
-                purpose: "Page-by-page reading & progress register (Amendment AC).",
-                rules: ["Verify actual page accessibility", "Maintain per-book progress and copyright compliance"]
-            },
-            15: {
-                name: "Formula 15: Classroom Integration",
-                purpose: "Ten-student teaching batch & records (Amendment AH).",
-                rules: ["10 students per batch with permanent roll numbers", "Daily class complete when all 10 addressed"]
-            },
-            16: {
-                name: "Formula 16: Qiyamat Ki Nishaniyan",
-                purpose: "Minor signs first, verification, then major signs.",
-                rules: ["First 60 points preliminary", "Compare similar signs"]
-            },
-            17: {
-                name: "Formula 17: Sher-o-Shayari v1.2",
-                purpose: "Automatic jawabi sher with 11 rules.",
-                rules: ["Roman Hindi/Urdu default script", "Preserve central meaning, add punchline", "Respect No-Reply mode"]
-            }
+        function clearChatScreen() {
+            const chatStream = document.getElementById('chat-stream');
+            chatStream.innerHTML = `
+                <div class="flex gap-3 items-start">
+                    <div class="w-8 h-8 rounded-xl bg-islamic-gold/20 border border-islamic-gold/40 flex items-center justify-center text-islamic-gold font-bold text-xs shrink-0">AI</div>
+                    <div class="bg-islamic-card border border-islamic-gold/30 p-4 rounded-2xl rounded-tl-none space-y-2 text-sm max-w-3xl shadow-lg">
+                        <p class="text-islamic-lightgold font-bold">नया चैट सत्र शुरू हुआ!</p>
+                        <p class="text-gray-200">आप अपना कोई भी प्रश्न लिख सकते हैं। मास्टर फॉर्मूला AI तुरंत प्रामाणिक उत्तर प्रदान करेगा।</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Formula Mapping & Prompt Trigger
+        const formulaMeta = {
+            11: "Formula 11 — All Formula Combined",
+            1: "Formula 1: Hadith Study & Verification",
+            2: "Formula 2: Sahih Hadith Protocol",
+            5: "Formula 5: Hadith Classification",
+            6: "Formula 6: Arabic Speaking for Beginners",
+            7: "Formula 7: Tark-Vitark (Logic & Debate)",
+            8: "Formula 8: Salaf Logical Stories",
+            10: "Formula 10: Fatwa Mustafa",
+            12: "Formula 12: Islamic Court",
+            13: "Formula 13: Mohaddes Mustafa",
+            14: "Formula 14: Book Reading by AI",
+            16: "Formula 16: Qiyamat Ki Nishaniyan",
+            17: "Formula 17: Sher-o-Shayari v1.2"
         };
 
-        // Smart Knowledge Fallback Engine for offline or direct scholarly answers
-        const smartKnowledgeBase = {
-            "hadees qudsi": `<b>हदीस-ए-कुदसी (Hadith Qudsi) की मास्टर व्याख्या:</b><br><br>
-1. <b>परिभाषा (Definition):</b> हदीस-ए-कुदसी वह हदीस है जिसमें अल्लाह के रसूल ﷺ अल्लाह तआला का कलाम बयान फरमाते हैं। यानी इसके अल्फ़ाज़ (Wording) रसूलुल्लाह ﷺ के होते हैं, लेकिन इसका अर्थ और संदेश (Meaning & Content) सीधे अल्लाह तआला की तरफ से होता है।<br><br>
-2. <b>क़ुरआन और हदीस-ए-कुदसी में अंतर (Difference from Quran):</b>
-- <i>क़ुरआन:</i> शब्द और अर्थ दोनों अल्लाह की तरफ से मुअजिज़ा (Miracle) हैं और नमाज़ में पढ़े जाते हैं।
-- <i>हदीस-ए-कुदसी:</i> इसका भाव अल्लाह का है, पर शब्द नबी ﷺ के हैं। इसे नमाज़ में तिलावत नहीं किया जाता।<br><br>
-3. <b>प्रसिद्ध मिसाल (Sahih Bukhari / Muslim):</b><br>
-<span class="arabic-font text-lg text-islamic-gold">"قَالَ اللَّهُ تَبَارَكَ وَتَعَالَى: يَا عِبَادِي إِنِّي حَرَّمْتُ الظُّلْمَ عَلَى نَفْسِي وَجَعَلْتُهُ بَيْنَكُمْ مُحَرَّمًا فَلاَ تَظَالَمُوا"</span><br>
-<i>अनुवाद:</i> अल्लाह तआला फरमाता है: "ऐ मेरे बंदों! मैंने अपने ऊपर ज़ुल्म को हराम किया है और तुम्हारे बीच भी इसे हराम किया है, इसलिए एक-दूसरे पर ज़ुल्म न करो।" (सही मुस्लिम #2577)<br><br>
-4. <b>मास्टर फॉर्मूला अनुपालन:</b> नियम 154-155 के तहत यह रिवायत सन्द और मत्न के लिहाज़ से 'सहीह' (Authentic) प्रमाणित है।`,
+        function triggerFormulaPrompt(fNum) {
+            const fName = formulaMeta[fNum] || `Formula ${fNum}`;
+            const input = document.getElementById('userQueryInput');
+            input.value = `[${fName}] `;
+            input.focus();
+        }
 
-            "niyyat": `<b>अमाल का दारोमदार नीयत पर है (Niyyat ki Ahamiyat):</b><br><br>
-1. <b>मूल हदीस (Sahih Bukhari #1):</b><br>
-<span class="arabic-font text-xl text-islamic-gold">إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى</span><br>
-<i>अनुवाद:</i> "तमाम आमाल का दारोमदार नीयत पर है, और हर इंसान को वही मिलेगा जिसकी उसने नीयत की।"<br><br>
-2. <b>विद्वानों का दृष्टिकोण (Scholarly Position):</b><br>
-इमाम शफई और इमाम अहमद bin हंबल (रहि.) के अनुसार यह हदीस इस्लाम के एक-तिहाई (1/3) ज्ञान का निचोड़ है। इबादत (जैसे नमाज़, रोज़ा, सदक़ा) बिना साफ़ नीयत के अल्लाह के यहाँ स्वीकार्य नहीं होती।<br><br>
-3. <b>मास्टर फॉर्मूला नियम 77 & 83:</b> प्रामाणिक असनाद से सिद्ध।`,
-
-            "namaz": `<b>नमाज़ (Salah) का तरीका एवं प्रामाणिक साक्ष्य:</b><br><br>
-1. <b>हदीस निर्देश:</b><br>
-<span class="arabic-font text-xl text-islamic-gold">صَلُّوا كَمَا رَأَيْتُمُونِي أُصَلِّي</span><br>
-<i>अनुवाद:</i> "तुम उसी तरह नमाज़ पढ़ो जिस तरह तुमने मुझे नमाज़ पढ़ते देखा है।" (सही बुखारी #631)<br><br>
-2. <b>मुख्य अरकान (Pillars):</b><br>
-- तकबीरे तहरीमा (अल्लाहु अकबर)<br>
-- कयाम व सूरह अल-फातिहा की तिलावत<br>
-- रुकू और कौमा (सीधे खड़े होना)<br>
-- सुजूद (सज्दा) व तशहुद।<br><br>
-3. <b>मास्टर फॉर्मूला नियम 1-99:</b> सहीह हदीसों का अनुपालन।`
-        };
-
-        // Speech-to-Text Input (Voice Recognition)
+        // Speech-to-Text Input (Microphone)
         function toggleVoiceInput() {
             const voiceStatus = document.getElementById('voice-status');
             const micBtn = document.getElementById('mic-btn');
 
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                alert('आपके ब्राउज़र में वॉइस इनपुट सपोर्ट नहीं है। कृपया Chrome/Edge का उपयोग करें।');
+                alert('आपके ब्राउज़र में वॉइस इनपुट सपोर्ट नहीं है। कृपया Chrome/Edge उपयोग करें।');
                 return;
             }
 
@@ -386,7 +273,6 @@
             const selectedLang = document.getElementById('langSelector').value;
             recognition.lang = selectedLang === 'en-US' ? 'en-US' : 'hi-IN';
             recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
 
             recognition.onstart = function() {
                 isListening = true;
@@ -397,11 +283,10 @@
             recognition.onresult = function(event) {
                 const transcript = event.results[0][0].transcript;
                 document.getElementById('userQueryInput').value = transcript;
-                processSearchQuery();
+                handleSendQuery();
             };
 
-            recognition.onerror = function(event) {
-                console.warn('Voice recognition error:', event.error);
+            recognition.onerror = function() {
                 voiceStatus.classList.add('hidden');
                 micBtn.classList.remove('bg-red-500/40', 'text-red-300', 'animate-pulse');
                 isListening = false;
@@ -416,203 +301,40 @@
             recognition.start();
         }
 
-        // Trigger Quick Prompt Chips
-        function triggerFormula(fNum) {
-            const fData = formulaMasterData[fNum];
-            const promptText = `Active Protocol: ${fData.name}`;
-            document.getElementById('userQueryInput').value = promptText;
-            executeSearchEngine(promptText, fData.name, fData);
-        }
+        // Smart Knowledge Fallback for Offline / Quick Responses
+        const smartKnowledgeBase = {
+            "hadees qudsi": `<b>हदीस-ए-कुदसी (Hadith Qudsi) की मास्टर व्याख्या:</b><br><br>
+1. <b>परिभाषा:</b> हदीस-ए-कुदसी वह हदीस है जिसमें अल्लाह के रसूल ﷺ अल्लाह तआला का कलाम बयान फरमाते हैं। इसका भाव अल्लाह का होता है और शब्द नबी ﷺ के।<br><br>
+2. <b>क़ुरआन और हदीस-ए-कुदसी में अंतर:</b><br>
+- <i>क़ुरआन:</i> शब्द और अर्थ दोनों अल्लाह की तरफ से मुअजिज़ा हैं और नमाज़ में पढ़े जाते हैं।<br>
+- <i>हदीस-ए-कुदसी:</i> इसे नमाज़ में तिलावत नहीं किया जाता।<br><br>
+3. <b>प्रसिद्ध साक्ष्य (Sahih Muslim #2577):</b><br>
+<span class="arabic-font text-lg text-islamic-gold">"قَالَ اللَّهُ تَبَارَكَ وَتَعالَى: يَا عِبَادِي إِنِّي حَرَّمْتُ الظُّلْمَ عَلَى نَفْسِي وَجَعَلْتُهُ بَيْنَكُمْ مُحَرَّمًا فَلَا تَظَالَمُوا"</span><br>
+<i>अनुवाद:</i> अल्लाह तआला फरमाता है: "ऐ मेरे बंदों! मैंने अपने ऊपर ज़ुल्म को हराम किया है और तुम्हारे बीच भी इसे हराम किया है, इसलिए एक-दूसरे पर ज़ुल्म न करो।"<br><br>
+4. <b>मास्टर फॉर्मूला ग्रेडिंग:</b> सहीह (Sahih - Authenticated).`,
 
-        function processSearchQuery() {
-            const query = document.getElementById('userQueryInput').value.trim();
-            if(!query) {
-                alert('कृपया पहले कोई प्रश्न या विषय लिखें!');
-                return;
-            }
-            executeSearchEngine(query, "Master Search & AI Auto-Verification (F11)");
-        }
+            "niyyat": `<b>अमाल का दारोमदार नीयत पर है (Niyyat in Islam):</b><br><br>
+1. <b>मूल हदीस (Sahih Bukhari #1):</b><br>
+<span class="arabic-font text-xl text-islamic-gold">إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى</span><br>
+<i>अनुवाद:</i> "तमाम आमाल का दारोमदार नीयत पर है, और हर इंसान को वही मिलेगा जिसकी उसने नीयत की।"<br><br>
+2. <b>विद्वानों का दृष्टिकोण:</b> इमाम शफई के अनुसार यह हदीस पूरे इस्लाम के ज्ञान का एक-तिहाई हिस्सा है।`,
 
-        // Call Gemini API with Exponential Backoff
-        async function fetchAIResponse(userQuery, systemPrompt, retries = 2, delay = 800) {
-            const apiKey = ""; // Canvas runtime automatically supplies the key
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            "namaz": `<b>नमाज़ का प्रामाणिक तरीका (Salah Guide):</b><br><br>
+1. <b>मूल हदीस (Sahih Bukhari #631):</b><br>
+<span class="arabic-font text-lg text-islamic-gold">صَلُّوا كَمَا رَأَيْتُمُونِي أُصَلِّي</span><br>
+<i>अनुवाद:</i> "तुम उसी तरह नमाज़ पढ़ो जिस तरह तुमने मुझे नमाज़ पढ़ते देखा है।"<br><br>
+2. <b>मुख्य अरकान:</b> तकबीरे तहरीमा, सूरह अल-फातिहा, रुकू, सुजूद और तशहुद।`
+        };
 
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                systemInstruction: { parts: [{ text: systemPrompt }] }
-            };
+        // Query Handler
+        async function handleSendQuery() {
+            const input = document.getElementById('userQueryInput');
+            const query = input.value.trim();
+            if (!query) return;
 
-            for (let i = 0; i < retries; i++) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
+            input.value = '';
 
-                    if (response.ok) {
-                        const data = await response.json();
-                        const candidate = data.candidates?.[0];
-                        if (candidate && candidate.content?.parts?.[0]?.text) {
-                            return candidate.content.parts[0].text;
-                        }
-                    }
-                } catch (err) {
-                    // Retry silently
-                }
-                await new Promise(res => setTimeout(res, delay * Math.pow(2, i)));
-            }
-            return null; // Fallback to internal knowledge base if API unavailable
-        }
+            // 1. Append User Bubble
+            appendUserBubble(query, true);
 
-        // Execute Search Engine & Render AI Response
-        async function executeSearchEngine(query, modeTitle, fData = null) {
-            navigateTo('result');
-
-            const responseContent = document.getElementById('qna-response-content');
-            const responseTitle = document.getElementById('response-title');
-            
-            responseTitle.innerText = `मास्टर फॉर्मूला AI उत्तर [${modeTitle}]:`;
-            responseContent.innerHTML = `
-                <div class="p-8 text-center space-y-3">
-                    <div class="inline-block w-8 h-8 border-4 border-islamic-gold border-t-transparent rounded-full animate-spin"></div>
-                    <p class="text-sm text-islamic-lightgold animate-pulse">v11.23 सेंट्रल रूल्स (99) और Gemini AI के तहत प्रामाणिक उत्तर जनरेट हो रहा है...</p>
-                </div>`;
-
-            let matchedFormula = fData;
-            if(!matchedFormula) {
-                const qLower = query.toLowerCase();
-                if(qLower.includes('f11') || qLower.includes('master')) matchedFormula = formulaMasterData[11];
-                else if(qLower.includes('f1') || qLower.includes('hadith')) matchedFormula = formulaMasterData[1];
-                else if(qLower.includes('f14') || qLower.includes('book')) matchedFormula = formulaMasterData[14];
-                else matchedFormula = formulaMasterData[11];
-            }
-
-            const systemPrompt = `You are the AI engine for "Islam Master Formula v11.23".
-Respond to user queries with a DIRECT, COMPREHENSIVE, SCHOLARLY answer.
-Guidelines:
-- Explain the concept directly in detail (Quranic verses, Sahih Hadiths, Scholar positions).
-- Use Roman Hindi / Urdu or English script based on user prompt.
-- Always enforce Central Rules 1-99 and Sahih grading protocols.
-- Do NOT return template metadata alone. Give the actual Islamic explanation first.`;
-
-            // 1. Try Live Gemini API
-            let aiText = await fetchAIResponse(query, systemPrompt);
-
-            // 2. Fallback to Smart Knowledge Base if API call fails or offline
-            if(!aiText) {
-                const queryKey = Object.keys(smartKnowledgeBase).find(k => query.toLowerCase().includes(k));
-                if(queryKey) {
-                    aiText = smartKnowledgeBase[queryKey];
-                } else {
-                    aiText = `<b>प्रश्न: "${query}" का मास्टर फॉर्मूला उत्तर:</b><br><br>
-1. <b>प्रामाणिक अध्ययन एवं संदर्भ:</b> इस विषय पर कुरान और सहीह सुन्नह के नियमों (रूल्स 154-164) के अनुसार प्रामाणिक राय यह है कि हर इस्लामी हुक्म का आधार साक्ष्य (Dalil) और सहीह असनाद पर निर्भर है।<br><br>
-2. <b>हदीस एवं असनाद जांच:</b> इमाम बुखारी और इमाम मुस्लिम के मापदंड के अनुसार किसी भी रिवायत को स्वीकार करने से पहले उसके रावियों (Narrators) का थिका (Trustworthy) होना आवश्यक है।<br><br>
-3. <b>मास्टर फॉर्मूला v11.23 निर्देश:</b> सेंट्रल रूल्स 99 और अमेंडमेंट AB/AC के तहत यह सवाल दर्ज किया गया है।`;
-                }
-            } else {
-                // Formatting markdown symbols from AI response to clean HTML
-                aiText = aiText
-                    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-                    .replace(/\n\n/g, '<br><br>')
-                    .replace(/\n/g, '<br>');
-            }
-
-            let rulesList = matchedFormula.rules.map(r => `<li>🔹 ${r}</li>`).join('');
-            let detailsHtml = `
-                <div class="mt-4 p-4 bg-islamic-inner border border-islamic-gold/30 rounded-xl space-y-2 text-xs md:text-sm">
-                    <p class="text-islamic-gold font-bold text-base">👑 ${matchedFormula.name}</p>
-                    <p class="text-gray-300"><b>Purpose:</b> ${matchedFormula.purpose}</p>
-                    <ul class="space-y-1 text-emerald-300"><b>Active Rules & Protocols:</b> ${rulesList}</ul>
-                </div>
-            `;
-
-            lastSpokenText = `${matchedFormula.name}. Answer: ${aiText.replace(/<[^>]*>?/gm, '')}`;
-
-            // Render Output
-            responseContent.innerHTML = `
-                <div class="space-y-4">
-                    <div class="text-sm md:text-base font-bold text-islamic-lightgold bg-islamic-inner p-3 rounded-xl border border-islamic-gold/20">
-                        <b>Query / Prompt:</b> ${query}
-                    </div>
-                    <div class="text-gray-100 leading-relaxed space-y-2">
-                        ${aiText}
-                    </div>
-                    ${detailsHtml}
-                </div>
-            `;
-
-            // Save to LocalStorage History
-            const answerObj = {
-                query: query,
-                mode: modeTitle,
-                timestamp: new Date().toLocaleString('hi-IN'),
-                answer: aiText,
-                details: detailsHtml
-            };
-
-            userData.history.unshift(answerObj);
-            localStorage.setItem('imf_qna_history', JSON.stringify(userData.history));
-            document.getElementById('profile-history-count').innerText = userData.history.length;
-        }
-
-        // Text-to-Speech (Read Aloud) Output
-        function speakAnswerText() {
-            if(!lastSpokenText) return;
-
-            if (!('speechSynthesis' in window)) {
-                alert('आपके ब्राउज़र में स्पीच सिंथेसिस सपोर्ट नहीं है।');
-                return;
-            }
-
-            window.speechSynthesis.cancel(); // Stop active audio
-
-            const speech = new SpeechSynthesisUtterance(lastSpokenText);
-            const selectedLang = document.getElementById('langSelector').value;
-            speech.lang = selectedLang;
-            speech.rate = 1.0;
-
-            const speakBtnText = document.getElementById('speak-btn-text');
-            speech.onstart = () => { if(speakBtnText) speakBtnText.innerText = 'बोल रहा है... (Speaking)'; };
-            speech.onend = () => { if(speakBtnText) speakBtnText.innerText = 'उत्तर सुनें (Read Aloud)'; };
-            speech.onerror = () => { if(speakBtnText) speakBtnText.innerText = 'उत्तर सुनें (Read Aloud)'; };
-
-            window.speechSynthesis.speak(speech);
-        }
-
-        // Render Q&A History
-        function renderHistory() {
-            const historyList = document.getElementById('history-list');
-            if(userData.history.length === 0) {
-                historyList.innerHTML = `<p class="text-sm text-gray-400">आपकी प्रोफाइल में अभी तक कोई इतिहास दर्ज नहीं है।</p>`;
-                return;
-            }
-
-            let html = '';
-            userData.history.forEach((item, index) => {
-                html += `
-                    <div class="bg-islamic-card border border-islamic-gold/20 p-4 rounded-xl space-y-2">
-                        <div class="flex justify-between text-xs text-islamic-gold">
-                            <span class="font-bold">[${item.mode || 'Q&A'}]</span>
-                            <span>${item.timestamp}</span>
-                        </div>
-                        <p class="text-sm font-bold text-islamic-lightgold">Q: ${item.query}</p>
-                        <div class="text-xs md:text-sm text-gray-200 line-clamp-3">${item.answer}</div>
-                    </div>
-                `;
-            });
-            historyList.innerHTML = html;
-        }
-    </script>
-</body>
-</html>
-```
-
----
-
-### What Changed & Fixed:
-1. **Direct AI Answers (No Template Output):** Searching terms like *"Hadees qudsi"*, *"Niyyat"*, or *"Namaz"* now provides complete, rich Islamic answers with Quranic verses, Sahih references (Bukhari/Muslim), and Arabic Uthmani text.
-2. **Live Gemini Integration + Smart Fallback:** Uses `gemini-3-flash-preview` API for AI generation, and automatically falls back to an offline Islamic knowledge base if network issues arise.
-3. **Microphone (🎙️) & Voice Output (🔊):** Voice search fills the input bar and submits automatically. Speech synthesis reads out the generated answers.
-```
+          
