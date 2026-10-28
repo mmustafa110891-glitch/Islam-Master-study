@@ -2,392 +2,184 @@
 <html lang="hi" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#061a14">
   <title>Islamic AI Master Engine</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            islamic: {
-              dark: '#061a14',
-              card: '#0b2e23',
-              gold: '#d4af37',
-              lightgold: '#f3e5ab'
-            }
-          }
-        }
-      }
-    };
+    tailwind.config = { darkMode:'class', theme:{extend:{colors:{islamic:{dark:'#061a14',card:'#0b2e23',gold:'#d4af37',lightgold:'#f3e5ab'}}}}};
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root { color-scheme: dark; }
-    * { box-sizing: border-box; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #061a14; color: #f3f4f6; margin: 0; min-height: 100dvh; }
-    .arabic-font { font-family: 'Amiri', serif; }
-    .chat-scroll { scrollbar-width: thin; scrollbar-color: #806a2c transparent; }
-    .chat-scroll::-webkit-scrollbar { width: 4px; }
-    .chat-scroll::-webkit-scrollbar-thumb { background: #d4af3766; border-radius: 9999px; }
-    .glass { background: rgba(11,46,35,.88); backdrop-filter: blur(14px); }
-    .subject-card { min-height: 100px; transition: transform .16s ease, border-color .16s ease; }
-    .subject-card:active { transform: scale(.98); }
-    .subject-card:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #f3e5ab; outline-offset: 2px; }
-    #chat-stream { scroll-behavior: smooth; }
-    .message-content { overflow-wrap: anywhere; white-space: pre-wrap; line-height: 1.7; }
-    .safe-area-bottom { padding-bottom: max(.75rem, env(safe-area-inset-bottom)); }
+    *{box-sizing:border-box}
+    :root{color-scheme:dark}
+    body{margin:0;min-height:100vh;background:#061a14;color:#f3f4f6;font-family:'Noto Sans Devanagari','Plus Jakarta Sans',sans-serif}
+    .urdu{font-family:'Noto Nastaliq Urdu','Amiri',serif;line-height:2}
+    .arabic{font-family:'Amiri',serif}
+    .glass{background:rgba(11,46,35,.94);backdrop-filter:blur(14px)}
+    .chat-scroll{scrollbar-width:thin;scrollbar-color:#806a2c transparent}
+    .message-content{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8}
+    button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #f3e5ab;outline-offset:2px}
+    .safe-bottom{padding-bottom:max(.75rem,env(safe-area-inset-bottom))}
+    @media(max-width:420px){.brand-title{font-size:12px}.brand-subtitle{font-size:9px}.lang-select{max-width:100px}.new-chat-label{display:none}.hero-title{font-size:1.8rem}}
   </style>
 </head>
-<body class="min-h-screen">
-  <div class="min-h-screen flex flex-col">
-    <header class="sticky top-0 z-30 border-b border-islamic-gold/25 glass shadow-lg">
-      <div class="max-w-5xl mx-auto px-3 py-3 flex items-center justify-between gap-3">
-        <button id="homeBtn" class="flex items-center gap-2 text-left min-w-0" aria-label="рд╣реЛрдо">
-          <span class="w-10 h-10 rounded-xl bg-islamic-gold/15 border border-islamic-gold/40 flex items-center justify-center text-xl">тШкя╕П</span>
-          <span class="min-w-0">
-            <span class="block text-islamic-lightgold font-extrabold text-sm sm:text-base truncate">Islamic AI Master Engine</span>
-            <span class="block text-[10px] text-emerald-200/70">Study тАв Explore тАв Understand</span>
-          </span>
-        </button>
-        <div class="flex items-center gap-2 shrink-0">
-          <select id="langSelector" aria-label="рднрд╛рд╖рд╛ рдЪреБрдиреЗрдВ" class="max-w-[112px] bg-islamic-dark border border-islamic-gold/40 text-islamic-lightgold text-xs rounded-lg px-2 py-2">
-            <option value="Hindi">рд╣рд┐рдВрджреА</option>
-            <option value="English">English</option>
-            <option value="Urdu">╪з╪▒╪п┘И</option>
-            <option value="Roman Urdu">Roman Urdu</option>
-            <option value="Roman Hindi">Roman Hindi</option>
-          </select>
-          <button id="newChatBtn" class="border border-islamic-gold/35 rounded-lg px-3 py-2 text-xs text-islamic-lightgold hover:bg-islamic-gold/10" title="рдирдИ рдЪреИрдЯ">я╝Л <span class="hidden sm:inline">рдирдИ рдЪреИрдЯ</span></button>
+<body>
+<div class="min-h-screen flex flex-col">
+  <header class="sticky top-0 z-30 border-b border-islamic-gold/25 glass">
+    <div class="max-w-5xl mx-auto px-3 py-3 flex items-center justify-between gap-2">
+      <button id="homeBtn" class="flex items-center gap-2 text-left min-w-0" aria-label="рдореБрдЦреНрдп рдкреГрд╖реНрда">
+        <span class="w-10 h-10 shrink-0 rounded-xl bg-islamic-gold/15 border border-islamic-gold/40 flex items-center justify-center text-xl">тШкя╕П</span>
+        <span class="min-w-0">
+          <span class="block brand-title text-islamic-lightgold font-extrabold truncate">Islamic AI Master Engine</span>
+          <span class="block brand-subtitle text-emerald-200/70">Study тАв Explore тАв Understand</span>
+        </span>
+      </button>
+      <div class="flex items-center gap-2 shrink-0">
+        <select id="langSelector" aria-label="рднрд╛рд╖рд╛ рдЪреБрдиреЗрдВ" class="lang-select bg-islamic-dark border border-islamic-gold/40 text-islamic-lightgold text-xs rounded-lg px-2 py-2">
+          <option value="Hindi">рд╣рд┐рдВрджреА</option>
+          <option value="English">English</option>
+          <option value="Urdu">╪з╪▒╪п┘И</option>
+          <option value="Roman Urdu">Roman Urdu</option>
+          <option value="Roman Hindi">Roman Hindi</option>
+        </select>
+        <button id="newChatBtn" class="border border-islamic-gold/35 rounded-lg px-3 py-2 text-xs text-islamic-lightgold">я╝Л <span class="new-chat-label">рдирдИ рдмрд╛рддрдЪреАрдд</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="w-full max-w-5xl mx-auto flex-1 px-3 sm:px-5 pb-40">
+    <section id="welcomePanel" class="pt-6 sm:pt-10">
+      <div class="relative overflow-hidden rounded-3xl border border-islamic-gold/30 bg-gradient-to-br from-islamic-card via-[#09271e] to-[#071810] p-5 sm:p-8 shadow-xl">
+        <p class="text-[10px] uppercase tracking-[.18em] text-islamic-lightgold/70 mb-3">Your Islamic Knowledge Companion</p>
+        <h1 class="arabic hero-title text-3xl sm:text-4xl text-islamic-lightgold leading-relaxed" dir="rtl">╪▒┘О╪и┘Р┘С ╪▓┘Р╪п┘Т┘Ж┘Р┘К ╪╣┘Р┘Д┘Т┘Е┘Л╪з</h1>
+        <h2 class="mt-3 text-xl sm:text-2xl font-extrabold text-white">рдЗрд╕реНрд▓рд╛рдореА рдЬреНрдЮрд╛рди рдХрд╛ рдЖрдкрдХрд╛ рд╕рд╛рдереА</h2>
+        <p class="mt-2 text-sm text-emerald-100/80 max-w-2xl">рдХрд╝реБрд░рдЖрди, рддрдлрд╝рд╕реАрд░, рд╣рджреАрд╕, рдЗрд╕реНрд▓рд╛рдореА рдЗрддрд┐рд╣рд╛рд╕, рдЕрдХрд╝реАрджрд╛ рдФрд░ рддрд░реНрдХ-рд╡рд┐рдЪрд╛рд░ рд╕реЗ рдЬреБрдбрд╝реЗ рд╕рд╡рд╛рд▓ рдкреВрдЫреЗрдВред рдЬрд╡рд╛рдмреЛрдВ рдореЗрдВ рд╕реНрд░реЛрддреЛрдВ рдФрд░ рдЕрдирд┐рд╢реНрдЪрд┐рддрддрд╛ рдХреЛ рд╕реНрдкрд╖реНрдЯ рд░рдЦрдиреЗ рдХреА рдХреЛрд╢рд┐рд╢ рдХреА рдЬрд╛рдПрдЧреАред</p>
+        <div class="mt-5 flex flex-wrap gap-2 text-[11px]">
+          <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">ЁЯУЦ рдХрд╝реБрд░рдЖрди рд╡ рддрдлрд╝рд╕реАрд░</span>
+          <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">ЁЯФО рд╕реНрд░реЛрддреЛрдВ рдХреА рдЬрд╛рдБрдЪ</span>
+          <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">ЁЯза рддрд░реНрдХ рдФрд░ рд╕реЛрдЪ</span>
         </div>
       </div>
-    </header>
 
-    <main class="w-full max-w-5xl mx-auto flex-1 px-3 sm:px-5 pb-36">
-      <section id="welcomePanel" class="pt-6 sm:pt-10">
-        <div class="relative overflow-hidden rounded-3xl border border-islamic-gold/30 bg-gradient-to-br from-islamic-card via-[#09271e] to-[#071810] p-5 sm:p-8 shadow-xl">
-          <div class="absolute -right-10 -top-12 w-44 h-44 rounded-full border border-islamic-gold/10"></div>
-          <div class="absolute -right-3 -top-5 w-28 h-28 rounded-full border border-islamic-gold/10"></div>
-          <p class="text-[10px] uppercase tracking-[.22em] text-islamic-lightgold/70 mb-3">Your Islamic Knowledge Companion</p>
-          <h1 class="arabic-font text-3xl sm:text-4xl text-islamic-lightgold leading-relaxed" dir="rtl">╪и┘Р╪│┘Т┘Е┘Р ╪з┘Д┘Д┘О┘С┘З┘Р ╪з┘Д╪▒┘О┘С╪н┘Т┘Е┘О┘░┘Ж┘Р ╪з┘Д╪▒┘О┘С╪н┘Р┘К┘Е┘Р</h1>
-          <h2 class="mt-3 text-xl sm:text-2xl font-extrabold text-white">рдЗрд▓реНрдо рдХреА рддрд▓рд╛рд╢, рдПрдХ рдЬрдЧрд╣</h2>
-          <p class="mt-2 text-sm text-emerald-100/75 max-w-2xl">рдХрд╝реБрд░рдЖрди, рд╣рджреАрд╕, рдЗрд╕реНрд▓рд╛рдореА рдЗрддрд┐рд╣рд╛рд╕ рдФрд░ рддрд░реНрдХ-рд╡рд┐рддрд░реНрдХ рд╕реЗ рдЬреБрдбрд╝реЗ рд╕рд╡рд╛рд▓ рдкреВрдЫреЗрдВред рдЬрд╡рд╛рдмреЛрдВ рдХреЗ рд╕рд╛рде рд╕реНрд░реЛрдд рдФрд░ рдкреНрд░рдорд╛рдг рдорд╛рдБрдЧреЗрдВ, рдФрд░ рдЬрд╝рд░реВрд░рдд рдкрдбрд╝рдиреЗ рдкрд░ рдЙрдирдХреА рдЬрд╛рдБрдЪ рдХрд░реЗрдВред</p>
-          <div class="mt-5 flex flex-wrap gap-2 text-[11px]">
-            <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">ЁЯУЪ рдЕрдзреНрдпрдпрди</span>
-            <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">ЁЯФО Google Search рд╕рдХреНрд╖рдо</span>
-            <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">ЁЯМР рдмрд╣реБрднрд╛рд╖реА</span>
-          </div>
-        </div>
-
-        <div class="mt-7 flex items-end justify-between gap-3">
-          <div>
-            <h3 class="font-bold text-white text-base">рдХрд┐рд╕ рд╡рд┐рд╖рдп рд╕реЗ рд╢реБрд░реБрдЖрдд рдХрд░реЗрдВ?</h3>
-            <p class="text-xs text-emerald-100/55 mt-1">рдХрд┐рд╕реА рдХрд╛рд░реНрдб рдХреЛ рдЫреВрдХрд░ рд╕рд╡рд╛рд▓ рддреИрдпрд╛рд░ рдХрд░реЗрдВред</p>
-          </div>
-          <span class="text-islamic-lightgold/60 text-xs">рд╡рд┐рд╖рдп рдЪреБрдиреЗрдВ тЖУ</span>
-        </div>
-
-        <div id="subjectGrid" class="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
-          <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card/80 p-4 hover:border-islamic-gold/70" data-prompt="рдХрд╝реБрд░рдЖрди рдХреА рдХрд┐рд╕реА рдЖрдпрдд рдХреА рддрдлрд╝рд╕реАрд░ рдкреНрд░рдорд╛рдгрд┐рдд рд╕реНрд░реЛрддреЛрдВ рдХреЗ рд╕рд╛рде рд╕рдордЭрд╛рдЗрдПред">
-            <span class="text-2xl">ЁЯУЦ</span><span class="block mt-3 font-bold text-sm">рдХрд╝реБрд░рдЖрди рдФрд░ рддрдлрд╝рд╕реАрд░</span><span class="block mt-1 text-[11px] text-emerald-100/55">рдЖрдпрдд, рдЕрд░реНрде рдФрд░ рд╡реНрдпрд╛рдЦреНрдпрд╛</span>
-          </button>
-          <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card/80 p-4 hover:border-islamic-gold/70" data-prompt="рдЗрд╕ рд╣рджреАрд╕ рдХрд╛ рдЕрд░рдмреА рдорддреНрди, рд╣рд┐рдВрджреА рдЕрдиреБрд╡рд╛рдж, рд╕реНрд░реЛрдд, рджрд░реНрдЬрд╛ рдФрд░ рд╡рд┐рджреНрд╡рд╛рдиреЛрдВ рдХреА рд╡реНрдпрд╛рдЦреНрдпрд╛ рдмрддрд╛рдЗрдПред">
-            <span class="text-2xl">ЁЯУЬ</span><span class="block mt-3 font-bold text-sm">рд╣рджреАрд╕ рдЕрдзреНрдпрдпрди</span><span class="block mt-1 text-[11px] text-emerald-100/55">рд╕реНрд░реЛрдд рдФрд░ рджрд░реНрдЬреЗ рдХреА рдЬрд╛рдБрдЪ</span>
-          </button>
-          <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card/80 p-4 hover:border-islamic-gold/70" data-prompt="рдЗрд╕реНрд▓рд╛рдореА рдЗрддрд┐рд╣рд╛рд╕ рдХреЗ рдЗрд╕ рд╡рд┐рд╖рдп рдкрд░ рднрд░реЛрд╕реЗрдордВрдж рд╕реНрд░реЛрддреЛрдВ рдФрд░ рддрд╛рд░реАрдЦрд╝реЛрдВ рдХреЗ рд╕рд╛рде рдЬрд╛рдирдХрд╛рд░реА рджреЗрдВред">
-            <span class="text-2xl">ЁЯПЫя╕П</span><span class="block mt-3 font-bold text-sm">рдЗрд╕реНрд▓рд╛рдореА рдЗрддрд┐рд╣рд╛рд╕</span><span class="block mt-1 text-[11px] text-emerald-100/55">рдШрдЯрдирд╛рдПрдБ рдФрд░ рд╕реНрд░реЛрдд</span>
-          </button>
-          <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card/80 p-4 hover:border-islamic-gold/70" data-prompt="рдЗрд╕ рдорд╕рд▓реЗ рдкрд░ рдЕрд▓рдЧ-рдЕрд▓рдЧ рдЗрд╕реНрд▓рд╛рдореА рдорддреЛрдВ рдХреЗ рддрд░реНрдХ, рдкреНрд░рдорд╛рдг рдФрд░ рдЕрд╕рд╣рдорддрд┐ рдирд┐рд╖реНрдкрдХреНрд╖ рд░реВрдк рд╕реЗ рддреБрд▓рдирд╛ рдХрд░реЗрдВред">
-            <span class="text-2xl">тЪЦя╕П</span><span class="block mt-3 font-bold text-sm">рддрд░реНрдХ-рд╡рд┐рддрд░реНрдХ</span><span class="block mt-1 text-[11px] text-emerald-100/55">рджрд▓реАрд▓ рдФрд░ рдЖрд▓реЛрдЪрдирд╛рддреНрдордХ рд╕реЛрдЪ</span>
-          </button>
-          <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card/80 p-4 hover:border-islamic-gold/70" data-prompt="рдЗрд╕ рдЕрдХрд╝реАрджреЗ рдХреЗ рдмрд╛рд░реЗ рдореЗрдВ рдХрд╝реБрд░рдЖрди, рдкреНрд░рдорд╛рдгрд┐рдд рд╣рджреАрд╕ рдФрд░ рдкреНрд░рдореБрдЦ рд╡рд┐рджреНрд╡рд╛рдиреЛрдВ рдХреА рд╡реНрдпрд╛рдЦреНрдпрд╛рдУрдВ рдХреЗ рд╕рд╛рде рдмрддрд╛рдЗрдПред">
-            <span class="text-2xl">ЁЯзн</span><span class="block mt-3 font-bold text-sm">рдЕрдХрд╝реАрджрд╛ рдФрд░ рдлрд╝рд┐рдХрд╝реНрд╣</span><span class="block mt-1 text-[11px] text-emerald-100/55">рдорддреЛрдВ рдФрд░ рдкреНрд░рдорд╛рдгреЛрдВ рдХреА рддреБрд▓рдирд╛</span>
-          </button>
-          <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card/80 p-4 hover:border-islamic-gold/70" data-prompt="рдЗрд╕ рд╡рд┐рд╖рдп рдХреЛ рд╕рд░рд▓ рднрд╛рд╖рд╛ рдореЗрдВ рд╕рдордЭрд╛рдЗрдП рдФрд░ рджрд╛рд╡реЛрдВ, рдкреНрд░рдорд╛рдгреЛрдВ рддрдерд╛ рдЕрдирд┐рд╢реНрдЪрд┐рддрддрд╛рдУрдВ рдХреЛ рдЕрд▓рдЧ-рдЕрд▓рдЧ рдмрддрд╛рдЗрдПред">
-            <span class="text-2xl">ЁЯза</span><span class="block mt-3 font-bold text-sm">рд╡рд┐рдЬреНрдЮрд╛рди рдФрд░ рд╕реЛрдЪ</span><span class="block mt-1 text-[11px] text-emerald-100/55">рддрд░реНрдХ, рдордиреЛрд╡рд┐рдЬреНрдЮрд╛рди рдФрд░ рд╡рд┐рдЬреНрдЮрд╛рди</span>
-          </button>
-        </div>
-
-        <div class="mt-6 rounded-2xl border border-islamic-gold/15 bg-black/10 p-4">
-          <p class="text-xs text-emerald-100/65">ЁЯТб рдмреЗрд╣рддрд░ рдЬрд╡рд╛рдм рдХреЗ рд▓рд┐рдП рд╕рд╡рд╛рд▓ рдореЗрдВ рд╕реВрд░рд╣/рдЖрдпрдд, рд╣рджреАрд╕ рдХрд╛ рд╕реНрд░реЛрдд, рдХрд┐рддрд╛рдм рдХрд╛ рдирд╛рдо рдпрд╛ рдЬрд┐рд╕ рдордд рдХреА рддреБрд▓рдирд╛ рдХрд░рдиреА рд╣реИ, рдЙрд╕рдХрд╛ рдЙрд▓реНрд▓реЗрдЦ рдХрд░реЗрдВред AI рдХреЗ рдЬрд╡рд╛рдмреЛрдВ рдФрд░ рдЙрджреНрдзрд░рдгреЛрдВ рдХреА рдореВрд▓ рд╕реНрд░реЛрдд рд╕реЗ рдкреБрд╖реНрдЯрд┐ рдХрд░реЗрдВред</p>
-        </div>
-      </section>
-
-      <section id="chatPanel" class="hidden pt-5">
-        <div class="flex items-center justify-between gap-3 mb-4">
-          <div><h2 class="font-bold text-lg">рдЖрдкрдХреА рдмрд╛рддрдЪреАрдд</h2><p class="text-xs text-emerald-100/55">рдЬрд╡рд╛рдм рд╕рд░реНрд╡рд░ рд╕реЗ рдкреНрд░рд╛рдкреНрдд рд╣реЛрдВрдЧреЗред</p></div>
-          <button id="backHomeBtn" class="text-xs border border-islamic-gold/30 text-islamic-lightgold rounded-lg px-3 py-2">рд╡рд┐рд╖рдп рджреЗрдЦреЗрдВ</button>
-        </div>
-        <div id="chat-stream" class="chat-scroll space-y-4"></div>
-      </section>
-    </main>
-
-    <footer class="fixed bottom-0 inset-x-0 z-40 border-t border-islamic-gold/25 glass safe-area-bottom">
-      <div class="max-w-5xl mx-auto p-3">
-        <div class="flex items-center justify-between mb-2 px-1">
-          <span id="statusText" class="text-[11px] text-emerald-100/60">AI рд╕реЗ рд╕рд╡рд╛рд▓ рдкреВрдЫрдиреЗ рдХреЗ рд▓рд┐рдП рддреИрдпрд╛рд░</span>
-          <button id="talkAiBtn" class="text-[11px] text-islamic-lightgold border border-islamic-gold/30 rounded-full px-3 py-1.5 hover:bg-islamic-gold/10">ЁЯОЩя╕П рдмреЛрд▓рдХрд░ рдкреВрдЫреЗрдВ</button>
-        </div>
-        <form id="chatForm" class="flex items-end gap-2 rounded-2xl border border-islamic-gold/40 bg-islamic-dark p-2 shadow-2xl">
-          <textarea id="userQueryInput" rows="1" maxlength="12000" placeholder="рдЕрдкрдирд╛ рд╕рд╡рд╛рд▓ рдпрд╣рд╛рдБ рд▓рд┐рдЦреЗрдВ..." aria-label="рдЕрдкрдирд╛ рд╕рд╡рд╛рд▓ рд▓рд┐рдЦреЗрдВ" class="flex-1 resize-none max-h-32 bg-transparent px-2 py-2 text-sm text-white placeholder:text-emerald-100/35 outline-none"></textarea>
-          <button id="voiceInputBtn" type="button" aria-label="рдорд╛рдЗрдХ рд╕реЗ рд╕рд╡рд╛рд▓ рдмреЛрд▓реЗрдВ" class="shrink-0 w-10 h-10 rounded-xl border border-islamic-gold/25 text-islamic-lightgold hover:bg-islamic-gold/10">ЁЯОд</button>
-          <button id="sendBtn" type="submit" class="shrink-0 h-10 rounded-xl bg-islamic-gold px-4 text-sm font-extrabold text-islamic-dark hover:bg-islamic-lightgold disabled:opacity-50">рднреЗрдЬреЗрдВ</button>
-        </form>
-        <p class="mt-2 text-center text-[10px] text-emerald-100/35">AI рдХреА рдЬрд╛рдирдХрд╛рд░реА рдореЗрдВ рдЧрд╝рд▓рддреА рд╣реЛ рд╕рдХрддреА рд╣реИред рдЕрд╣рдо рдзрд╛рд░реНрдорд┐рдХ рдорд╕рд▓реЛрдВ рдореЗрдВ рдореВрд▓ рд╕реНрд░реЛрдд рдЬрд╛рдБрдЪреЗрдВред</p>
+      <div class="mt-7">
+        <h3 class="font-bold text-white text-base">рдХрд┐рд╕ рд╡рд┐рд╖рдп рд╕реЗ рд╢реБрд░реВ рдХрд░рдирд╛ рдЪрд╛рд╣реЗрдВрдЧреЗ?</h3>
+        <p class="text-xs text-emerald-100/65 mt-1">рдХрд┐рд╕реА рд╡рд┐рд╖рдп рдкрд░ рдЯреИрдк рдХрд░реЗрдВ рдпрд╛ рдиреАрдЪреЗ рдЕрдкрдирд╛ рд╕рд╡рд╛рд▓ рд▓рд┐рдЦреЗрдВред</p>
       </div>
-    </footer>
-  </div>
+      <div id="subjectGrid" class="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдХрд╝реБрд░рдЖрди рдХреА рдХрд┐рд╕реА рдЖрдпрдд рдХреА рддрдлрд╝рд╕реАрд░ рд╕реНрд░реЛрддреЛрдВ рдХреЗ рд╕рд╛рде рд╕рдордЭрд╛рдЗрдПред"><span class="text-2xl">ЁЯУЦ</span><span class="block mt-3 font-bold text-sm">рдХрд╝реБрд░рдЖрди рдФрд░ рддрдлрд╝рд╕реАрд░</span><span class="block mt-1 text-[11px] text-emerald-100/65">рдЖрдпрдд, рдЕрд░реНрде рдФрд░ рд╡реНрдпрд╛рдЦреНрдпрд╛</span></button>
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдХрд┐рд╕реА рд╣рджреАрд╕ рдХрд╛ рдЕрд░рдмреА рдорддреНрди, рдЕрдиреБрд╡рд╛рдж, рд╕реНрд░реЛрдд рдФрд░ рджрд░реНрдЬрд╛ рдмрддрд╛рдЗрдПред"><span class="text-2xl">ЁЯУЪ</span><span class="block mt-3 font-bold text-sm">рд╣рджреАрд╕ рдЕрдзреНрдпрдпрди</span><span class="block mt-1 text-[11px] text-emerald-100/65">рдорддреНрди, рд╕реНрд░реЛрдд рдФрд░ рджрд░реНрдЬрд╛</span></button>
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдЗрд╕реНрд▓рд╛рдореА рдЗрддрд┐рд╣рд╛рд╕ рдХреЗ рдХрд┐рд╕реА рд╡рд┐рд╖рдп рдХреЛ рднрд░реЛрд╕реЗрдордВрдж рд╕реНрд░реЛрддреЛрдВ рдХреЗ рд╕рд╛рде рд╕рдордЭрд╛рдЗрдПред"><span class="text-2xl">ЁЯПЫя╕П</span><span class="block mt-3 font-bold text-sm">рдЗрд╕реНрд▓рд╛рдореА рдЗрддрд┐рд╣рд╛рд╕</span><span class="block mt-1 text-[11px] text-emerald-100/65">рдШрдЯрдирд╛рдПрдБ рдФрд░ рд╕рдВрджрд░реНрдн</span></button>
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдЗрд╕ рд╡рд┐рд╖рдп рдХрд╛ рддрд╛рд░реНрдХрд┐рдХ рд╡рд┐рд╢реНрд▓реЗрд╖рдг рдХреАрдЬрд┐рдП рдФрд░ рджреЛрдиреЛрдВ рдкрдХреНрд╖реЛрдВ рдХреЗ рддрд░реНрдХ рдмрддрд╛рдЗрдПред"><span class="text-2xl">тЪЦя╕П</span><span class="block mt-3 font-bold text-sm">рддрд░реНрдХ-рд╡рд┐рддрд░реНрдХ</span><span class="block mt-1 text-[11px] text-emerald-100/65">рджрд▓реАрд▓ рдФрд░ рд╡рд┐рд╢реНрд▓реЗрд╖рдг</span></button>
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдЕрдХрд╝реАрджрд╛ рдпрд╛ рдлрд╝рд┐рдХрд╝реНрд╣ рдХреЗ рдЗрд╕ рд╕рд╡рд╛рд▓ рдкрд░ рдкреНрд░рдореБрдЦ рдордд рдФрд░ рдЙрдирдХреЗ рд╕реНрд░реЛрдд рдмрддрд╛рдЗрдПред"><span class="text-2xl">ЁЯХМ</span><span class="block mt-3 font-bold text-sm">рдЕрдХрд╝реАрджрд╛ рдФрд░ рдлрд╝рд┐рдХрд╝реНрд╣</span><span class="block mt-1 text-[11px] text-emerald-100/65">рдорддрднреЗрдж рдФрд░ рджрд▓реАрд▓реЗрдВ</span></button>
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдЗрд╕ рд╡рд┐рд╖рдп рдХреЛ рд╡рд┐рдЬреНрдЮрд╛рди, рддрд░реНрдХ рдФрд░ рдЙрдкрд▓рдмреНрдз рдкреНрд░рдорд╛рдгреЛрдВ рдХреЗ рдЖрдзрд╛рд░ рдкрд░ рд╕рдордЭрд╛рдЗрдПред"><span class="text-2xl">ЁЯФм</span><span class="block mt-3 font-bold text-sm">рд╡рд┐рдЬреНрдЮрд╛рди рдФрд░ рд╕реЛрдЪ</span><span class="block mt-1 text-[11px] text-emerald-100/65">рдкреНрд░рдорд╛рдг рдФрд░ рд╡рд┐рд╡реЗрдЪрдирд╛</span></button>
+      </div>
+      <div class="mt-6 rounded-2xl border border-islamic-gold/15 bg-black/10 p-4 text-xs text-emerald-100/75">рдиреЛрдЯ: рдзрд╛рд░реНрдорд┐рдХ рдорд╕рд▓реЛрдВ рдореЗрдВ рдХрд╝реБрд░рдЖрди, рд╣рджреАрд╕, рд╡рд┐рджреНрд╡рд╛рдиреЛрдВ рдХреА рд╡реНрдпрд╛рдЦреНрдпрд╛ рдФрд░ рдЕрдирд┐рд╢реНрдЪрд┐рдд рдмрд╛рддреЛрдВ рдХреЛ рдЕрд▓рдЧ-рдЕрд▓рдЧ рдкрд╣рдЪрд╛рдиреЗрдВред рдЕрд╣рдо рдлрд╝реИрд╕рд▓реЛрдВ рдХреЗ рд▓рд┐рдП рдореВрд▓ рд╕реНрд░реЛрддреЛрдВ рдХреА рдЬрд╛рдБрдЪ рдХрд░реЗрдВред</div>
+    </section>
 
-  <script>
-    /*
-      Frontend connects to the existing Render backend.
-      Set API_BASE_URL to the deployed backend URL if this website is hosted
-      on a different domain. Leave empty when frontend and API share an origin.
-    */
-    const API_BASE_URL = "";
-    const CHAT_ENDPOINT = `${API_BASE_URL}/api/chat`;
+    <section id="chatPanel" class="hidden pt-5">
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <div><h2 class="font-bold text-lg">рдЖрдкрдХреА рдмрд╛рддрдЪреАрдд</h2><p class="text-xs text-emerald-100/65">рдЬрд╡рд╛рдм рдЖрдкрдХреЗ AI рд╕рд░реНрд╡рд░ рд╕реЗ рдЖрдПрдБрдЧреЗред</p></div>
+        <button id="backHomeBtn" class="text-xs border border-islamic-gold/30 text-islamic-lightgold rounded-lg px-3 py-2">рд╡рд┐рд╖рдп рджреЗрдЦреЗрдВ</button>
+      </div>
+      <div id="chat-stream" class="chat-scroll space-y-4"></div>
+    </section>
+  </main>
 
-    const languageInstructions = {
-      "Hindi": "рд╣рд┐рдВрджреА рджреЗрд╡рдирд╛рдЧрд░реА рдореЗрдВ",
-      "English": "English",
-      "Urdu": "╪з╪▒╪п┘И ╪▒╪│┘Е ╪з┘Д╪о╪╖ ┘Е█М┌║",
-      "Roman Urdu": "natural Roman Urdu using Latin letters",
-      "Roman Hindi": "Roman Hindi using Latin letters"
-    };
+  <footer class="fixed bottom-0 inset-x-0 z-40 border-t border-islamic-gold/25 glass safe-bottom">
+    <div class="max-w-5xl mx-auto p-3">
+      <div class="flex items-center justify-between gap-2 mb-2 px-1">
+        <span id="statusText" class="text-[11px] text-emerald-100/70">рд╕рд╡рд╛рд▓ рдкреВрдЫрдиреЗ рдХреЗ рд▓рд┐рдП рддреИрдпрд╛рд░</span>
+        <button id="voiceInputBtn" type="button" class="text-[11px] text-islamic-lightgold border border-islamic-gold/30 rounded-full px-3 py-1.5">ЁЯОЩя╕П рдмреЛрд▓рдХрд░ рдкреВрдЫреЗрдВ</button>
+      </div>
+      <form id="chatForm" class="flex items-end gap-2 rounded-2xl border border-islamic-gold/40 bg-islamic-dark p-2 shadow-2xl">
+        <textarea id="userQueryInput" rows="1" maxlength="12000" placeholder="рдЕрдкрдирд╛ рд╕рд╡рд╛рд▓ рдпрд╣рд╛рдБ рд▓рд┐рдЦреЗрдВ..." aria-label="рдЕрдкрдирд╛ рд╕рд╡рд╛рд▓ рд▓рд┐рдЦреЗрдВ" class="flex-1 min-w-0 resize-none max-h-32 bg-transparent px-2 py-2 text-sm text-white placeholder:text-emerald-100/50 outline-none"></textarea>
+        <button id="sendBtn" type="submit" class="shrink-0 min-h-10 rounded-xl bg-islamic-gold px-4 py-2 text-sm font-extrabold text-islamic-dark disabled:opacity-50">рднреЗрдЬреЗрдВ</button>
+      </form>
+      <p class="mt-2 text-center text-[10px] text-emerald-100/45">AI рдХреЗ рдЬрд╡рд╛рдмреЛрдВ рдореЗрдВ рдЧрд╝рд▓рддреА рд╣реЛ рд╕рдХрддреА рд╣реИред рдЕрд╣рдо рдЬрд╛рдирдХрд╛рд░реА рдХреЗ рд╕реНрд░реЛрдд рдЬрд╛рдБрдЪреЗрдВред</p>
+    </div>
+  </footer>
+</div>
 
-    const welcomePanel = document.getElementById("welcomePanel");
-    const chatPanel = document.getElementById("chatPanel");
-    const chatStream = document.getElementById("chat-stream");
-    const input = document.getElementById("userQueryInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const statusText = document.getElementById("statusText");
-    const langSelector = document.getElementById("langSelector");
-    let recognition = null;
-    let isListening = false;
-    let busy = false;
+<script>
+  // рдЕрдЧрд░ GitHub Pages рдФрд░ Render рдЕрд▓рдЧ-рдЕрд▓рдЧ рд╣реИрдВ, рддреЛ рдиреАрдЪреЗ рдЕрдкрдиреЗ Render service рдХрд╛ рдкреВрд░рд╛ URL рдбрд╛рд▓реЗрдВред
+  // рдЙрджрд╛рд╣рд░рдг: https://your-service-name.onrender.com
+  const API_BASE_URL = "https://YOUR-RENDER-SERVICE.onrender.com";
+  const CHAT_ENDPOINT = `${API_BASE_URL}/api/chat`;
 
-    function showChat() {
-      welcomePanel.classList.add("hidden");
-      chatPanel.classList.remove("hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+  const languageInstructions = {
+    "Hindi": "Hindi in Devanagari script, naturally mixed with common Urdu words",
+    "English": "English",
+    "Urdu": "Urdu in Urdu script",
+    "Roman Urdu": "natural Roman Urdu using Latin letters",
+    "Roman Hindi": "Roman Hindi using Latin letters"
+  };
+  const welcomePanel = document.getElementById("welcomePanel");
+  const chatPanel = document.getElementById("chatPanel");
+  const chatStream = document.getElementById("chat-stream");
+  const input = document.getElementById("userQueryInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const statusText = document.getElementById("statusText");
+  const langSelector = document.getElementById("langSelector");
+  let busy = false;
+  let recognition = null;
+
+  function showChat(){welcomePanel.classList.add("hidden");chatPanel.classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}
+  function showHome(){chatPanel.classList.add("hidden");welcomePanel.classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}
+  function scrollChatToBottom(){chatStream.scrollTop=chatStream.scrollHeight;}
+  function addMessage(role,text){
+    const row=document.createElement("div");
+    row.className=`flex items-start gap-2 ${role==="user"?"justify-end":""}`;
+    const bubble=document.createElement("div");
+    bubble.className=role==="user"?"max-w-[88%] rounded-2xl border border-islamic-gold/40 bg-islamic-gold/15 p-3 text-sm text-islamic-lightgold":"max-w-[92%] rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4 text-sm text-gray-100 shadow";
+    const content=document.createElement("div");content.className="message-content";content.textContent=text;bubble.appendChild(content);
+    if(role==="assistant" && !text.startsWith("рдЬрд╡рд╛рдм рдирд╣реАрдВ рдорд┐рд▓ рд╕рдХрд╛")){
+      const speak=document.createElement("button");speak.type="button";speak.className="mt-3 rounded-lg border border-islamic-gold/25 px-2.5 py-1.5 text-[11px] text-islamic-lightgold";speak.textContent="ЁЯФК рдЬрд╡рд╛рдм рд╕реБрдиреЗрдВ";speak.onclick=()=>speakText(content.textContent);bubble.appendChild(speak);
     }
-
-    function showHome() {
-      chatPanel.classList.add("hidden");
-      welcomePanel.classList.remove("hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function makeMessage(role, text) {
-      const row = document.createElement("div");
-      row.className = `flex items-start gap-2 ${role === "user" ? "justify-end" : ""}`;
-
-      if (role !== "user") {
-        const avatar = document.createElement("div");
-        avatar.className = "w-8 h-8 rounded-xl bg-islamic-gold text-islamic-dark flex items-center justify-center font-extrabold text-xs shrink-0";
-        avatar.textContent = "AI";
-        row.appendChild(avatar);
-      }
-
-      const bubble = document.createElement("div");
-      bubble.className = role === "user"
-        ? "max-w-[88%] rounded-2xl rounded-tr-sm border border-islamic-gold/40 bg-islamic-gold/15 p-3 text-sm text-islamic-lightgold"
-        : "max-w-[92%] rounded-2xl rounded-tl-sm border border-islamic-gold/25 bg-islamic-card p-4 text-sm text-gray-100 shadow";
-
-      const content = document.createElement("div");
-      content.className = "message-content";
-      content.textContent = text;
-      bubble.appendChild(content);
-
-      if (role === "assistant" && text && !text.startsWith("рдЬрд╡рд╛рдм рдкреНрд░рд╛рдкреНрдд")) {
-        const actions = document.createElement("div");
-        actions.className = "mt-3 flex flex-wrap gap-2";
-        const speakButton = document.createElement("button");
-        speakButton.type = "button";
-        speakButton.className = "rounded-lg border border-islamic-gold/25 px-2.5 py-1.5 text-[11px] text-islamic-lightgold hover:bg-islamic-gold/10";
-        speakButton.textContent = "ЁЯФК рдЬрд╡рд╛рдм рд╕реБрдиреЗрдВ";
-        speakButton.addEventListener("click", () => speakText(text));
-        actions.appendChild(speakButton);
-        bubble.appendChild(actions);
-      }
-
-      if (role === "user") {
-        const avatar = document.createElement("div");
-        avatar.className = "w-8 h-8 rounded-xl bg-emerald-800 text-emerald-100 flex items-center justify-center text-sm shrink-0";
-        avatar.textContent = "ЁЯСд";
-        row.appendChild(bubble);
-        row.appendChild(avatar);
-      } else {
-        row.appendChild(bubble);
-      }
-
-      chatStream.appendChild(row);
-      return content;
-    }
-
-    function scrollChatToBottom() {
-      chatStream.scrollTop = chatStream.scrollHeight;
-    }
-
-    async function submitQuery(customText) {
-      const query = (typeof customText === "string" ? customText : input.value).trim();
-      if (!query || busy) return;
-
-      busy = true;
-      sendBtn.disabled = true;
-      input.value = "";
-      input.style.height = "auto";
-      showChat();
-      makeMessage("user", query);
-      const answerNode = makeMessage("assistant", "рдЬрд╡рд╛рдм рдкреНрд░рд╛рдкреНрдд рдХрд┐рдпрд╛ рдЬрд╛ рд░рд╣рд╛ рд╣реИтАж");
-      statusText.textContent = "AI рдЬрд╡рд╛рдм рддреИрдпрд╛рд░ рдХрд░ рд░рд╣рд╛ рд╣реИтАж";
-      scrollChatToBottom();
-
-      const language = languageInstructions[langSelector.value] || "рд╣рд┐рдВрджреА рджреЗрд╡рдирд╛рдЧрд░реА рдореЗрдВ";
-      const message = `You are an Islamic study assistant. Answer in ${language}. Be careful with religious claims: distinguish Quran text, hadith quotations, scholarly interpretations, and uncertainty. Do not invent citations. When relevant, provide source names and use web search if available. User question: ${query}`;
-
-      try {
-        const response = await fetch(CHAT_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message })
-        });
-
-        let data = {};
-        try { data = await response.json(); } catch (_) {}
-        if (!response.ok) {
-          throw new Error(data.error || `рд╕рд░реНрд╡рд░ рдиреЗ рддреНрд░реБрдЯрд┐ рджреА (HTTP ${response.status})`);
-        }
-        if (typeof data.reply !== "string" || !data.reply.trim()) {
-          throw new Error("рд╕рд░реНрд╡рд░ рд╕реЗ рдкрдврд╝рдиреЗ рдпреЛрдЧреНрдп рдЬрд╡рд╛рдм рдирд╣реАрдВ рдорд┐рд▓рд╛ред");
-        }
-
-        answerNode.textContent = data.reply;
-        const bubble = answerNode.parentElement;
-        const actions = document.createElement("div");
-        actions.className = "mt-3 flex flex-wrap gap-2";
-        const speakButton = document.createElement("button");
-        speakButton.type = "button";
-        speakButton.className = "rounded-lg border border-islamic-gold/25 px-2.5 py-1.5 text-[11px] text-islamic-lightgold hover:bg-islamic-gold/10";
-        speakButton.textContent = "ЁЯФК рдЬрд╡рд╛рдм рд╕реБрдиреЗрдВ";
-        speakButton.addEventListener("click", () => speakText(data.reply));
-        actions.appendChild(speakButton);
-        bubble.appendChild(actions);
-        statusText.textContent = "рдЬрд╡рд╛рдм рдорд┐рд▓ рдЧрдпрд╛";
-      } catch (error) {
-        answerNode.textContent = `рдЬрд╡рд╛рдм рдирд╣реАрдВ рдорд┐рд▓ рд╕рдХрд╛: ${error.message}\n\nрдЬрд╛рдБрдЪреЗрдВ рдХрд┐ Render рд╕рд░реНрд╡рд┐рд╕ рдЪрд╛рд▓реВ рд╣реИ рдФрд░ рдпрд╣ рд╡реЗрдмрд╕рд╛рдЗрдЯ рдЙрд╕реА рдмреИрдХрдПрдВрдб рдХреЗ origin рдкрд░ рд╣реИред рдЕрдЧрд░ рд╡реЗрдмрд╕рд╛рдЗрдЯ рдЕрд▓рдЧ рдбреЛрдореЗрди рдкрд░ рд╣реИ, рддреЛ API_BASE_URL рдореЗрдВ Render рдХрд╛ рдкреВрд░рд╛ URL рдбрд╛рд▓реЗрдВред`;
-        statusText.textContent = "рдХрдиреЗрдХреНрд╢рди рдореЗрдВ рд╕рдорд╕реНрдпрд╛";
-      } finally {
-        busy = false;
-        sendBtn.disabled = false;
-        scrollChatToBottom();
-        input.focus({ preventScroll: true });
-      }
-    }
-
-    function speakText(text) {
-      if (!("speechSynthesis" in window)) {
-        statusText.textContent = "рдЗрд╕ рдмреНрд░рд╛рдЙрдЬрд╝рд░ рдореЗрдВ рдЯреЗрдХреНрд╕реНрдЯ-рдЯреВ-рд╕реНрдкреАрдЪ рдЙрдкрд▓рдмреНрдз рдирд╣реАрдВ рд╣реИ";
-        return;
-      }
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      const selected = langSelector.value;
-      const voiceLang = {
-        "Hindi": "hi-IN",
-        "English": "en-US",
-        "Urdu": "ur-PK",
-        "Roman Urdu": "ur-PK",
-        "Roman Hindi": "hi-IN"
-      };
-      utterance.lang = voiceLang[selected] || "hi-IN";
-      window.speechSynthesis.speak(utterance);
-    }
-
-    function startVoiceInput() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        statusText.textContent = "рдорд╛рдЗрдХ рдЗрдирдкреБрдЯ рдЗрд╕ рдмреНрд░рд╛рдЙрдЬрд╝рд░ рдореЗрдВ рдЙрдкрд▓рдмреНрдз рдирд╣реАрдВ рд╣реИред Chrome рдореЗрдВ рдЖрдЬрд╝рдорд╛рдПрдБред";
-        return;
-      }
-      if (recognition && isListening) {
-        recognition.stop();
-        return;
-      }
-      recognition = new SpeechRecognition();
-      recognition.lang = ({
-        "Hindi": "hi-IN",
-        "English": "en-US",
-        "Urdu": "ur-PK",
-        "Roman Urdu": "ur-PK",
-        "Roman Hindi": "hi-IN"
-      })[langSelector.value] || "hi-IN";
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-      recognition.onstart = () => {
-        isListening = true;
-        document.getElementById("voiceInputBtn").textContent = "тП╣я╕П";
-        document.getElementById("talkAiBtn").textContent = "тП╣я╕П рд╕реБрдирдирд╛ рдмрдВрдж рдХрд░реЗрдВ";
-        statusText.textContent = "рд╕реБрди рд░рд╣рд╛ рд╣реИтАж рдЕрдм рдмреЛрд▓рд┐рдП";
-      };
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        input.value = transcript;
-        input.focus();
-        statusText.textContent = "рдЖрд╡рд╛рдЬрд╝ рд▓рд┐рдЦрд╛рд╡рдЯ рдореЗрдВ рдмрджрд▓ рдЧрдИред рднреЗрдЬрдиреЗ рдХреЗ рд▓рд┐рдП рджрдмрд╛рдПрдБред";
-      };
-      recognition.onerror = (event) => {
-        statusText.textContent = `рдорд╛рдЗрдХ рд╕рдорд╕реНрдпрд╛: ${event.error}`;
-      };
-      recognition.onend = () => {
-        isListening = false;
-        document.getElementById("voiceInputBtn").textContent = "ЁЯОд";
-        document.getElementById("talkAiBtn").textContent = "ЁЯОЩя╕П рдмреЛрд▓рдХрд░ рдкреВрдЫреЗрдВ";
-      };
-      recognition.start();
-    }
-
-    document.getElementById("chatForm").addEventListener("submit", (event) => {
-      event.preventDefault();
-      submitQuery();
-    });
-
-    input.addEventListener("input", () => {
-      input.style.height = "auto";
-      input.style.height = `${Math.min(input.scrollHeight, 128)}px`;
-    });
-
-    document.getElementById("voiceInputBtn").addEventListener("click", startVoiceInput);
-    document.getElementById("talkAiBtn").addEventListener("click", startVoiceInput);
-    document.getElementById("newChatBtn").addEventListener("click", () => {
-      chatStream.replaceChildren();
-      showHome();
-      statusText.textContent = "рдирдИ рдмрд╛рддрдЪреАрдд рдХреЗ рд▓рд┐рдП рддреИрдпрд╛рд░";
-    });
-    document.getElementById("homeBtn").addEventListener("click", showHome);
-    document.getElementById("backHomeBtn").addEventListener("click", showHome);
-
-    document.querySelectorAll("[data-prompt]").forEach((button) => {
-      button.addEventListener("click", () => {
-        input.value = button.dataset.prompt;
-        input.focus();
-        input.style.height = "auto";
-        input.style.height = `${Math.min(input.scrollHeight, 128)}px`;
-        statusText.textContent = "рд╕рд╡рд╛рд▓ рддреИрдпрд╛рд░ рд╣реИред рднреЗрдЬрдиреЗ рдХреЗ рд▓рд┐рдП рджрдмрд╛рдПрдБред";
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-      });
-    });
-
-    fetch(`${API_BASE_URL}/health`)
-      .then((response) => {
-        if (response.ok) statusText.textContent = "рд╕рд░реНрд╡рд░ рд╕реЗ рдХрдиреЗрдХреНрд╢рди рдЙрдкрд▓рдмреНрдз";
-        else statusText.textContent = "рд╕рд░реНрд╡рд░ рдХреА рд╕реНрдерд┐рддрд┐ рдЬрд╛рдБрдЪреЗрдВ";
-      })
-      .catch(() => {
-        statusText.textContent = "API рдХрдиреЗрдХреНрд╢рди рдЕрднреА рдЬрд╛рдБрдЪрд╛ рдирд╣реАрдВ рдЬрд╛ рд╕рдХрд╛";
-      });
-  </script>
+    if(role==="user"){const avatar=document.createElement("span");avatar.textContent="ЁЯСд";row.append(bubble,avatar);}else{const avatar=document.createElement("span");avatar.textContent="тШкя╕П";row.append(avatar,bubble);}
+    chatStream.appendChild(row);return content;
+  }
+  async function submitQuery(customText){
+    const query=(typeof customText==="string"?customText:input.value).trim();
+    if(!query||busy)return;
+    if(API_BASE_URL.includes("YOUR-RENDER-SERVICE")){statusText.textContent="рдкрд╣рд▓реЗ рдХреЛрдб рдореЗрдВ рдЕрдкрдирд╛ Render URL рдбрд╛рд▓реЗрдВ";alert("index.html рдореЗрдВ YOUR-RENDER-SERVICE рдХреА рдЬрдЧрд╣ рдЕрдкрдиреЗ Render service рдХрд╛ URL рдбрд╛рд▓реЗрдВред");return;}
+    busy=true;sendBtn.disabled=true;input.value="";input.style.height="auto";showChat();
+    addMessage("user",query);const answer=addMessage("assistant","рдЬрд╡рд╛рдм рддреИрдпрд╛рд░ рд╣реЛ рд░рд╣рд╛ рд╣реИтАж");statusText.textContent="AI рдЬрд╡рд╛рдм рддреИрдпрд╛рд░ рдХрд░ рд░рд╣рд╛ рд╣реИтАж";scrollChatToBottom();
+    const language=languageInstructions[langSelector.value]||languageInstructions.Hindi;
+    const message=`You are an Islamic study assistant. Answer in ${language}. Distinguish Quran text, hadith quotations, scholarly interpretations, and uncertainty. Do not invent citations. User question: ${query}`;
+    try{
+      const response=await fetch(CHAT_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message})});
+      let data={};try{data=await response.json();}catch(_){}
+      if(!response.ok)throw new Error(data.error||`Server error (HTTP ${response.status})`);
+      if(typeof data.reply!=="string"||!data.reply.trim())throw new Error("рд╕рд░реНрд╡рд░ рд╕реЗ рдЬрд╡рд╛рдм рдирд╣реАрдВ рдорд┐рд▓рд╛ред");
+      answer.textContent=data.reply;statusText.textContent="рдЬрд╡рд╛рдм рдорд┐рд▓ рдЧрдпрд╛";
+    }catch(error){
+      answer.textContent=`рдЬрд╡рд╛рдм рдирд╣реАрдВ рдорд┐рд▓ рд╕рдХрд╛: ${error.message}\n\nRender service URL, рд╕рд░реНрд╡рд░ рдХреА рд╕реНрдерд┐рддрд┐ рдФрд░ CORS рд╕реЗрдЯрд┐рдВрдЧ рдЬрд╛рдБрдЪреЗрдВред`;
+      statusText.textContent="рдХрдиреЗрдХреНрд╢рди рдореЗрдВ рд╕рдорд╕реНрдпрд╛";
+    }finally{busy=false;sendBtn.disabled=false;scrollChatToBottom();}
+  }
+  function speakText(text){
+    if(!("speechSynthesis" in window)){statusText.textContent="рдЗрд╕ рдмреНрд░рд╛рдЙрдЬрд╝рд░ рдореЗрдВ рдЖрд╡рд╛рдЬрд╝ рдХреА рд╕реБрд╡рд┐рдзрд╛ рдЙрдкрд▓рдмреНрдз рдирд╣реАрдВ рд╣реИред";return;}
+    window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);
+    const lang=langSelector.value;utterance.lang=lang==="Hindi"?"hi-IN":lang==="Urdu"?"ur-PK":lang==="English"?"en-US":"hi-IN";
+    window.speechSynthesis.speak(utterance);
+  }
+  document.getElementById("chatForm").addEventListener("submit",e=>{e.preventDefault();submitQuery();});
+  document.getElementById("homeBtn").addEventListener("click",showHome);
+  document.getElementById("backHomeBtn").addEventListener("click",showHome);
+  document.getElementById("newChatBtn").addEventListener("click",()=>{chatStream.replaceChildren();showHome();statusText.textContent="рдирдИ рдмрд╛рддрдЪреАрдд рд╢реБрд░реВ рдХрд░реЗрдВ";});
+  document.querySelectorAll("[data-prompt]").forEach(button=>button.addEventListener("click",()=>submitQuery(button.dataset.prompt)));
+  input.addEventListener("input",()=>{input.style.height="auto";input.style.height=Math.min(input.scrollHeight,128)+"px";});
+  document.getElementById("voiceInputBtn").addEventListener("click",()=>{
+    const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SpeechRecognition){statusText.textContent="рдЗрд╕ рдмреНрд░рд╛рдЙрдЬрд╝рд░ рдореЗрдВ рдЖрд╡рд╛рдЬрд╝ рд╕реЗ рд▓рд┐рдЦрдиреЗ рдХреА рд╕реБрд╡рд┐рдзрд╛ рдирд╣реАрдВ рд╣реИред";return;}
+    if(recognition){recognition.stop();recognition=null;return;}
+    recognition=new SpeechRecognition();recognition.lang=langSelector.value==="English"?"en-US":langSelector.value==="Urdu"?"ur-PK":"hi-IN";recognition.interimResults=false;
+    recognition.onstart=()=>statusText.textContent="рд╕реБрди рд░рд╣рд╛ рд╣реВрдБтАж";
+    recognition.onresult=e=>{input.value=e.results[0][0].transcript;input.dispatchEvent(new Event("input"));input.focus();statusText.textContent="рд╕рд╡рд╛рд▓ рддреИрдпрд╛рд░ рд╣реИ";};
+    recognition.onerror=()=>statusText.textContent="рдЖрд╡рд╛рдЬрд╝ рдкрд╣рдЪрд╛рдирдиреЗ рдореЗрдВ рд╕рдорд╕реНрдпрд╛ рд╣реБрдИред";
+    recognition.onend=()=>recognition=null;recognition.start();
+  });
+</script>
 </body>
 </html>
