@@ -29,7 +29,6 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #04140f; color: #f3f4f6; }
         .arabic-font { font-family: 'Amiri', serif; }
-        /* Custom scrollbar for quick formula prompts */
         .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: #061a14; border-radius: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 6px; }
@@ -40,17 +39,17 @@
     <!-- Top Header & Profile Bar -->
     <header class="bg-islamic-card border-b border-islamic-gold/30 sticky top-0 z-50 px-4 py-3 shadow-md flex justify-between items-center flex-wrap gap-2">
         <div class="flex items-center gap-2">
-            <button onclick="navigateTo('home')" class="bg-islamic-gold/20 text-islamic-lightgold hover:bg-islamic-gold/30 border border-islamic-gold/40 px-3 py-1.5 rounded-lg text-sm font-semibold transition">
+            <button onclick="navigateTo('home')" class="bg-islamic-gold/20 text-islamic-lightgold hover:bg-islamic-gold/30 border border-islamic-gold/40 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition">
                 🏠 होम (Dashboard)
             </button>
-            <button onclick="navigateTo('profile')" class="bg-emerald-900/40 text-emerald-300 hover:bg-emerald-800/50 border border-emerald-600/50 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1 transition">
+            <button onclick="navigateTo('profile')" class="bg-emerald-900/40 text-emerald-300 hover:bg-emerald-800/50 border border-emerald-600/50 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold flex items-center gap-1 transition">
                 👤 <span id="user-display-name">Mustafa</span> (My Profile)
             </button>
         </div>
 
         <div class="text-center">
             <h1 class="text-islamic-gold font-bold text-sm md:text-base tracking-wider">ISLAM MASTER FORMULA</h1>
-            <span class="text-[10px] text-islamic-lightgold/70 tracking-widest block">v11.23 | Central Rules: 99 | AI & Voice Active</span>
+            <span class="text-[10px] text-islamic-lightgold/70 tracking-widest block">v11.23 | Central Rules: 99 | Live AI Search Active</span>
         </div>
 
         <div class="flex items-center gap-2">
@@ -81,7 +80,9 @@
                 
                 <div class="flex gap-2">
                     <div class="relative flex-grow">
-                        <input type="text" id="userQueryInput" placeholder="अपना प्रश्न लिखें या बोलें (उदा. नियत की अहमियत, F1, Hadith Verification, F11)..." 
+                        <input type="text" id="userQueryInput" 
+                               onkeydown="if(event.key === 'Enter') processSearchQuery()"
+                               placeholder="अपना प्रश्न लिखें या बोलें (उदा. Hadees qudsi, Niyyat ki ahamiyat, F1, F11)..." 
                                class="w-full bg-islamic-inner border border-islamic-gold/40 rounded-xl pl-4 pr-12 py-3 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-islamic-gold">
                         <!-- Mic Button inside Search Bar -->
                         <button onclick="toggleVoiceInput()" id="mic-btn" title="Click to speak (Voice Input)" 
@@ -100,7 +101,7 @@
                     <span class="text-[11px] text-islamic-gold font-semibold uppercase tracking-wider">⚡ फॉर्मूला 1 से 17 और F11 मास्टर प्रॉम्प्ट्स (क्लिक करें):</span>
                     <div class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto custom-scroll p-2 bg-islamic-inner rounded-xl border border-islamic-gold/20">
                         <button onclick="triggerFormula(11)" class="text-[11px] bg-islamic-gold text-islamic-dark font-bold border border-islamic-gold px-2.5 py-1.5 rounded-lg text-left transition hover:scale-105"><b>F11:</b> Master Formula (All Combined)</button>
-                        <button onclick="triggerFormula(1)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F1:</b> Hadith Study & Verification</button>
+                        <button onclick="triggerFormula(1)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F1:</b> Hadith Verification</button>
                         <button onclick="triggerFormula(2)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F2:</b> Sahih Hadith Protocol</button>
                         <button onclick="triggerFormula(5)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F5:</b> Hadith Classification</button>
                         <button onclick="triggerFormula(6)" class="text-[11px] bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1.5 rounded-lg text-left transition"><b>F6:</b> Arabic Beginners</button>
@@ -123,7 +124,7 @@
                 <div onclick="navigateTo('history')" class="bg-islamic-card border border-islamic-gold/30 p-5 rounded-2xl cursor-pointer hover:border-islamic-gold transition shadow-lg">
                     <div class="text-3xl mb-2">💬</div>
                     <h3 class="text-lg font-bold text-islamic-lightgold">मेरी प्रोफाइल प्रश्न इतिहास (My Q&A History)</h3>
-                    <p class="text-xs text-gray-300 mt-1">आपके पिछले सभी पूछे गए प्रश्नों, कमांड्स और AI फॉर्मूला रिजल्ट्स का परमानेंट रिकॉर्ड।</p>
+                    <p class="text-xs text-gray-300 mt-1">आपके पिछले सभी पूछे गए प्रश्नों, कमांड्स और AI उत्तरों का परमानेंट रिकॉर्ड।</p>
                 </div>
 
                 <div onclick="navigateTo('progress')" class="bg-islamic-card border border-islamic-gold/30 p-5 rounded-2xl cursor-pointer hover:border-islamic-gold transition shadow-lg">
@@ -137,7 +138,7 @@
         <!-- VIEW 2: FULL-PAGE AI RESPONSE VIEW & READ ALOUD VOICE -->
         <div id="view-result" class="hidden space-y-4">
             <div class="flex justify-between items-center border-b border-islamic-gold/30 pb-3">
-                <h3 id="response-title" class="text-xl font-bold text-islamic-gold">मास्टर फॉर्मूला AI उत्तर (Full Page):</h3>
+                <h3 id="response-title" class="text-lg md:text-xl font-bold text-islamic-gold">मास्टर फॉर्मूला AI उत्तर:</h3>
                 <button onclick="navigateTo('home')" class="bg-islamic-gold/20 text-islamic-lightgold hover:bg-islamic-gold/30 border border-islamic-gold/40 px-4 py-1.5 rounded-lg text-xs font-semibold transition">
                     ← वापस होम पर जाएं (Back)
                 </button>
@@ -253,7 +254,7 @@
             }
         }
 
-        // Formula Directory and Rules Meta
+        // Formula Directory Meta
         const formulaMasterData = {
             11: {
                 name: "Formula 11 — Master Formula (All Formula Combined)",
@@ -278,6 +279,4 @@
             6: {
                 name: "Formula 6: Arabic Speaking for Beginners",
                 purpose: "Hindi-based Arabic learning, Levels 1-9.",
-                rules: ["Exactly 5 lessons and 5 revision questions per chapter"]
-            },
-    
+                rules: ["Exactly 5 lessons
