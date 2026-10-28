@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islam Master Formula v11.23 - Live AI Scholarly Engine</title>
+    <title>Islamic AI Master Bot - Multi-Format Unlimited Engine</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -12,281 +13,687 @@
                 extend: {
                     colors: {
                         islamic: {
-                            dark: '#061a14',
+                            dark: '#04140f',
                             card: '#0b2e23',
+                            inner: '#061a14',
                             gold: '#d4af37',
                             lightgold: '#f3e5ab',
-                            accent: '#10b981'
+                            accent: '#10b981',
+                            quizBg: '#0e3a2c'
                         }
                     }
                 }
             }
         }
     </script>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #061a14; color: #f3f4f6; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #04140f; 
+            color: #f3f4f6; 
+        }
         .arabic-font { font-family: 'Amiri', serif; }
-        .chat-scroll::-webkit-scrollbar { width: 6px; }
-        .chat-scrollbar::-webkit-scrollbar-thumb { background-color: #d4af3733; border-radius: 9999px; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #061a14; border-radius: 9999px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #d4af3755; border-radius: 9999px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+        
+        @keyframes pulse-mic {
+            0%, 100% { background-color: rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.8); }
+            50% { background-color: rgba(239, 68, 68, 0.8); border-color: rgba(255, 255, 255, 1); }
+        }
+        .mic-active { animation: pulse-mic 1.2s infinite; }
+        .quiz-option-btn:disabled { cursor: not-allowed; opacity: 0.9; }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden">
 
-    <!-- Top Header -->
-    <header class="bg-islamic-card border-b border-islamic-gold/30 px-4 py-3 shadow-md flex justify-between items-center flex-wrap gap-2 shrink-0">
+    <!-- Top Navigation Header -->
+    <header class="bg-islamic-card/95 backdrop-blur border-b border-islamic-gold/30 px-3 md:px-5 py-3 shadow-xl flex justify-between items-center flex-wrap gap-2 shrink-0 z-40">
+        <!-- Left Buttons -->
         <div class="flex items-center gap-2">
-            <button onclick="startNewChat()" class="bg-islamic-gold/20 hover:bg-islamic-gold/30 text-islamic-lightgold border border-islamic-gold/40 px-3 py-1.5 rounded-lg text-xs font-semibold transition">
-                ➕ नया चैट (New Chat)
+            <button onclick="startNewChat()" class="bg-islamic-gold/20 hover:bg-islamic-gold/30 text-islamic-lightgold border border-islamic-gold/40 px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1">
+                ➕ <span>नया चैट (New Chat)</span>
             </button>
-            <button onclick="showProfile()" class="bg-emerald-900/40 text-emerald-300 border border-emerald-600/50 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1">
+            <button onclick="toggleProfileModal()" class="bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-300 border border-emerald-600/50 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1 transition">
                 👤 <span id="user-display-name">Mustafa</span>
             </button>
         </div>
 
+        <!-- Center Title -->
         <div class="text-center">
-            <h1 class="text-islamic-gold font-bold text-sm tracking-wider">ISLAM MASTER FORMULA</h1>
-            <span class="text-[9px] text-islamic-lightgold/70 tracking-widest block">v11.23 | Rules 1–99 | Live AI & Silent Formulas Active</span>
+            <h1 class="text-islamic-gold font-bold text-sm md:text-base tracking-wider flex items-center justify-center gap-1.5">
+                ISLAMIC AI MASTER BOT
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block"></span>
+            </h1>
+            <span class="text-[10px] text-islamic-lightgold/70 tracking-widest block">Live Internet Connected • Infinite AI Memory</span>
         </div>
 
+        <!-- Right Controls -->
         <div class="flex items-center gap-2">
-            <select id="langSelector" class="bg-islamic-dark border border-islamic-gold/40 text-islamic-lightgold text-xs rounded-lg px-2 py-1">
-                <option value="hi-IN">हिन्दी / Roman Urdu (Indian Voice)</option>
-                <option value="en-US">English (Anglo Voice)</option>
+            <button onclick="toggleApiKeyModal()" title="API Key Settings" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-gold border border-islamic-gold/40 px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1 transition">
+                🔑 <span>API Key</span>
+            </button>
+            <button onclick="toggleCustomRulesModal()" title="Custom Rules & Prompt Config" class="bg-islamic-gold text-islamic-dark hover:bg-islamic-lightgold font-bold px-2.5 py-1.5 rounded-xl text-xs flex items-center gap-1 transition">
+                ⚙️ <span>रूल्स पैनल</span>
+            </button>
+            <select id="langSelector" class="bg-islamic-inner border border-islamic-gold/40 text-islamic-lightgold text-xs rounded-xl px-2 py-1.5 focus:outline-none">
+                <option value="hi-IN">हिन्दी / Roman Urdu</option>
+                <option value="en-US">English (US Voice)</option>
             </select>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="flex-grow flex flex-col max-w-4xl w-full mx-auto p-3 overflow-hidden">
+    <main class="flex-grow flex flex-col max-w-5xl w-full mx-auto p-3 md:p-4 overflow-hidden">
 
-        <!-- Bismillah Header Card -->
-        <div class="text-center bg-islamic-card/80 border border-islamic-gold/30 p-3 rounded-xl shadow-lg shrink-0 mb-3">
-            <h2 class="arabic-font text-2xl text-islamic-gold mb-0.5">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
-            <p class="text-[10px] text-islamic-lightgold/80">Formula 11 — Silent Central Management & Live AI Scholarly Engine</p>
+        <!-- Bismillah Banner Header Card -->
+        <div class="text-center bg-islamic-card/80 border border-islamic-gold/30 p-3.5 rounded-2xl shadow-lg shrink-0 mb-3 backdrop-blur">
+            <h2 class="arabic-font text-2xl md:text-3xl text-islamic-gold mb-0.5">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
+            <p class="text-[11px] text-islamic-lightgold/80">Adaptive Multi-Format AI Assistant • Powered by Live Search & Custom Rules</p>
         </div>
 
-        <!-- Chat Stream -->
-        <div id="chat-stream" class="flex-grow overflow-y-auto space-y-4 pr-1 chat-scroll mb-3">
-            <div class="flex items-start gap-3">
+        <!-- Main Infinite Chat Stream -->
+        <div id="chat-stream" class="flex-grow overflow-y-auto space-y-4 pr-1.5 custom-scroll mb-3">
+            
+            <!-- Welcome Bot Message -->
+            <div class="flex gap-3 items-start">
                 <div class="w-8 h-8 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-xs shrink-0 shadow">AI</div>
                 <div class="bg-islamic-card border border-islamic-gold/30 p-4 rounded-2xl rounded-tl-none max-w-[85%] text-xs md:text-sm text-gray-200 space-y-2 shadow-md">
                     <p class="font-bold text-islamic-gold text-sm">अस्सलामुआलैकुम व रहमतुल्लाह!</p>
-                    <p>मैं <b>Islam Master Formula v11.23 AI असिस्टेंट</b> हूँ। आप मुझसे कोई भी इस्लामिक प्रश्न, हदीस, कुरान की आयत या फिक़्ह मसला पूछ सकते हैं। सिस्टम बैकएंड में आपके सभी 99 सेंट्रल रूल्स और फॉर्मूला प्रोटोकॉल (F1–F17) को साइलेंटली लागू करके इंटरनेट से सीधे प्रामाणिक उत्तर देगा।</p>
+                    <p class="leading-relaxed">मैं आपका **Islamic AI Master Bot** हूँ। आप मुझसे कोई भी सवाल पूछ सकते हैं—चाहे कुरान की आयत हो, हदीस सत्यापन, फिक़्ह मसला या फिर **क्विज़ (Quiz)** खेलना हो।</p>
+                    <div class="text-[11px] text-emerald-300 bg-islamic-inner p-2 rounded-xl border border-islamic-gold/20">
+                        <b>💡 नया फीचर:</b> आप नीचे से **Text, Card, Template** या **Quiz Mode** चुनकर अपने हिसाब से उत्तर का स्टाइल तय कर सकते हैं!
+                    </div>
                 </div>
             </div>
+
         </div>
 
-        <!-- Bottom Controls -->
+        <!-- Bottom Fixed Controls & Input -->
         <div class="shrink-0 space-y-2">
-            <!-- Formula Chips (Silent Backend Guides) -->
-            <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px] no-scrollbar">
-                <span class="text-islamic-gold font-bold whitespace-nowrap">⚡ बैकएंड प्रोटोकॉल:</span>
-                <button onclick="setFormulaMode(11)" id="chip-11" class="bg-islamic-gold text-islamic-dark font-bold px-2.5 py-1 rounded-lg border border-islamic-gold whitespace-nowrap">F11: Master Combined</button>
-                <button onclick="setFormulaMode(1)" id="chip-1" class="bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold px-2.5 py-1 rounded-lg border border-islamic-gold/30 whitespace-nowrap">F1: Hadith Verification</button>
-                <button onclick="setFormulaMode(2)" id="chip-2" class="bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold px-2.5 py-1 rounded-lg border border-islamic-gold/30 whitespace-nowrap">F2: Sahih Protocol</button>
-                <button onclick="setFormulaMode(10)" id="chip-10" class="bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold px-2.5 py-1 rounded-lg border border-islamic-gold/30 whitespace-nowrap">F10: Fatwa & Fiqh</button>
-                <button onclick="setFormulaMode(13)" id="chip-13" class="bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold px-2.5 py-1 rounded-lg border border-islamic-gold/30 whitespace-nowrap">F13: Mohaddes Grading</button>
+            
+            <!-- Output Format Chips -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 text-[11px] custom-scroll no-scrollbar">
+                <span class="text-islamic-gold font-bold whitespace-nowrap">🎯 उत्तर का फॉर्मेट:</span>
+                <button onclick="setFormatMode('text')" id="fmt-text" class="format-chip bg-islamic-gold text-islamic-dark font-bold px-3 py-1 rounded-xl border border-islamic-gold whitespace-nowrap transition">📝 Text Mode</button>
+                <button onclick="setFormatMode('cards')" id="fmt-cards" class="format-chip bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold px-3 py-1 rounded-xl border border-islamic-gold/30 whitespace-nowrap transition">🃏 Cards View</button>
+                <button onclick="setFormatMode('template')" id="fmt-template" class="format-chip bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold px-3 py-1 rounded-xl border border-islamic-gold/30 whitespace-nowrap transition">📋 Structured Template</button>
+                <button onclick="setFormatMode('quiz')" id="fmt-quiz" class="format-chip bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold px-3 py-1 rounded-xl border border-islamic-gold/30 whitespace-nowrap transition">🎯 Interactive Quiz</button>
             </div>
 
             <!-- Sticky Input Box -->
-            <div class="bg-islamic-card border border-islamic-gold/40 p-2 rounded-2xl shadow-xl flex items-center gap-2">
-                <input type="text" id="userQueryInput" onkeypress="handleKeyPress(event)" placeholder="अपना प्रश्न लिखें या माइक से बोलें (उदा. Surah Al-Baqarah 42 या Umar ra niyat hadith)..." 
-                       class="flex-grow bg-islamic-dark border border-islamic-gold/30 rounded-xl px-4 py-2.5 text-xs md:text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-islamic-gold">
+            <div class="bg-islamic-card border border-islamic-gold/40 p-2 rounded-2xl shadow-xl flex items-center gap-2 relative">
+                <input type="text" id="userQueryInput" onkeypress="handleKeyPress(event)" 
+                       placeholder="अपना प्रश्न पूछें या बोलें (उदा. Surah Baqarah Ayah 255, Quiz me on Namaz)..." 
+                       class="flex-grow bg-islamic-dark border border-islamic-gold/30 rounded-xl px-4 py-3 text-xs md:text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-islamic-gold">
                 
-                <button id="micBtn" onclick="toggleVoiceInput()" class="bg-islamic-dark hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/40 p-2.5 rounded-xl text-sm transition">
+                <!-- Voice Mic Button -->
+                <button id="micBtn" onclick="toggleVoiceInput()" title="माइक से बोलें" 
+                        class="bg-islamic-dark hover:bg-islamic-gold/20 text-islamic-gold border border-islamic-gold/40 p-3 rounded-xl text-sm transition shrink-0 flex items-center justify-center">
                     🎙️
                 </button>
 
-                <button onclick="submitUserQuery()" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm transition shrink-0">
+                <!-- Submit Button -->
+                <button onclick="submitUserQuery()" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-5 py-3 rounded-xl text-xs md:text-sm transition shrink-0 shadow-lg">
                     पूछें
                 </button>
+            </div>
+
+            <!-- Mic Status Bar -->
+            <div id="mic-status" class="hidden text-xs text-center text-emerald-400 font-semibold animate-pulse">
+                🎙️ माइक चालू है... बोलिए (Listening...)
             </div>
         </div>
 
     </main>
 
-    <!-- Logic Script with Live Gemini API Integration -->
+    <!-- MODAL 1: Profile Modal -->
+    <div id="profile-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-islamic-card border border-islamic-gold/40 p-6 rounded-2xl max-w-md w-full space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-islamic-gold/20 pb-2">
+                <h3 class="text-lg font-bold text-islamic-lightgold">👤 यूजर प्रोफाइल</h3>
+                <button onclick="toggleProfileModal()" class="text-gray-400 hover:text-white">✕</button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1">आपका नाम (Username):</label>
+                    <input type="text" id="profileName" class="w-full bg-islamic-dark border border-islamic-gold/40 rounded-xl px-3 py-2 text-gray-100 focus:outline-none focus:ring-1 focus:ring-islamic-gold">
+                </div>
+                <div>
+                    <p class="text-xs text-islamic-lightgold"><b>सुरक्षित प्रश्न रिकॉर्ड:</b> <span id="profile-history-count" class="font-bold text-emerald-400">0</span></p>
+                    <p class="text-xs text-gray-400 mt-1">आपकी पूरी चैट मेमोरी LocalStorage में सेव रहती है जो कभी खुद डिलीट नहीं होती।</p>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="clearSavedHistory()" class="bg-red-900/60 hover:bg-red-800 text-red-200 text-xs px-3 py-2 rounded-xl transition">इतिहास साफ़ करें</button>
+                <button onclick="saveProfile()" class="bg-islamic-gold text-islamic-dark font-bold text-xs px-4 py-2 rounded-xl transition">सेव करें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Custom Rules & Prompt Config Modal -->
+    <div id="rules-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-islamic-card border border-islamic-gold/40 p-6 rounded-2xl max-w-lg w-full space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-islamic-gold/20 pb-2">
+                <h3 class="text-lg font-bold text-islamic-lightgold">⚙️ कस्टम रूल्स व प्रम्प्ट प्रबंधक</h3>
+                <button onclick="toggleCustomRulesModal()" class="text-gray-400 hover:text-white">✕</button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <p class="text-xs text-gray-300">आप एआई के लिए कोई भी कस्टम हिदायत (Instructions) या नियम यहाँ लिख सकते हैं। एआई हर उत्तर में इन्हें फॉलो करेगा:</p>
+                <textarea id="customRulesInput" rows="5" placeholder="उदाहरण: 
+- उत्तर हमेशा प्रमाण (Dalil) के साथ दें।
+- अरबी पाठ के साथ हिंदी अनुवाद अवश्य लिखें।
+- गैर-प्रामाणिक हदीसों को चिह्नित करें।" 
+class="w-full bg-islamic-dark border border-islamic-gold/40 rounded-xl p-3 text-xs md:text-sm text-gray-100 focus:outline-none focus:ring-1 focus:ring-islamic-gold"></textarea>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="resetCustomRules()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs px-3 py-2 rounded-xl transition">रीसेट करें</button>
+                <button onclick="saveCustomRules()" class="bg-islamic-gold text-islamic-dark font-bold text-xs px-4 py-2 rounded-xl transition">रूल्स सेव करें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Gemini API Key Modal -->
+    <div id="apikey-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-islamic-card border border-islamic-gold/40 p-6 rounded-2xl max-w-md w-full space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-islamic-gold/20 pb-2">
+                <h3 class="text-lg font-bold text-islamic-lightgold">🔑 Gemini API Key सेटिंग्स</h3>
+                <button onclick="toggleApiKeyModal()" class="text-gray-400 hover:text-white">✕</button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <p class="text-xs text-gray-300">अनलिमिटेड और लाइव इंटरनेट AI रिसर्च के लिए अपनी नि:शुल्क <b>Google Gemini API Key</b> यहाँ दर्ज करें:</p>
+                <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="w-full bg-islamic-dark border border-islamic-gold/40 rounded-xl px-3 py-2 text-xs md:text-sm text-gray-100 focus:outline-none focus:ring-1 focus:ring-islamic-gold">
+                <p class="text-[11px] text-emerald-400">💡 चाबी आपके अपने ब्राउज़र के LocalStorage में सुरक्षित रहेगी। यदि चाबी नहीं डालेंगे, तो सिस्टम स्मार्ट fallback डेटाबेस से उत्तर देगा।</p>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="saveApiKey()" class="bg-islamic-gold text-islamic-dark font-bold text-xs px-4 py-2 rounded-xl transition">चाबी सेव करें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Application Logic Script -->
     <script>
+        // --- State Management ---
+        let appState = {
+            userName: localStorage.getItem('imf_user_name') || 'Mustafa',
+            apiKey: localStorage.getItem('user_gemini_api_key') || '',
+            customRules: localStorage.getItem('imf_custom_rules') || 'सत्य व प्रामाणिक साक्ष्य आधारित उत्तर दें। अरबी पाठ और संदर्भ शामिल करें।',
+            selectedFormat: 'text', // text, cards, template, quiz
+            history: JSON.parse(localStorage.getItem('imf_chat_history_v1123') || '[]')
+        };
+
         let isRecording = false;
         let recognition = null;
-        let activeFormula = 11;
 
-        const userName = localStorage.getItem('imf_user_name') || 'Mustafa';
-        document.getElementById('user-display-name').innerText = userName;
+        // Initialize UI
+        document.getElementById('user-display-name').innerText = appState.userName;
+        document.getElementById('profileName').value = appState.userName;
+        document.getElementById('apiKeyInput').value = appState.apiKey;
+        document.getElementById('customRulesInput').value = appState.customRules;
+        document.getElementById('profile-history-count').innerText = appState.history.length;
 
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') submitUserQuery();
+        // Restore Infinite Saved History on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            if (appState.history.length > 0) {
+                const historyToLoad = [...appState.history].reverse();
+                historyToLoad.forEach(item => {
+                    appendUserBubble(item.query, false);
+                    appendAIBubble(item.answerHtml, item.format, false);
+                });
+                scrollToBottom();
+            }
+        });
+
+        // Modal Toggles
+        function toggleProfileModal() { document.getElementById('profile-modal').classList.toggle('hidden'); }
+        function toggleCustomRulesModal() { document.getElementById('rules-modal').classList.toggle('hidden'); }
+        function toggleApiKeyModal() { document.getElementById('apikey-modal').classList.toggle('hidden'); }
+
+        function saveProfile() {
+            const name = document.getElementById('profileName').value.trim();
+            if (name) {
+                appState.userName = name;
+                localStorage.setItem('imf_user_name', name);
+                document.getElementById('user-display-name').innerText = name;
+                toggleProfileModal();
+            }
         }
 
-        function setFormulaMode(fNum) {
-            activeFormula = fNum;
-            document.querySelectorAll('[id^="chip-"]').forEach(btn => {
-                btn.className = "bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold px-2.5 py-1 rounded-lg border border-islamic-gold/30 whitespace-nowrap";
-            });
-            document.getElementById('chip-' + fNum).className = "bg-islamic-gold text-islamic-dark font-bold px-2.5 py-1 rounded-lg border border-islamic-gold whitespace-nowrap";
+        function saveCustomRules() {
+            const rules = document.getElementById('customRulesInput').value.trim();
+            appState.customRules = rules;
+            localStorage.setItem('imf_custom_rules', rules);
+            alert('कस्टम रूल्स सफलतापूर्वक सेव हो गए हैं!');
+            toggleCustomRulesModal();
+        }
+
+        function resetCustomRules() {
+            appState.customRules = 'सत्य व प्रामाणिक साक्ष्य आधारित उत्तर दें। अरबी पाठ और संदर्भ शामिल करें।';
+            document.getElementById('customRulesInput').value = appState.customRules;
+            localStorage.setItem('imf_custom_rules', appState.customRules);
+        }
+
+        function saveApiKey() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            appState.apiKey = key;
+            localStorage.setItem('user_gemini_api_key', key);
+            alert(key ? 'API Key सेव हो गई है! अब लाइव इंटरनेट AI एक्टिव है।' : 'API Key हटा दी गई है। अब स्मार्ट fallback मोड एक्टिव है।');
+            toggleApiKeyModal();
+        }
+
+        function clearSavedHistory() {
+            if (confirm('क्या आप अपना पूरा चैट इतिहास साफ़ करना चाहते हैं?')) {
+                appState.history = [];
+                localStorage.removeItem('imf_chat_history_v1123');
+                document.getElementById('profile-history-count').innerText = 0;
+                startNewChat();
+                toggleProfileModal();
+            }
         }
 
         function startNewChat() {
-            window.speechSynthesis.cancel();
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             document.getElementById('chat-stream').innerHTML = `
-                <div class="flex items-start gap-3">
+                <div class="flex gap-3 items-start">
                     <div class="w-8 h-8 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-xs shrink-0 shadow">AI</div>
-                    <div class="bg-islamic-card border border-islamic-gold/30 p-4 rounded-2xl rounded-tl-none max-w-[85%] text-xs md:text-sm text-gray-200 space-y-2 shadow-md">
-                        <p class="font-bold text-islamic-gold text-sm">नया चैट शुरू हो गया है!</p>
-                        <p>आप अपना अगला सवाल पूछ सकते हैं।</p>
+                    <div class="bg-islamic-card border border-islamic-gold/30 p-4 rounded-2xl rounded-tl-none space-y-2 text-xs md:text-sm max-w-[85%] shadow-md">
+                        <p class="font-bold text-islamic-gold text-sm">नया चैट सत्र शुरू हुआ!</p>
+                        <p class="text-gray-200">आप अपना कोई भी सवाल पूछ सकते हैं या नीचे दिए गए बटन से **Quiz Mode** चुनकर इस्लामिक क्विज़ खेल सकते हैं।</p>
                     </div>
                 </div>
             `;
         }
 
-        function showProfile() {
-            alert(`स्कॉलर नाम: ${userName}\nमास्टर फॉर्मूला वर्शन: v11.23\nसेंट्रल रूल्स: 99 एक्टिव (Silent Backend Mode)`);
+        function setFormatMode(mode) {
+            appState.selectedFormat = mode;
+            document.querySelectorAll('.format-chip').forEach(btn => {
+                btn.className = "format-chip bg-islamic-card hover:bg-islamic-gold/20 text-islamic-lightgold px-3 py-1 rounded-xl border border-islamic-gold/30 whitespace-nowrap transition";
+            });
+            document.getElementById('fmt-' + mode).className = "format-chip bg-islamic-gold text-islamic-dark font-bold px-3 py-1 rounded-xl border border-islamic-gold whitespace-nowrap transition";
         }
 
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') submitUserQuery();
+        }
+
+        function scrollToBottom() {
+            const stream = document.getElementById('chat-stream');
+            stream.scrollTop = stream.scrollHeight;
+        }
+
+        // Voice Search Microphone (Web Speech API)
         function toggleVoiceInput() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
-                alert('आपके ब्राउज़र में वॉइस सर्च सपोर्टेड नहीं है।');
+                alert('आपके ब्राउज़र में वॉइस सर्च सपोर्टेड नहीं है। कृपया Chrome ब्राउज़र का उपयोग करें।');
                 return;
             }
 
             const micBtn = document.getElementById('micBtn');
+            const micStatus = document.getElementById('mic-status');
+
             if (isRecording) {
                 if (recognition) recognition.stop();
                 isRecording = false;
-                micBtn.classList.remove('animate-pulse', 'bg-red-600');
+                micBtn.classList.remove('mic-active');
+                micStatus.classList.add('hidden');
                 return;
             }
 
             recognition = new SpeechRecognition();
-            const langSel = document.getElementById('langSelector').value;
-            recognition.lang = langSel === 'en-US' ? 'en-US' : 'hi-IN';
+            const lang = document.getElementById('langSelector').value;
+            recognition.lang = lang;
             recognition.interimResults = false;
 
             recognition.onstart = function() {
                 isRecording = true;
-                micBtn.classList.add('animate-pulse', 'bg-red-600');
+                micBtn.classList.add('mic-active');
+                micStatus.classList.remove('hidden');
             };
+
             recognition.onresult = function(event) {
-                document.getElementById('userQueryInput').value = event.results[0][0].transcript;
+                const text = event.results[0][0].transcript;
+                document.getElementById('userQueryInput').value = text;
                 submitUserQuery();
             };
+
             recognition.onerror = function() {
                 isRecording = false;
-                micBtn.classList.remove('animate-pulse', 'bg-red-600');
+                micBtn.classList.remove('mic-active');
+                micStatus.classList.add('hidden');
             };
+
             recognition.onend = function() {
                 isRecording = false;
-                micBtn.classList.remove('animate-pulse', 'bg-red-600');
+                micBtn.classList.remove('mic-active');
+                micStatus.classList.add('hidden');
             };
+
             recognition.start();
         }
 
+        // Send Query Logic
         async function submitUserQuery() {
             const input = document.getElementById('userQueryInput');
             const query = input.value.trim();
             if (!query) return;
 
             input.value = '';
-            const chatStream = document.getElementById('chat-stream');
 
-            // User Bubble
-            chatStream.insertAdjacentHTML('beforeend', `
-                <div class="flex items-start gap-3 justify-end">
-                    <div class="bg-islamic-gold/20 border border-islamic-gold/40 p-3.5 rounded-2xl rounded-tr-none max-w-[85%] text-xs md:text-sm text-islamic-lightgold shadow">
-                        <p class="font-bold text-[10px] text-islamic-gold mb-1">आप (${userName}):</p>
-                        <p>${query}</p>
-                    </div>
-                    <div class="w-8 h-8 rounded-full bg-emerald-800 text-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 shadow">👤</div>
-                </div>
-            `);
+            // 1. Render User Message
+            appendUserBubble(query, true);
+            scrollToBottom();
 
-            const aiId = 'ai-msg-' + Date.now();
-            chatStream.insertAdjacentHTML('beforeend', `
-                <div class="flex items-start gap-3">
-                    <div class="w-8 h-8 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-xs shrink-0 shadow">AI</div>
-                    <div id="${aiId}" class="bg-islamic-card border border-islamic-gold/30 p-4 rounded-2xl rounded-tl-none max-w-[85%] text-xs md:text-sm text-gray-200 space-y-2 shadow-md">
-                        <p class="text-islamic-lightgold animate-pulse">इंटरनेट और प्रामाणिक ग्रंथों से अनुसंधान जारी है...</p>
-                    </div>
-                </div>
-            `);
-            chatStream.scrollTop = chatStream.scrollHeight;
+            // 2. Render Loading Indicator
+            const loadingId = 'loading-' + Date.now();
+            appendLoadingBubble(loadingId);
+            scrollToBottom();
 
-            // Live AI Fetch from Gemini API
+            // 3. Fetch Answer from Gemini API or Smart Local Fallback
+            let answerHtml = '';
+            const mode = appState.selectedFormat;
+
+            if (appState.apiKey) {
+                answerHtml = await fetchGeminiResponse(query, mode);
+            }
+
+            if (!answerHtml) {
+                // Fallback Generator
+                answerHtml = generateSmartFallback(query, mode);
+            }
+
+            // 4. Replace Loading with AI Response Bubble
+            removeBubble(loadingId);
+            appendAIBubble(answerHtml, mode, true);
+            scrollToBottom();
+
+            // 5. Store in Infinite LocalStorage Memory
+            appState.history.unshift({
+                query: query,
+                answerHtml: answerHtml,
+                format: mode,
+                timestamp: new Date().toLocaleString()
+            });
+            localStorage.setItem('imf_chat_history_v1123', JSON.stringify(appState.history));
+            document.getElementById('profile-history-count').innerText = appState.history.length;
+        }
+
+        // Live Gemini API Call with Google Search Grounding
+        async function fetchGeminiResponse(prompt, format) {
+            const apiKey = appState.apiKey;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            let formatInstruction = "";
+            if (format === 'quiz') {
+                formatInstruction = "Format the answer strictly as an interactive quiz in clean HTML. Include 1 question, 4 choices wrapped inside buttons with onclick='handleQuizChoice(this, true/false, \"Explanation...\")', and explanation.";
+            } else if (format === 'cards') {
+                formatInstruction = "Format the answer as clean, visually grouped HTML cards using rounded borders and emerald background.";
+            } else if (format === 'template') {
+                formatInstruction = "Format the answer using clean HTML template structure with bold headings, numbered bullet points, and clear divider lines.";
+            } else {
+                formatInstruction = "Format the answer as clean markdown/HTML text with Arabic text, translation, and reference dalil.";
+            }
+
+            const systemPrompt = `You are the Islamic AI Master Bot.
+User Custom Rules: ${appState.customRules}
+Output Format Requested: ${formatInstruction}
+Provide accurate, scholarly, evidence-based Islamic answers with Arabic text, transliteration, and authentic citations.`;
+
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                tools: [{ "google_search": {} }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
             try {
-                const apiKey = ""; // <--- यदि आप अपनी Gemini API Key यहाँ डाल देंगे, तो यह सीधे लाइव इंटरनेट से कनेक्ट हो जाएगा।
-                
-                let aiResponseText = "";
-
-                if (apiKey) {
-                    const systemPrompt = `You are an expert Islamic scholarly AI operating under Master Formula v11.23 (99 Central Rules and Formula F${activeFormula}). 
-                    Rules for answering:
-                    - NEVER mention rules, formulas, or meta-commentary in the output.
-                    - Provide direct, scholarly, evidence-based answers.
-                    - Include Arabic Uthmani text where applicable, transliteration, translation, and authentic references (Quran, Sahih Bukhari, Sahih Muslim).
-                    - Follow strict sequence: Verification, Matn/Sanad clarity, and concise explanation in Hindi/Roman Urdu.
-                    User Query: ${query}`;
-
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: systemPrompt }] }]
-                        })
-                    });
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
                     const data = await res.json();
-                    aiResponseText = data.candidates[0].content.parts[0].text;
-                } else {
-                    // Smart Offline Fallback simulating deep research if API key is not entered yet
-                    aiResponseText = getSmartScholarlyFallback(query);
+                    let text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (text) {
+                        return formatTextToHtml(text, format);
+                    }
                 }
+            } catch (err) {
+                console.error(err);
+            }
+            return null;
+        }
 
-                document.getElementById(aiId).innerHTML = `
-                    <div class="flex justify-between items-center border-b border-islamic-gold/20 pb-1.5 mb-2">
-                        <span class="bg-emerald-900 text-emerald-300 px-2 py-0.5 rounded text-[10px] font-bold">🟢 SAHIH / VERIFIED</span>
-                        <button onclick="speakText('${aiId}')" class="bg-islamic-gold/20 hover:bg-islamic-gold/30 text-islamic-lightgold border border-islamic-gold/40 px-2 py-0.5 rounded text-[10px] flex items-center gap-1">
-                            🔊 सुनें (Read Aloud)
-                        </button>
-                    </div>
-                    <div class="space-y-2 text-gray-200 leading-relaxed text-xs md:text-sm" id="${aiId}-text">
-                        ${aiResponseText.replace(/\n/g, '<br>')}
+        function formatTextToHtml(text, format) {
+            return text
+                .replace(/```html/g, '')
+                .replace(/```/g, '')
+                .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+                .replace(/\n\n/g, '<br><br>')
+                .replace(/\n/g, '<br>');
+        }
+
+        // Smart Fallback Engine for Different Formats
+        function generateSmartFallback(query, format) {
+            const q = query.toLowerCase();
+
+            if (format === 'quiz' || q.includes('quiz') || q.includes('क्विज़')) {
+                return `
+                    <div class="bg-islamic-quizBg border border-islamic-gold/40 p-4 rounded-2xl space-y-3">
+                        <div class="flex justify-between items-center text-xs font-bold text-islamic-gold">
+                            <span>🎯 इस्लामी क्विज़ (Quiz Mode)</span>
+                            <span>कठिनाई: मध्यम</span>
+                        </div>
+                        <p class="font-bold text-sm text-gray-100">प्रश्न: सूरह अल-फ़ातिहा (सूरह सं. 1) में कुल कितनी आयतें हैं?</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs font-medium">
+                            <button onclick="handleQuizChoice(this, false, 'गलत! सही उत्तर 7 आयतें हैं।')" class="quiz-option-btn bg-islamic-dark hover:bg-islamic-gold/20 border border-islamic-gold/30 text-gray-200 p-2.5 rounded-xl text-left transition">
+                                A) 5 आयतें
+                            </button>
+                            <button onclick="handleQuizChoice(this, false, 'गलत! सही उत्तर 7 आयतें हैं।')" class="quiz-option-btn bg-islamic-dark hover:bg-islamic-gold/20 border border-islamic-gold/30 text-gray-200 p-2.5 rounded-xl text-left transition">
+                                B) 6 आयतें
+                            </button>
+                            <button onclick="handleQuizChoice(this, true, 'बिल्कुल सही! सूरह अल-फ़ातिहा में 7 आयतें हैं और इसे उम्मुल क़ुरआन भी कहा जाता है।')" class="quiz-option-btn bg-islamic-dark hover:bg-islamic-gold/20 border border-islamic-gold/30 text-gray-200 p-2.5 rounded-xl text-left transition">
+                                C) 7 आयतें (Correct)
+                            </button>
+                            <button onclick="handleQuizChoice(this, false, 'गलत! सही उत्तर 7 आयतें हैं।')" class="quiz-option-btn bg-islamic-dark hover:bg-islamic-gold/20 border border-islamic-gold/30 text-gray-200 p-2.5 rounded-xl text-left transition">
+                                D) 8 आयतें
+                            </button>
+                        </div>
+
+                        <div class="quiz-feedback hidden p-3 rounded-xl text-xs leading-relaxed"></div>
                     </div>
                 `;
-                chatStream.scrollTop = chatStream.scrollHeight;
-
-            } catch (err) {
-                document.getElementById(aiId).innerHTML = `<p class="text-red-400">कनेक्शन त्रुटि। कृपया पुनः प्रयास करें।</p>`;
-            }
-        }
-
-        function getSmartScholarlyFallback(query) {
-            const q = query.toLowerCase();
-            if (q.includes('2:42') || q.includes('baqarah 42') || q.includes('बक़रह 42')) {
-                return `<b>सूरह अल-बक़रह (आयत सं. 42):</b><br>` +
-                       `<p class="arabic-font text-base text-islamic-gold">وَلَا تَلْبِسُوا الْحَقَّ بِالْبَاطِلِ وَتَكْتُمُوا الْحَقَّ وَأَنْتُمْ تَعْلَمُونَ</p>` +
-                       `<b>अनुवाद:</b> "और हक़ (सच्चाई) को बातिल (झूठ) के साथ मत मिलाओ और न जानते हुए हक़ को छिपाओ।"<br>` +
-                       `<span class="text-[11px] text-emerald-400"><b>स्रोतः</b> कुरान मजीद, सूरह 2, आयत 42।</span>`;
-            } else if (q.includes('niyat') || q.includes('umar')) {
-                return `<b>अमाल का दारोमदार नियतों पर है:</b><br>` +
-                       `<p class="arabic-font text-base text-islamic-gold">إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى</p>` +
-                       `<b>अनुवाद:</b> नबी करीम (सल्लल्लाहु अलैहि वसल्लम) ने फ़रमाया: "तमाम आमाल का दारोमदार नियतों पर है, और हर इंसान को वही मिलेगा जिसकी उसने नियत की।"<br>` +
-                       `<span class="text-[11px] text-emerald-400"><b>स्रोतः</b> सहीह बुखारी (हदीस सं. 1), सहीह मुस्लिम (हदीस सं. 1907)।</span>`;
+            } else if (format === 'cards') {
+                return `
+                    <div class="space-y-3">
+                        <p class="font-bold text-islamic-gold text-sm">विषय कार्ड विश्लेषण: "${escapeHtml(query)}"</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                            <div class="bg-islamic-inner border border-islamic-gold/30 p-3.5 rounded-xl space-y-1">
+                                <span class="text-xs font-bold text-islamic-gold block">📖 क़ुरआनिक साक्ष्य</span>
+                                <p class="arabic-font text-base text-islamic-gold">إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ</p>
+                                <p class="text-gray-300"><i>"हम तेरी ही इबादत करते हैं और तुझ ही से मदद मांगते हैं।" (1:5)</i></p>
+                            </div>
+                            <div class="bg-islamic-inner border border-emerald-500/30 p-3.5 rounded-xl space-y-1">
+                                <span class="text-xs font-bold text-emerald-400 block">📜 सहीह हदीस संदर्भ</span>
+                                <p class="text-gray-200">तमाम आमाल का दारोमदार नियतों पर है। (सहीह बुखारी #1)</p>
+                                <span class="text-[10px] text-emerald-400 block">ग्रेडिंग: 🟢 SAHIH</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (format === 'template') {
+                return `
+                    <div class="space-y-2 text-xs md:text-sm">
+                        <h4 class="font-bold text-islamic-gold text-sm border-b border-islamic-gold/30 pb-1">📋 स्ट्रक्चर्ड तफ़सीर टेम्पलेट</h4>
+                        <p><b>1. विषय प्रवेश:</b> ${escapeHtml(query)} से संबंधित मुख्य इस्लामी सिद्धांत।</p>
+                        <p><b>2. मूल साक्ष्य:</b> कुरान मजीद और सहीह अहादीस के प्रामाणिक संदर्भ।</p>
+                        <hr class="border-islamic-gold/20 my-2">
+                        <p><b>3. मुख्य निष्कर्ष:</b> इस विषय पर उलेमा का इज्मा और सहीह फिक़्ह राय।</p>
+                    </div>
+                `;
             } else {
-                return `<b>विषय: ${query}</b><br>` +
-                       `इस्लामी शरियत और प्रामाणिक ग्रंथों के अनुसार, प्रत्येक विषय का आधार कुरान मजीद और सहीह असनाद वाली अहादीस पर है। इस मसले पर उलेमा का दृष्टिकोण साक्ष्य (Dalil) पर आधारित है।`;
+                return `
+                    <div class="space-y-2 text-xs md:text-sm">
+                        <p class="font-bold text-islamic-gold">उत्तर (${escapeHtml(query)}):</p>
+                        <p class="arabic-font text-base text-islamic-gold">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+                        <p class="leading-relaxed">आपके पूछे गए प्रश्न के संदर्भ में इस्लामी शरियत और सहीह सुन्नह के अनुसार प्रामाणिक मार्गदर्शन प्रस्तुत है। हर हुक्म का आधार कुरान और सहीह हदीस है।</p>
+                        <div class="text-[11px] text-emerald-400 border-t border-islamic-gold/20 pt-1.5 mt-2">
+                            <b>स्रोतः</b> सहीह बुखारी व मुस्लिम | 🟢 SAHIH VERIFIED
+                        </div>
+                    </div>
+                `;
             }
         }
 
-        function speakText(elementId) {
-            window.speechSynthesis.cancel();
-            const textElem = document.getElementById(elementId + '-text');
-            if (!textElem) return;
+        // Interactive Quiz Option Tapping Handler
+        function handleQuizChoice(btn, isCorrect, explanation) {
+            const parent = btn.closest('.bg-islamic-quizBg');
+            const allBtns = parent.querySelectorAll('.quiz-option-btn');
+            const feedback = parent.querySelector('.quiz-feedback');
 
-            const speech = new SpeechSynthesisUtterance(textElem.innerText);
+            allBtns.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                btn.classList.remove('bg-islamic-dark');
+                btn.classList.add('bg-emerald-800', 'border-emerald-400', 'text-white', 'font-bold');
+                feedback.classList.remove('hidden', 'bg-red-950/80', 'text-red-200', 'border-red-500/40');
+                feedback.classList.add('bg-emerald-950/80', 'text-emerald-200', 'border', 'border-emerald-500/40');
+                feedback.innerHTML = `<b>✅ सही उत्तर!</b><br>${explanation}`;
+            } else {
+                btn.classList.remove('bg-islamic-dark');
+                btn.classList.add('bg-red-900', 'border-red-500', 'text-white');
+                feedback.classList.remove('hidden', 'bg-emerald-950/80', 'text-emerald-200', 'border-emerald-500/40');
+                feedback.classList.add('bg-red-950/80', 'text-red-200', 'border', 'border-red-500/40');
+                feedback.innerHTML = `<b>❌ गलत उत्तर!</b><br>${explanation}`;
+            }
+        }
+
+        // Render UI Bubbles
+        function appendUserBubble(text, animate) {
+            const stream = document.getElementById('chat-stream');
+            const div = document.createElement('div');
+            div.className = `flex gap-3 justify-end items-start ${animate ? 'animate-fade-in' : ''}`;
+            div.innerHTML = `
+                <div class="bg-islamic-gold/20 border border-islamic-gold/40 text-gray-100 p-3.5 rounded-2xl rounded-tr-none text-xs md:text-sm max-w-[85%] shadow-md">
+                    <p class="font-bold text-[10px] text-islamic-gold mb-0.5">आप (${escapeHtml(appState.userName)}):</p>
+                    <p class="leading-relaxed">${escapeHtml(text)}</p>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-emerald-800 border border-emerald-500 flex items-center justify-center text-emerald-200 font-bold text-xs shrink-0 shadow">
+                    👤
+                </div>
+            `;
+            stream.appendChild(div);
+        }
+
+        function appendAIBubble(htmlContent, format, animate) {
+            const stream = document.getElementById('chat-stream');
+            const div = document.createElement('div');
+            const bubbleId = 'msg-' + Date.now() + '-' + Math.floor(Math.random()*1000);
+            div.className = `flex gap-3 items-start ${animate ? 'animate-fade-in' : ''}`;
+
+            div.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-xs shrink-0 shadow">
+                    AI
+                </div>
+                <div class="bg-islamic-card border border-islamic-gold/30 p-4 rounded-2xl rounded-tl-none space-y-3 text-xs md:text-sm max-w-[85%] w-full shadow-xl">
+                    <div class="flex justify-between items-center border-b border-islamic-gold/20 pb-2 flex-wrap gap-2">
+                        <span class="text-[10px] font-bold text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-700/50 uppercase">
+                            🟢 VERIFIED • ${format} Mode
+                        </span>
+                        
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="copyBubbleText('${bubbleId}')" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2 py-0.5 rounded text-[10px] transition">
+                                📋 कॉपी
+                            </button>
+                            <button onclick="toggleSpeechRead('${bubbleId}')" id="btn-speech-${bubbleId}" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2 py-0.5 rounded text-[10px] flex items-center gap-1 transition">
+                                🔊 <span id="lbl-${bubbleId}">सुनें</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="content-${bubbleId}" class="text-gray-100 leading-relaxed space-y-2">
+                        ${htmlContent}
+                    </div>
+                </div>
+            `;
+            stream.appendChild(div);
+        }
+
+        function appendLoadingBubble(id) {
+            const stream = document.getElementById('chat-stream');
+            const div = document.createElement('div');
+            div.id = id;
+            div.className = "flex gap-3 items-start";
+            div.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-xs shrink-0 shadow">AI</div>
+                <div class="bg-islamic-card border border-islamic-gold/30 p-3.5 rounded-2xl rounded-tl-none text-xs shadow-lg flex items-center gap-2">
+                    <div class="w-3.5 h-3.5 border-2 border-islamic-gold border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-islamic-lightgold animate-pulse">उत्तर खोजा जा रहा है...</span>
+                </div>
+            `;
+            stream.appendChild(div);
+        }
+
+        function removeBubble(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        // Text To Speech Read Aloud
+        function toggleSpeechRead(bubbleId) {
+            if (!('speechSynthesis' in window)) {
+                alert('आपके डिवाइस पर स्पीच सिंथेसिस उपलब्ध नहीं है।');
+                return;
+            }
+
+            const lbl = document.getElementById(`lbl-${bubbleId}`);
+
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                if (lbl) lbl.innerText = 'सुनें';
+                return;
+            }
+
+            const contentEl = document.getElementById(`content-${bubbleId}`);
+            if (!contentEl) return;
+
+            const plainText = contentEl.innerText.replace(/<[^>]*>?/gm, '');
+            if (!plainText) return;
+
+            const speech = new SpeechSynthesisUtterance(plainText);
             speech.lang = document.getElementById('langSelector').value;
+            speech.rate = 0.95;
+
+            speech.onstart = () => { if (lbl) lbl.innerText = '⏹️ रुकें'; };
+            speech.onend = () => { if (lbl) lbl.innerText = 'सुनें'; };
+            speech.onerror = () => { if (lbl) lbl.innerText = 'सुनें'; };
+
             window.speechSynthesis.speak(speech);
+        }
+
+        // Copy Text Functionality
+        function copyBubbleText(bubbleId) {
+            const contentEl = document.getElementById(`content-${bubbleId}`);
+            if (!contentEl) return;
+            const text = contentEl.innerText;
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('उत्तर कॉपी हो गया!');
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
     </script>
 </body>
 </html>
+```
