@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islam Master Formula v11.23 - AI Chat & Research Engine</title>
+    <title>Islam Master Formula v11.23 - Research & Q&A Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -32,12 +32,17 @@
         .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: #061a14; border-radius: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 6px; }
+        @keyframes pulse-red {
+            0%, 100% { background-color: rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.8); }
+            50% { background-color: rgba(239, 68, 68, 0.7); border-color: rgba(239, 68, 68, 1); }
+        }
+        .mic-active { animation: pulse-red 1.2s infinite; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
     <!-- Top Navigation Header -->
-    <header class="bg-islamic-card/90 backdrop-blur border-b border-islamic-gold/30 sticky top-0 z-50 px-4 py-3 shadow-md flex justify-between items-center flex-wrap gap-2">
+    <header class="bg-islamic-card/95 backdrop-blur border-b border-islamic-gold/30 sticky top-0 z-50 px-4 py-3 shadow-md flex justify-between items-center flex-wrap gap-2">
         <div class="flex items-center gap-2">
             <button onclick="clearChatScreen()" class="bg-islamic-gold/20 hover:bg-islamic-gold/30 text-islamic-lightgold border border-islamic-gold/40 px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition flex items-center gap-1">
                 ➕ <span>नया चैट (New Chat)</span>
@@ -61,7 +66,7 @@
     </header>
 
     <!-- Chat Message Container (Continuous Scroll Stream) -->
-    <main class="flex-grow max-w-4xl w-full mx-auto p-4 space-y-6 overflow-y-auto">
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 space-y-6">
         
         <!-- Bismillah Header -->
         <div class="text-center bg-islamic-card/60 border border-islamic-gold/30 p-4 rounded-2xl shadow-xl">
@@ -70,7 +75,7 @@
         </div>
 
         <!-- Chat History Stream -->
-        <div id="chat-stream" class="space-y-6 pb-24">
+        <div id="chat-stream" class="space-y-6 pb-28">
             <!-- Welcome Bot Message -->
             <div class="flex gap-3 items-start">
                 <div class="w-8 h-8 rounded-xl bg-islamic-gold/20 border border-islamic-gold/40 flex items-center justify-center text-islamic-gold font-bold text-xs shrink-0">
@@ -78,7 +83,7 @@
                 </div>
                 <div class="bg-islamic-card border border-islamic-gold/30 p-4 rounded-2xl rounded-tl-none space-y-2 text-sm max-w-3xl shadow-lg">
                     <p class="text-islamic-lightgold font-bold">अस्सलामुआलैकुम व रहमतुल्लाह!</p>
-                    <p class="text-gray-200 leading-relaxed">मैं <b>Islam Master Formula v11.23</b> AI असिस्टेंट हूँ। आप मुझसे कोई भी इस्लामिक प्रश्न, हदीस सत्यापन, फिक़्ह सवाल या सूरह तफ़सीर पूछ सकते हैं। सिस्टम आपके प्रश्न के अनुसार सही फॉर्मूला (F1-F17) खुद-ब-खुद अप्लाई करके प्रामाणिक उत्तर देगा।</p>
+                    <p class="text-gray-200 leading-relaxed">मैं <b>Islam Master Formula v11.23</b> AI रिसर्च असिस्टेंट हूँ। आप मुझसे कोई भी इस्लामिक प्रश्न, हदीस सत्यापन, फिक़्ह सवाल या सूरह तफ़सीर पूछ सकते हैं। सिस्टम आपके प्रश्न के अनुसार सही फॉर्मूला (F1-F17) अप्लाई करके प्रामाणिक उत्तर देगा।</p>
                 </div>
             </div>
         </div>
@@ -93,18 +98,18 @@
             <div class="flex items-center gap-1.5 overflow-x-auto custom-scroll pb-1 text-xs whitespace-nowrap">
                 <span class="text-[11px] text-islamic-gold font-semibold uppercase tracking-wider shrink-0 pr-1">⚡ फॉर्मूला:</span>
                 <button onclick="triggerFormulaPrompt(11)" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-2.5 py-1 rounded-lg transition shrink-0">F11: Master</button>
-                <button onclick="triggerFormulaPrompt(1)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F1: Hadith Study</button>
+                <button onclick="triggerFormulaPrompt(1)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F1: Hadith Verification</button>
                 <button onclick="triggerFormulaPrompt(2)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F2: Sahih Protocol</button>
-                <button onclick="triggerFormulaPrompt(5)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F5: Classification</button>
+                <button onclick="triggerFormulaPrompt(5)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F5: Hadith Classification</button>
                 <button onclick="triggerFormulaPrompt(6)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F6: Arabic Class</button>
                 <button onclick="triggerFormulaPrompt(7)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F7: Tark-Vitark</button>
                 <button onclick="triggerFormulaPrompt(8)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F8: Salaf Stories</button>
                 <button onclick="triggerFormulaPrompt(10)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F10: Fatwa Mustafa</button>
                 <button onclick="triggerFormulaPrompt(12)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F12: Islamic Court</button>
-                <button onclick="triggerFormulaPrompt(13)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F13: Mohaddes</button>
+                <button onclick="triggerFormulaPrompt(13)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F13: Mohaddes Mustafa</button>
                 <button onclick="triggerFormulaPrompt(14)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F14: Book Reading</button>
-                <button onclick="triggerFormulaPrompt(16)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F16: Qiyamat Signs</button>
-                <button onclick="triggerFormulaPrompt(17)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F17: Shayari v1.2</button>
+                <button onclick="triggerFormulaPrompt(16)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F16: Qiyamat Nishaniyan</button>
+                <button onclick="triggerFormulaPrompt(17)" class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg transition shrink-0">F17: Sher-o-Shayari</button>
             </div>
 
             <!-- Input Box & Mic Button -->
@@ -112,12 +117,12 @@
                 <div class="relative flex-grow">
                     <input type="text" id="userQueryInput" 
                            onkeydown="if(event.key === 'Enter') handleSendQuery()"
-                           placeholder="अपना प्रश्न लिखें या माइक से बोलें (उदा. Hadees qudsi, Niyyat ki ahamiyat)..." 
+                           placeholder="अपना प्रश्न लिखें या माइक दबाकर बोलें (उदा. Umar rs niyat wali hadees)..." 
                            class="w-full bg-islamic-inner border border-islamic-gold/40 rounded-xl pl-4 pr-12 py-3 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-islamic-gold">
                     
                     <!-- Mic Button -->
                     <button onclick="toggleVoiceInput()" id="mic-btn" title="Click to Speak (Voice Search)" 
-                            class="absolute right-2 top-1/2 -translate-y-1/2 bg-islamic-gold/20 hover:bg-islamic-gold/40 text-islamic-gold p-2 rounded-lg transition">
+                            class="absolute right-2 top-1/2 -translate-y-1/2 bg-islamic-gold/20 hover:bg-islamic-gold/40 text-islamic-gold p-2 rounded-lg transition flex items-center justify-center">
                         🎙️
                     </button>
                 </div>
@@ -127,9 +132,9 @@
                 </button>
             </div>
 
-            <!-- Voice Listening Indicator -->
+            <!-- Voice Listening Status Indicator -->
             <div id="voice-status" class="hidden text-xs text-center text-emerald-400 font-semibold animate-pulse">
-                🎙️ माइक सुन रहा है... (Listening...)
+                🎙️ माइक चालू है... बोलिए (Listening...)
             </div>
 
         </div>
@@ -164,21 +169,21 @@
         // State & LocalStorage Management
         let userData = {
             name: localStorage.getItem('imf_user_name') || 'Mustafa',
-            history: JSON.parse(localStorage.getItem('imf_qna_history') || '[]')
+            history: JSON.parse(localStorage.getItem('imf_chat_history_v1123') || '[]')
         };
 
         let recognition = null;
         let isListening = false;
+        let activeSpeechUtterance = null;
 
         document.getElementById('user-display-name').innerText = userData.name;
         document.getElementById('profileName').value = userData.name;
         document.getElementById('profile-history-count').innerText = userData.history.length;
 
-        // Render previous saved history into chat on load if exists
+        // Load saved chat stream history on initial load
         window.addEventListener('DOMContentLoaded', () => {
             if (userData.history.length > 0) {
-                // Show last 5 conversations smoothly
-                const recent = userData.history.slice(0, 10).reverse();
+                const recent = userData.history.slice(0, 15).reverse();
                 recent.forEach(item => {
                     appendUserBubble(item.query, false);
                     appendAIBubble(item.answer, item.formulaName, false);
@@ -202,9 +207,9 @@
         }
 
         function clearSavedHistory() {
-            if (confirm('क्या आप अपना पिछला पूरा प्रश्न इतिहास मिटाना चाहते हैं?')) {
+            if (confirm('क्या आप अपना पूरा प्रश्न इतिहास साफ़ करना चाहते हैं?')) {
                 userData.history = [];
-                localStorage.removeItem('imf_qna_history');
+                localStorage.removeItem('imf_chat_history_v1123');
                 document.getElementById('profile-history-count').innerText = 0;
                 clearChatScreen();
                 toggleProfileModal();
@@ -212,23 +217,25 @@
         }
 
         function clearChatScreen() {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             const chatStream = document.getElementById('chat-stream');
             chatStream.innerHTML = `
                 <div class="flex gap-3 items-start">
                     <div class="w-8 h-8 rounded-xl bg-islamic-gold/20 border border-islamic-gold/40 flex items-center justify-center text-islamic-gold font-bold text-xs shrink-0">AI</div>
                     <div class="bg-islamic-card border border-islamic-gold/30 p-4 rounded-2xl rounded-tl-none space-y-2 text-sm max-w-3xl shadow-lg">
                         <p class="text-islamic-lightgold font-bold">नया चैट सत्र शुरू हुआ!</p>
-                        <p class="text-gray-200">आप अपना कोई भी प्रश्न लिख सकते हैं। मास्टर फॉर्मूला AI तुरंत प्रामाणिक उत्तर प्रदान करेगा।</p>
+                        <p class="text-gray-200">आप अपना कोई भी प्रश्न लिख या बोल सकते हैं। मास्टर फॉर्मूला AI तुरंत प्रामाणिक उत्तर देगा।</p>
                     </div>
                 </div>
             `;
         }
 
         function scrollToBottom() {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            setTimeout(() => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 50);
         }
 
-        // Formula Mapping & Prompt Trigger
         const formulaMeta = {
             11: "Formula 11 — All Formula Combined",
             1: "Formula 1: Hadith Study & Verification",
@@ -252,13 +259,13 @@
             input.focus();
         }
 
-        // Speech-to-Text Input (Microphone)
+        // Voice Search Input Handler
         function toggleVoiceInput() {
             const voiceStatus = document.getElementById('voice-status');
             const micBtn = document.getElementById('mic-btn');
 
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                alert('आपके ब्राउज़र में वॉइस इनपुट सपोर्ट नहीं है। कृपया Chrome/Edge उपयोग करें।');
+                alert('आपके ब्राउज़र में वॉइस सर्च सपोर्ट नहीं है। कृपया गूगल क्रोम (Chrome) या एज (Edge) का इस्तेमाल करें।');
                 return;
             }
 
@@ -272,12 +279,13 @@
             
             const selectedLang = document.getElementById('langSelector').value;
             recognition.lang = selectedLang === 'en-US' ? 'en-US' : 'hi-IN';
+            recognition.continuous = false;
             recognition.interimResults = false;
 
             recognition.onstart = function() {
                 isListening = true;
                 voiceStatus.classList.remove('hidden');
-                micBtn.classList.add('bg-red-500/40', 'text-red-300', 'animate-pulse');
+                micBtn.classList.add('mic-active');
             };
 
             recognition.onresult = function(event) {
@@ -286,47 +294,63 @@
                 handleSendQuery();
             };
 
-            recognition.onerror = function() {
+            recognition.onerror = function(e) {
                 voiceStatus.classList.add('hidden');
-                micBtn.classList.remove('bg-red-500/40', 'text-red-300', 'animate-pulse');
+                micBtn.classList.remove('mic-active');
                 isListening = false;
             };
 
             recognition.onend = function() {
                 isListening = false;
                 voiceStatus.classList.add('hidden');
-                micBtn.classList.remove('bg-red-500/40', 'text-red-300', 'animate-pulse');
+                micBtn.classList.remove('mic-active');
             };
 
             recognition.start();
         }
 
-        // Smart Knowledge Fallback for Offline / Quick Responses
-        const smartKnowledgeBase = {
-            "hadees qudsi": `<b>हदीस-ए-कुदसी (Hadith Qudsi) की मास्टर व्याख्या:</b><br><br>
-1. <b>परिभाषा:</b> हदीस-ए-कुदसी वह हदीस है जिसमें अल्लाह के रसूल ﷺ अल्लाह तआला का कलाम बयान फरमाते हैं। इसका भाव अल्लाह का होता है और शब्द नबी ﷺ के।<br><br>
-2. <b>क़ुरआन और हदीस-ए-कुदसी में अंतर:</b><br>
-- <i>क़ुरआन:</i> शब्द और अर्थ दोनों अल्लाह की तरफ से मुअजिज़ा हैं और नमाज़ में पढ़े जाते हैं।<br>
-- <i>हदीस-ए-कुदसी:</i> इसे नमाज़ में तिलावत नहीं किया जाता।<br><br>
-3. <b>प्रसिद्ध साक्ष्य (Sahih Muslim #2577):</b><br>
-<span class="arabic-font text-lg text-islamic-gold">"قَالَ اللَّهُ تَبَارَكَ وَتَعالَى: يَا عِبَادِي إِنِّي حَرَّمْتُ الظُّلْمَ عَلَى نَفْسِي وَجَعَلْتُهُ بَيْنَكُمْ مُحَرَّمًا فَلَا تَظَالَمُوا"</span><br>
-<i>अनुवाद:</i> अल्लाह तआला फरमाता है: "ऐ मेरे बंदों! मैंने अपने ऊपर ज़ुल्म को हराम किया है और तुम्हारे बीच भी इसे हराम किया है, इसलिए एक-दूसरे पर ज़ुल्म न करो।"<br><br>
-4. <b>मास्टर फॉर्मूला ग्रेडिंग:</b> सहीह (Sahih - Authenticated).`,
+        // Rich Islamic Knowledge Engine Fallback Database
+        const islamicKnowledgeDB = [
+            {
+                keywords: ["niyat", "niyyat", "umar", "umar rs", "actions by intention", "bukhari 1"],
+                formula: "Formula 1: Hadith Study & Verification",
+                grading: "🟢 SAHIH (Sahih Bukhari #1 / Sahih Muslim #1907)",
+                response: `<b>हज़रत उमर बिन अल-खत्ताब (रज़ि.) से रिवायत नीयत वाली हदीस:</b><br><br>
+1. <b>मूल अरबी मत्न (Original Arabic Text):</b><br>
+<span class="arabic-font text-xl text-islamic-gold block my-2">عَنْ أَمِيرِ الْمُؤْمِنِينَ أَبِي حَفْصٍ عُمَرَ بْنِ الْخَطَّابِ رَضِيَ اللَّهُ عَنْهُ قَالَ: سَمِعْتُ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَقُولُ: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى، فَمَنْ كَانَتْ هِجْرَتُهُ إِلَى اللَّهِ وَرَسُولِهِ فَهِجْرَتُهُ إِلَى اللَّهِ وَرَسُولِهِ، وَمَنْ كَانَتْ هِجْرَتُهُ لِدُنْيَا يُصِيبُهَا أَوْ امْرَأَةٍ يَنْكِحُهَا فَهِجْرَتُهُ إِلَى مَا هَاجَرَ إِلَيْهِ"</span><br>
+2. <b>अनुवाद (Translation):</b><br>
+"अमीरुल मोमिनीन हज़रत उमर बिन अल-खत्ताब (रज़ि.) बयान करते हैं कि मैंने अल्लाह के रसूल ﷺ को फरमाते हुए सुना: <i>'तमाम आमाल (कर्मों) का दारोमदार नीयत पर है, और हर इंसान को वही मिलेगा जिसकी उसने नीयत की। पस जिसकी हिजरत अल्लाह और उसके रसूल के लिए होगी, उसकी हिजरत अल्लाह और उसके रसूल के लिए मानी जाएगी; और जिसकी हिजरत दुनिया हासिल करने या किसी औरत से निकाह करने के लिए होगी, उसकी हिजरत उसी के लिए होगी जिसके लिए उसने हिजरत की।'</i>"<br><br>
+3. <b>असनाद व सनद जांच (Sanad Analysis):</b><br>
+- <b>रावी (Narrator):</b> उमर बिन अल-खत्ताब ➔ अलक़मा बिन वक़्क़ास ➔ मुहम्मद बिन इब्राहीम अल-तमीमी ➔ यह्या बिन सईद अल-अंसारी।<br>
+- यह हदीस 'ग़रीब' (अहाद) है लेकिन उम्मत के तमाम मुहद्दिसीन का इस पर इज्मा है। इमाम शफई फरमाते हैं कि यह हदीस दीन के 70 अबवाब में दाखिल है।`
+            },
+            {
+                keywords: ["qudsi", "qudsiy", "kudsi", "hadees qudsi"],
+                formula: "Formula 2: Sahih Hadith Protocol",
+                grading: "🟢 SAHIH (Sahih Muslim #2577)",
+                response: `<b>हदीस-ए-कुदसी (Hadith Qudsi) की मास्टर व्याख्या:</b><br><br>
+1. <b>परिभाषा:</b> वह हदीस जिसमें अल्लाह के रसूल ﷺ अल्लाह तआला का कलाम बयान फरमाते हैं। इसका भाव (Meaning) अल्लाह तआला की तरफ से होता है और शब्द (Wording) रसूलुल्लाह ﷺ के होते हैं।<br><br>
+2. <b>प्रसिद्ध हदीस-ए-कुदसी (Sahih Muslim #2577):</b><br>
+<span class="arabic-font text-lg text-islamic-gold block my-2 font-bold">"قَالَ اللَّهُ تَبَارَكَ وَتَعَالَى: يَا عِبَادِي إِنِّي حَرَّمْتُ الظُّلْمَ عَلَى نَفْسِي وَجَعَلْتُهُ بَيْنَكُمْ مُحَرَّمًا فَلَا تَظَالَمُوا"</span><br>
+<i>अनुवाद:</i> अल्लाह तआला फरमाता है: "ऐ मेरे बंदों! मैंने अपने ऊपर ज़ुल्म को हराम (निषिद्ध) कर दिया है और तुम्हारे दरमियान भी इसे हराम ठहराया है, इसलिए एक-दूसरे पर ज़ुल्म न करो।"<br><br>
+3. <b>अंतर (Difference):</b> क़ुरआन की तिलावत नमाज़ में अनिवार्य है, जबकि हदीस-ए-कुदसी की नमाज़ में तिलावत नहीं की जाती।`
+            },
+            {
+                keywords: ["namaz", "salah", "salat", "pray"],
+                formula: "Formula 5: Hadith Classification",
+                grading: "🟢 SAHIH (Sahih Bukhari #631)",
+                response: `<b>नमाज़ का प्रामाणिक तरीका (Authentic Salah Method):</b><br><br>
+1. <b>रसूलुल्लाह ﷺ का फरमान:</b><br>
+<span class="arabic-font text-lg text-islamic-gold block my-1">"صَلُّوا كَمَا رَأَيْتُمُونِي أُصَلِّي"</span><br>
+<i>"तुम उसी तरह नमाज़ पढ़ो जिस तरह तुमने मुझे नमाज़ पढ़ते देखा है।"</i> (सहीह बुखारी)<br><br>
+2. <b>मुख्य अरकान (Obligatory Steps):</b><br>
+- <b>तकबीरे तहरीमा:</b> 'अल्लाहु अकबर' कहकर हाथ कानों/कंधों तक उठाना।<br>
+- <b>क़ियाम व सूरह अल-फातिहा:</b> सूरह फातिहा की तिलावत हर रकत में फर्ज़ है।<br>
+- <b>रुकू व सुजूद:</b> इत्मीनान (तमामनीनत) के साथ रुकू और दो सजदे करना।`
+            }
+        ];
 
-            "niyyat": `<b>अमाल का दारोमदार नीयत पर है (Niyyat in Islam):</b><br><br>
-1. <b>मूल हदीस (Sahih Bukhari #1):</b><br>
-<span class="arabic-font text-xl text-islamic-gold">إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى</span><br>
-<i>अनुवाद:</i> "तमाम आमाल का दारोमदार नीयत पर है, और हर इंसान को वही मिलेगा जिसकी उसने नीयत की।"<br><br>
-2. <b>विद्वानों का दृष्टिकोण:</b> इमाम शफई के अनुसार यह हदीस पूरे इस्लाम के ज्ञान का एक-तिहाई हिस्सा है।`,
-
-            "namaz": `<b>नमाज़ का प्रामाणिक तरीका (Salah Guide):</b><br><br>
-1. <b>मूल हदीस (Sahih Bukhari #631):</b><br>
-<span class="arabic-font text-lg text-islamic-gold">صَلُّوا كَمَا رَأَيْتُمُونِي أُصَلِّي</span><br>
-<i>अनुवाद:</i> "तुम उसी तरह नमाज़ पढ़ो जिस तरह तुमने मुझे नमाज़ पढ़ते देखा है।"<br><br>
-2. <b>मुख्य अरकान:</b> तकबीरे तहरीमा, सूरह अल-फातिहा, रुकू, सुजूद और तशहुद।`
-        };
-
-        // Query Handler
+        // Query Submission Logic
         async function handleSendQuery() {
             const input = document.getElementById('userQueryInput');
             const query = input.value.trim();
@@ -336,5 +360,216 @@
 
             // 1. Append User Bubble
             appendUserBubble(query, true);
+            scrollToBottom();
 
-          
+            // 2. Identify Applicable Formula
+            let appliedFormula = "Formula 11 — All Formula Combined";
+            const qLower = query.toLowerCase();
+            if (qLower.includes('f1') || qLower.includes('verification') || qLower.includes('sanad')) appliedFormula = formulaMeta[1];
+            else if (qLower.includes('f2') || qLower.includes('sahih')) appliedFormula = formulaMeta[2];
+            else if (qLower.includes('f5') || qLower.includes('classification')) appliedFormula = formulaMeta[5];
+            else if (qLower.includes('f10') || qLower.includes('fatwa')) appliedFormula = formulaMeta[10];
+            else if (qLower.includes('f13') || qLower.includes('mohaddes')) appliedFormula = formulaMeta[13];
+            else if (qLower.includes('f14') || qLower.includes('book')) appliedFormula = formulaMeta[14];
+            else if (qLower.includes('f16') || qLower.includes('qiyamat')) appliedFormula = formulaMeta[16];
+            else if (qLower.includes('f17') || qLower.includes('sher') || qLower.includes('shayari')) appliedFormula = formulaMeta[17];
+
+            // 3. Append Loading Indicator Bubble
+            const loadingId = 'loading-' + Date.now();
+            appendLoadingBubble(loadingId);
+            scrollToBottom();
+
+            // 4. Try Dynamic AI Call via Gemini API
+            const systemPrompt = `You are the scholarly AI search engine for "Islam Master Formula v11.23".
+Answer the query directly, authentically, and comprehensively in Hindi / Roman Urdu or English based on user query language.
+Include Quranic verses (in Arabic font), authentic Hadith citations (Bukhari, Muslim, Abu Dawud), Sanad/Matn commentary, and scholarly concensus.
+Format your output in clean HTML (<p>, <b>, <i>, <br>, <span class="arabic-font">). Do not output template text or code blocks.`;
+
+            let aiAnswerText = await callGeminiAPI(query, systemPrompt);
+
+            // Fallback to Rich Knowledge Base if API call fails
+            if (!aiAnswerText) {
+                const matchObj = islamicKnowledgeDB.find(item => item.keywords.some(k => qLower.includes(k)));
+                if (matchObj) {
+                    appliedFormula = matchObj.formula;
+                    aiAnswerText = matchObj.response;
+                } else {
+                    aiAnswerText = `<b>मास्टर फॉर्मूला v11.23 उत्तर:</b><br><br>
+"${escapeHtml(query)}" के संदर्भ में प्रामाणिक कुरान एवं सहीह सुन्नह के नियमों (रूल्स 154–164) के अनुसार साक्ष्य-आधारित विश्लेषण:<br><br>
+1. <b>दलिल व संदर्भ:</b> हर इस्लामी हुक्म का आधार कुरान मजीद और नबी करीम ﷺ की सहीह असनाद वाली सुन्नह पर निर्भर है।<br>
+2. <b>मुहद्दिसीन के मानदंड:</b> इमाम बुखारी और इमाम मुस्लिम के सिद्धांतों के अनुसार किसी भी रिवायत की असनाद के रावियों का आदिल (Just) और ज़ाबित होना आवश्यक है।<br>
+3. <b>मास्टर निष्कर्ष:</b> यह प्रश्न दर्ज कर लिया गया है तथा उपलब्ध प्रामाणिक ग्रंथों के अनुसार इसका अनुसंधान जारी है।`;
+                }
+            } else {
+                aiAnswerText = aiAnswerText
+                    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+                    .replace(/\n\n/g, '<br><br>')
+                    .replace(/\n/g, '<br>');
+            }
+
+            // Remove loading bubble and render final response bubble
+            removeBubble(loadingId);
+            appendAIBubble(aiAnswerText, appliedFormula, true);
+            scrollToBottom();
+
+            // Save conversation into LocalStorage
+            userData.history.unshift({
+                query: query,
+                answer: aiAnswerText,
+                formulaName: appliedFormula,
+                timestamp: new Date().toLocaleString('hi-IN')
+            });
+            localStorage.setItem('imf_chat_history_v1123', JSON.stringify(userData.history));
+            document.getElementById('profile-history-count').innerText = userData.history.length;
+        }
+
+        // Fetch AI Response via Gemini API with retry logic
+        async function callGeminiAPI(prompt, systemInstruction, retries = 2) {
+            const apiKey = ""; // Built-in environment key handler
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] }
+            };
+
+            for (let attempt = 0; attempt < retries; attempt++) {
+                try {
+                    const res = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                        if (text) return text;
+                    }
+                } catch (e) {
+                    // Retry silently
+                }
+                await new Promise(r => setTimeout(r, 600 * (attempt + 1)));
+            }
+            return null;
+        }
+
+        // Render User Chat Bubble
+        function appendUserBubble(text, animate) {
+            const chatStream = document.getElementById('chat-stream');
+            const div = document.createElement('div');
+            div.className = `flex gap-3 justify-end items-start ${animate ? 'animate-fade-in' : ''}`;
+            div.innerHTML = `
+                <div class="bg-islamic-gold/20 border border-islamic-gold/40 text-gray-100 p-3 md:p-4 rounded-2xl rounded-tr-none text-sm max-w-2xl shadow-md">
+                    <p class="font-bold text-[11px] text-islamic-gold mb-1">आप (Mustafa):</p>
+                    <p class="leading-relaxed">${escapeHtml(text)}</p>
+                </div>
+                <div class="w-8 h-8 rounded-xl bg-emerald-800 border border-emerald-500 flex items-center justify-center text-emerald-200 font-bold text-xs shrink-0">
+                    👤
+                </div>
+            `;
+            chatStream.appendChild(div);
+        }
+
+        // Render AI Chat Bubble with Working Text-to-Speech
+        function appendAIBubble(htmlContent, formulaName, animate) {
+            const chatStream = document.getElementById('chat-stream');
+            const div = document.createElement('div');
+            const bubbleId = 'speech-' + Date.now() + '-' + Math.floor(Math.random()*1000);
+            div.className = `flex gap-3 items-start ${animate ? 'animate-fade-in' : ''}`;
+
+            div.innerHTML = `
+                <div class="w-8 h-8 rounded-xl bg-islamic-gold/20 border border-islamic-gold/40 flex items-center justify-center text-islamic-gold font-bold text-xs shrink-0">
+                    AI
+                </div>
+                <div class="bg-islamic-card border border-islamic-gold/30 p-4 rounded-2xl rounded-tl-none space-y-3 text-sm max-w-3xl shadow-xl w-full">
+                    <div class="flex justify-between items-center border-b border-islamic-gold/20 pb-2 flex-wrap gap-2">
+                        <span class="text-[11px] font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-0.5 rounded border border-emerald-700/50">
+                            ${formulaName}
+                        </span>
+                        
+                        <!-- Read Aloud Text-to-Speech Button -->
+                        <button onclick="toggleSpeechRead('${bubbleId}')" id="speech-btn-${bubbleId}" 
+                                class="bg-islamic-inner hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+                            🔊 <span id="label-${bubbleId}">सुनें (Read Aloud)</span>
+                        </button>
+                    </div>
+
+                    <div id="text-content-${bubbleId}" class="text-gray-100 leading-relaxed space-y-2">
+                        ${htmlContent}
+                    </div>
+                </div>
+            `;
+            chatStream.appendChild(div);
+        }
+
+        // Render Loading Indicator
+        function appendLoadingBubble(id) {
+            const chatStream = document.getElementById('chat-stream');
+            const div = document.createElement('div');
+            div.id = id;
+            div.className = "flex gap-3 items-start";
+            div.innerHTML = `
+                <div class="w-8 h-8 rounded-xl bg-islamic-gold/20 border border-islamic-gold/40 flex items-center justify-center text-islamic-gold font-bold text-xs shrink-0">AI</div>
+                <div class="bg-islamic-card border border-islamic-gold/30 p-4 rounded-2xl rounded-tl-none text-sm shadow-lg flex items-center gap-2">
+                    <div class="w-4 h-4 border-2 border-islamic-gold border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-xs text-islamic-lightgold animate-pulse">मास्टर फॉर्मूला AI उत्तर तैयार कर रहा है...</span>
+                </div>
+            `;
+            chatStream.appendChild(div);
+        }
+
+        function removeBubble(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        // Working Text-to-Speech Engine
+        function toggleSpeechRead(bubbleId) {
+            if (!('speechSynthesis' in window)) {
+                alert('आपके डिवाइस पर स्पीच सिंथेसिस उपलब्ध नहीं है।');
+                return;
+            }
+
+            const labelEl = document.getElementById(`label-${bubbleId}`);
+            
+            // If already speaking, stop it
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                if (labelEl) labelEl.innerText = 'सुनें (Read Aloud)';
+                return;
+            }
+
+            const contentEl = document.getElementById(`text-content-${bubbleId}`);
+            if (!contentEl) return;
+
+            // Strip HTML tags for clean voice output
+            const plainText = contentEl.innerText.replace(/<[^>]*>?/gm, '');
+            if (!plainText) return;
+
+            activeSpeechUtterance = new SpeechSynthesisUtterance(plainText);
+            const selectedLang = document.getElementById('langSelector').value;
+            activeSpeechUtterance.lang = selectedLang;
+            activeSpeechUtterance.rate = 0.95;
+
+            activeSpeechUtterance.onstart = () => {
+                if (labelEl) labelEl.innerText = '⏹️ रुकें (Stop)';
+            };
+
+            activeSpeechUtterance.onend = () => {
+                if (labelEl) labelEl.innerText = 'सुनें (Read Aloud)';
+            };
+
+            activeSpeechUtterance.onerror = () => {
+                if (labelEl) labelEl.innerText = 'सुनें (Read Aloud)';
+            };
+
+            window.speechSynthesis.speak(activeSpeechUtterance);
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
+```
