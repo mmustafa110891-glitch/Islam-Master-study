@@ -21,29 +21,29 @@
     .message-content{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8}
     button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #f3e5ab;outline-offset:2px}
     .safe-bottom{padding-bottom:max(.75rem,env(safe-area-inset-bottom))}
-    @media(max-width:420px){.brand-title{font-size:12px}.brand-subtitle{font-size:9px}.lang-select{max-width:100px}.new-chat-label{display:none}.hero-title{font-size:1.8rem}}
+    @media(max-width:420px){.brand-title{font-size:12px}.brand-subtitle{font-size:9px}.lang-select{max-width:105px}.new-chat-label{display:none}.hero-title{font-size:1.8rem}}
   </style>
 </head>
 <body>
 <div class="min-h-screen flex flex-col">
   <header class="sticky top-0 z-30 border-b border-islamic-gold/25 glass">
     <div class="max-w-5xl mx-auto px-3 py-3 flex items-center justify-between gap-2">
-      <button id="homeBtn" class="flex items-center gap-2 text-left min-w-0" aria-label="рдореБрдЦреНрдп рдкреГрд╖реНрда">
-        <span class="w-10 h-10 shrink-0 rounded-xl bg-islamic-gold/15 border border-islamic-gold/40 flex items-center justify-center text-xl">тШкя╕П</span>
+      <button id="homeBtn" class="flex items-center gap-2 text-left min-w-0" aria-label="मुख्य पृष्ठ">
+        <span class="w-10 h-10 shrink-0 rounded-xl bg-islamic-gold/15 border border-islamic-gold/40 flex items-center justify-center text-xl">☪️</span>
         <span class="min-w-0">
           <span class="block brand-title text-islamic-lightgold font-extrabold truncate">Islamic AI Master Engine</span>
-          <span class="block brand-subtitle text-emerald-200/70">Study тАв Explore тАв Understand</span>
+          <span class="block brand-subtitle text-emerald-200/70">Study • Explore • Understand</span>
         </span>
       </button>
       <div class="flex items-center gap-2 shrink-0">
-        <select id="langSelector" aria-label="рднрд╛рд╖рд╛ рдЪреБрдиреЗрдВ" class="lang-select bg-islamic-dark border border-islamic-gold/40 text-islamic-lightgold text-xs rounded-lg px-2 py-2">
-          <option value="Hindi">рд╣рд┐рдВрджреА</option>
+        <select id="langSelector" aria-label="जवाब की भाषा चुनें" class="lang-select bg-islamic-dark border border-islamic-gold/40 text-islamic-lightgold text-xs rounded-lg px-2 py-2">
+          <option value="Hindi">हिंदी</option>
           <option value="English">English</option>
-          <option value="Urdu">╪з╪▒╪п┘И</option>
+          <option value="Urdu">اردو</option>
           <option value="Roman Urdu">Roman Urdu</option>
           <option value="Roman Hindi">Roman Hindi</option>
         </select>
-        <button id="newChatBtn" class="border border-islamic-gold/35 rounded-lg px-3 py-2 text-xs text-islamic-lightgold">я╝Л <span class="new-chat-label">рдирдИ рдмрд╛рддрдЪреАрдд</span></button>
+        <button id="newChatBtn" class="border border-islamic-gold/35 rounded-lg px-3 py-2 text-xs text-islamic-lightgold">＋ <span class="new-chat-label">नई बातचीत</span></button>
       </div>
     </div>
   </header>
@@ -52,35 +52,35 @@
     <section id="welcomePanel" class="pt-6 sm:pt-10">
       <div class="relative overflow-hidden rounded-3xl border border-islamic-gold/30 bg-gradient-to-br from-islamic-card via-[#09271e] to-[#071810] p-5 sm:p-8 shadow-xl">
         <p class="text-[10px] uppercase tracking-[.18em] text-islamic-lightgold/70 mb-3">Your Islamic Knowledge Companion</p>
-        <h1 class="arabic hero-title text-3xl sm:text-4xl text-islamic-lightgold leading-relaxed" dir="rtl">╪▒┘О╪и┘Р┘С ╪▓┘Р╪п┘Т┘Ж┘Р┘К ╪╣┘Р┘Д┘Т┘Е┘Л╪з</h1>
-        <h2 class="mt-3 text-xl sm:text-2xl font-extrabold text-white">рдЗрд╕реНрд▓рд╛рдореА рдЬреНрдЮрд╛рди рдХрд╛ рдЖрдкрдХрд╛ рд╕рд╛рдереА</h2>
-        <p class="mt-2 text-sm text-emerald-100/80 max-w-2xl">рдХрд╝реБрд░рдЖрди, рддрдлрд╝рд╕реАрд░, рд╣рджреАрд╕, рдЗрд╕реНрд▓рд╛рдореА рдЗрддрд┐рд╣рд╛рд╕, рдЕрдХрд╝реАрджрд╛ рдФрд░ рддрд░реНрдХ-рд╡рд┐рдЪрд╛рд░ рд╕реЗ рдЬреБрдбрд╝реЗ рд╕рд╡рд╛рд▓ рдкреВрдЫреЗрдВред рдЬрд╡рд╛рдмреЛрдВ рдореЗрдВ рд╕реНрд░реЛрддреЛрдВ рдФрд░ рдЕрдирд┐рд╢реНрдЪрд┐рддрддрд╛ рдХреЛ рд╕реНрдкрд╖реНрдЯ рд░рдЦрдиреЗ рдХреА рдХреЛрд╢рд┐рд╢ рдХреА рдЬрд╛рдПрдЧреАред</p>
+        <h1 class="arabic hero-title text-3xl sm:text-4xl text-islamic-lightgold leading-relaxed" dir="rtl">رحلة العلم والمعرفة</h1>
+        <h2 class="mt-3 text-xl sm:text-2xl font-extrabold text-white">इस्लामी इल्म की दुनिया में आपका स्वागत है</h2>
+        <p class="mt-2 text-sm text-emerald-100/80 max-w-2xl">क़ुरआन, तफ़सीर, हदीस, इस्लामी इतिहास, अक़ीदा, फ़िक़्ह और तर्क-विचार से जुड़े सवाल पूछें। जवाब में जहाँ मुमकिन हो, स्रोत और संदर्भ दिए जाएँगे। किसी बात में मतभेद या अनिश्चितता हो, तो उसे साफ़ बताया जाएगा।</p>
         <div class="mt-5 flex flex-wrap gap-2 text-[11px]">
-          <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">ЁЯУЦ рдХрд╝реБрд░рдЖрди рд╡ рддрдлрд╝рд╕реАрд░</span>
-          <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">ЁЯФО рд╕реНрд░реЛрддреЛрдВ рдХреА рдЬрд╛рдБрдЪ</span>
-          <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">ЁЯза рддрд░реНрдХ рдФрд░ рд╕реЛрдЪ</span>
+          <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">📖 क़ुरआन और तफ़सीर</span>
+          <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">🔎 स्रोतों की जाँच</span>
+          <span class="rounded-full border border-islamic-gold/25 bg-black/15 px-3 py-1.5 text-islamic-lightgold">🧠 तर्क और सोच</span>
         </div>
       </div>
 
       <div class="mt-7">
-        <h3 class="font-bold text-white text-base">рдХрд┐рд╕ рд╡рд┐рд╖рдп рд╕реЗ рд╢реБрд░реВ рдХрд░рдирд╛ рдЪрд╛рд╣реЗрдВрдЧреЗ?</h3>
-        <p class="text-xs text-emerald-100/65 mt-1">рдХрд┐рд╕реА рд╡рд┐рд╖рдп рдкрд░ рдЯреИрдк рдХрд░реЗрдВ рдпрд╛ рдиреАрдЪреЗ рдЕрдкрдирд╛ рд╕рд╡рд╛рд▓ рд▓рд┐рдЦреЗрдВред</p>
+        <h3 class="font-bold text-white text-base">किस विषय से शुरू करना चाहेंगे?</h3>
+        <p class="text-xs text-emerald-100/65 mt-1">किसी विषय पर टैप करें या नीचे अपना सवाल लिखें।</p>
       </div>
       <div id="subjectGrid" class="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдХрд╝реБрд░рдЖрди рдХреА рдХрд┐рд╕реА рдЖрдпрдд рдХреА рддрдлрд╝рд╕реАрд░ рд╕реНрд░реЛрддреЛрдВ рдХреЗ рд╕рд╛рде рд╕рдордЭрд╛рдЗрдПред"><span class="text-2xl">ЁЯУЦ</span><span class="block mt-3 font-bold text-sm">рдХрд╝реБрд░рдЖрди рдФрд░ рддрдлрд╝рд╕реАрд░</span><span class="block mt-1 text-[11px] text-emerald-100/65">рдЖрдпрдд, рдЕрд░реНрде рдФрд░ рд╡реНрдпрд╛рдЦреНрдпрд╛</span></button>
-        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдХрд┐рд╕реА рд╣рджреАрд╕ рдХрд╛ рдЕрд░рдмреА рдорддреНрди, рдЕрдиреБрд╡рд╛рдж, рд╕реНрд░реЛрдд рдФрд░ рджрд░реНрдЬрд╛ рдмрддрд╛рдЗрдПред"><span class="text-2xl">ЁЯУЪ</span><span class="block mt-3 font-bold text-sm">рд╣рджреАрд╕ рдЕрдзреНрдпрдпрди</span><span class="block mt-1 text-[11px] text-emerald-100/65">рдорддреНрди, рд╕реНрд░реЛрдд рдФрд░ рджрд░реНрдЬрд╛</span></button>
-        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдЗрд╕реНрд▓рд╛рдореА рдЗрддрд┐рд╣рд╛рд╕ рдХреЗ рдХрд┐рд╕реА рд╡рд┐рд╖рдп рдХреЛ рднрд░реЛрд╕реЗрдордВрдж рд╕реНрд░реЛрддреЛрдВ рдХреЗ рд╕рд╛рде рд╕рдордЭрд╛рдЗрдПред"><span class="text-2xl">ЁЯПЫя╕П</span><span class="block mt-3 font-bold text-sm">рдЗрд╕реНрд▓рд╛рдореА рдЗрддрд┐рд╣рд╛рд╕</span><span class="block mt-1 text-[11px] text-emerald-100/65">рдШрдЯрдирд╛рдПрдБ рдФрд░ рд╕рдВрджрд░реНрдн</span></button>
-        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдЗрд╕ рд╡рд┐рд╖рдп рдХрд╛ рддрд╛рд░реНрдХрд┐рдХ рд╡рд┐рд╢реНрд▓реЗрд╖рдг рдХреАрдЬрд┐рдП рдФрд░ рджреЛрдиреЛрдВ рдкрдХреНрд╖реЛрдВ рдХреЗ рддрд░реНрдХ рдмрддрд╛рдЗрдПред"><span class="text-2xl">тЪЦя╕П</span><span class="block mt-3 font-bold text-sm">рддрд░реНрдХ-рд╡рд┐рддрд░реНрдХ</span><span class="block mt-1 text-[11px] text-emerald-100/65">рджрд▓реАрд▓ рдФрд░ рд╡рд┐рд╢реНрд▓реЗрд╖рдг</span></button>
-        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдЕрдХрд╝реАрджрд╛ рдпрд╛ рдлрд╝рд┐рдХрд╝реНрд╣ рдХреЗ рдЗрд╕ рд╕рд╡рд╛рд▓ рдкрд░ рдкреНрд░рдореБрдЦ рдордд рдФрд░ рдЙрдирдХреЗ рд╕реНрд░реЛрдд рдмрддрд╛рдЗрдПред"><span class="text-2xl">ЁЯХМ</span><span class="block mt-3 font-bold text-sm">рдЕрдХрд╝реАрджрд╛ рдФрд░ рдлрд╝рд┐рдХрд╝реНрд╣</span><span class="block mt-1 text-[11px] text-emerald-100/65">рдорддрднреЗрдж рдФрд░ рджрд▓реАрд▓реЗрдВ</span></button>
-        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="рдЗрд╕ рд╡рд┐рд╖рдп рдХреЛ рд╡рд┐рдЬреНрдЮрд╛рди, рддрд░реНрдХ рдФрд░ рдЙрдкрд▓рдмреНрдз рдкреНрд░рдорд╛рдгреЛрдВ рдХреЗ рдЖрдзрд╛рд░ рдкрд░ рд╕рдордЭрд╛рдЗрдПред"><span class="text-2xl">ЁЯФм</span><span class="block mt-3 font-bold text-sm">рд╡рд┐рдЬреНрдЮрд╛рди рдФрд░ рд╕реЛрдЪ</span><span class="block mt-1 text-[11px] text-emerald-100/65">рдкреНрд░рдорд╛рдг рдФрд░ рд╡рд┐рд╡реЗрдЪрдирд╛</span></button>
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="क़ुरआन की किसी आयत की तफ़सीर समझाइए। आयत का संदर्भ, प्रमुख मुफ़स्सिरीन की राय और मतभेद भी बताइए।"><span class="text-2xl">📖</span><span class="block mt-3 font-bold text-sm">क़ुरआन और तफ़सीर</span><span class="block mt-1 text-[11px] text-emerald-100/65">आयत, अर्थ और व्याख्या</span></button>
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="किसी हदीस का अरबी मत्न, अनुवाद, स्रोत, हदीस का दर्जा और मुहद्दिसीन की राय बताइए। संदर्भ न मालूम हो तो स्पष्ट कहिए।"><span class="text-2xl">📚</span><span class="block mt-3 font-bold text-sm">हदीस का अध्ययन</span><span class="block mt-1 text-[11px] text-emerald-100/65">मत्न, स्रोत और दर्जा</span></button>
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="इस्लामी इतिहास के इस विषय को विश्वसनीय स्रोतों और ऐतिहासिक संदर्भ के साथ समझाइए।"><span class="text-2xl">🏛️</span><span class="block mt-3 font-bold text-sm">इस्लामी इतिहास</span><span class="block mt-1 text-[11px] text-emerald-100/65">घटनाएँ और पृष्ठभूमि</span></button>
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="इस सवाल का तार्किक विश्लेषण कीजिए। दावे, प्रमाण, छिपी हुई धारणाएँ और संभावित आपत्तियाँ अलग-अलग बताइए।"><span class="text-2xl">⚖️</span><span class="block mt-3 font-bold text-sm">तर्क और बहस</span><span class="block mt-1 text-[11px] text-emerald-100/65">दलील और विश्लेषण</span></button>
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="इस अक़ीदा या फ़िक़्ह के सवाल पर प्रमुख इस्लामी मतों को उनके प्रमाणों के साथ समझाइए और मतभेद को स्पष्ट रखिए।"><span class="text-2xl">🕌</span><span class="block mt-3 font-bold text-sm">अक़ीदा और फ़िक़्ह</span><span class="block mt-1 text-[11px] text-emerald-100/65">मत, प्रमाण और दलीलें</span></button>
+        <button class="subject-card text-left rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4" data-prompt="इस विषय को विज्ञान, तर्क और उपलब्ध प्रमाणों के आधार पर समझाइए। जहाँ धार्मिक व्याख्याएँ हों, उन्हें वैज्ञानिक निष्कर्षों से अलग रखिए।"><span class="text-2xl">🔬</span><span class="block mt-3 font-bold text-sm">विज्ञान और सोच</span><span class="block mt-1 text-[11px] text-emerald-100/65">प्रमाण और विवेचना</span></button>
       </div>
-      <div class="mt-6 rounded-2xl border border-islamic-gold/15 bg-black/10 p-4 text-xs text-emerald-100/75">рдиреЛрдЯ: рдзрд╛рд░реНрдорд┐рдХ рдорд╕рд▓реЛрдВ рдореЗрдВ рдХрд╝реБрд░рдЖрди, рд╣рджреАрд╕, рд╡рд┐рджреНрд╡рд╛рдиреЛрдВ рдХреА рд╡реНрдпрд╛рдЦреНрдпрд╛ рдФрд░ рдЕрдирд┐рд╢реНрдЪрд┐рдд рдмрд╛рддреЛрдВ рдХреЛ рдЕрд▓рдЧ-рдЕрд▓рдЧ рдкрд╣рдЪрд╛рдиреЗрдВред рдЕрд╣рдо рдлрд╝реИрд╕рд▓реЛрдВ рдХреЗ рд▓рд┐рдП рдореВрд▓ рд╕реНрд░реЛрддреЛрдВ рдХреА рдЬрд╛рдБрдЪ рдХрд░реЗрдВред</div>
+      <div class="mt-6 rounded-2xl border border-islamic-gold/15 bg-black/10 p-4 text-xs text-emerald-100/75">नोट: धार्मिक मसलों में स्रोतों की जाँच ज़रूरी है। क़ुरआन, हदीस, विद्वानों की व्याख्या और आधुनिक शोध को एक ही चीज़ न समझें। जहाँ पुख़्ता संदर्भ उपलब्ध न हो, वहाँ जवाब को अंतिम प्रमाण न मानें।</div>
     </section>
 
     <section id="chatPanel" class="hidden pt-5">
       <div class="flex items-center justify-between gap-3 mb-4">
-        <div><h2 class="font-bold text-lg">рдЖрдкрдХреА рдмрд╛рддрдЪреАрдд</h2><p class="text-xs text-emerald-100/65">рдЬрд╡рд╛рдм рдЖрдкрдХреЗ AI рд╕рд░реНрд╡рд░ рд╕реЗ рдЖрдПрдБрдЧреЗред</p></div>
-        <button id="backHomeBtn" class="text-xs border border-islamic-gold/30 text-islamic-lightgold rounded-lg px-3 py-2">рд╡рд┐рд╖рдп рджреЗрдЦреЗрдВ</button>
+        <div><h2 class="font-bold text-lg">आपकी बातचीत</h2><p class="text-xs text-emerald-100/65">जवाब आपके AI सर्वर से आएगा।</p></div>
+        <button id="backHomeBtn" class="text-xs border border-islamic-gold/30 text-islamic-lightgold rounded-lg px-3 py-2">विषय देखें</button>
       </div>
       <div id="chat-stream" class="chat-scroll space-y-4"></div>
     </section>
@@ -89,21 +89,21 @@
   <footer class="fixed bottom-0 inset-x-0 z-40 border-t border-islamic-gold/25 glass safe-bottom">
     <div class="max-w-5xl mx-auto p-3">
       <div class="flex items-center justify-between gap-2 mb-2 px-1">
-        <span id="statusText" class="text-[11px] text-emerald-100/70">рд╕рд╡рд╛рд▓ рдкреВрдЫрдиреЗ рдХреЗ рд▓рд┐рдП рддреИрдпрд╛рд░</span>
-        <button id="voiceInputBtn" type="button" class="text-[11px] text-islamic-lightgold border border-islamic-gold/30 rounded-full px-3 py-1.5">ЁЯОЩя╕П рдмреЛрд▓рдХрд░ рдкреВрдЫреЗрдВ</button>
+        <span id="statusText" class="text-[11px] text-emerald-100/70">अपना सवाल लिखें</span>
+        <button id="voiceInputBtn" type="button" class="text-[11px] text-islamic-lightgold border border-islamic-gold/30 rounded-full px-3 py-1.5">🎙️ बोलकर पूछें</button>
       </div>
       <form id="chatForm" class="flex items-end gap-2 rounded-2xl border border-islamic-gold/40 bg-islamic-dark p-2 shadow-2xl">
-        <textarea id="userQueryInput" rows="1" maxlength="12000" placeholder="рдЕрдкрдирд╛ рд╕рд╡рд╛рд▓ рдпрд╣рд╛рдБ рд▓рд┐рдЦреЗрдВ..." aria-label="рдЕрдкрдирд╛ рд╕рд╡рд╛рд▓ рд▓рд┐рдЦреЗрдВ" class="flex-1 min-w-0 resize-none max-h-32 bg-transparent px-2 py-2 text-sm text-white placeholder:text-emerald-100/50 outline-none"></textarea>
-        <button id="sendBtn" type="submit" class="shrink-0 min-h-10 rounded-xl bg-islamic-gold px-4 py-2 text-sm font-extrabold text-islamic-dark disabled:opacity-50">рднреЗрдЬреЗрдВ</button>
+        <textarea id="userQueryInput" rows="1" maxlength="12000" placeholder="अपना सवाल यहाँ लिखें…" aria-label="अपना सवाल लिखें" class="flex-1 min-w-0 resize-none max-h-32 bg-transparent px-2 py-2 text-sm text-white placeholder:text-emerald-100/50 outline-none"></textarea>
+        <button id="sendBtn" type="submit" class="shrink-0 min-h-10 rounded-xl bg-islamic-gold px-4 py-2 text-sm font-extrabold text-islamic-dark disabled:opacity-50">भेजें</button>
       </form>
-      <p class="mt-2 text-center text-[10px] text-emerald-100/45">AI рдХреЗ рдЬрд╡рд╛рдмреЛрдВ рдореЗрдВ рдЧрд╝рд▓рддреА рд╣реЛ рд╕рдХрддреА рд╣реИред рдЕрд╣рдо рдЬрд╛рдирдХрд╛рд░реА рдХреЗ рд╕реНрд░реЛрдд рдЬрд╛рдБрдЪреЗрдВред</p>
+      <p class="mt-2 text-center text-[10px] text-emerald-100/45">AI के जवाबों में ग़लतियाँ हो सकती हैं। अहम जानकारी के लिए मूल स्रोत जाँचें।</p>
     </div>
   </footer>
 </div>
 
 <script>
-  // рдЕрдЧрд░ GitHub Pages рдФрд░ Render рдЕрд▓рдЧ-рдЕрд▓рдЧ рд╣реИрдВ, рддреЛ рдиреАрдЪреЗ рдЕрдкрдиреЗ Render service рдХрд╛ рдкреВрд░рд╛ URL рдбрд╛рд▓реЗрдВред
-  // рдЙрджрд╛рд╣рд░рдг: https://your-service-name.onrender.com
+  // GitHub Pages और Render अलग-अलग हों तो यहाँ अपने Render service का पूरा URL डालें।
+  // उदाहरण: https://islam-master-api.onrender.com (केवल तभी इस्तेमाल करें जब यही आपका वास्तविक URL हो)
   const API_BASE_URL = "https://YOUR-RENDER-SERVICE.onrender.com";
   const CHAT_ENDPOINT = `${API_BASE_URL}/api/chat`;
 
@@ -126,60 +126,61 @@
 
   function showChat(){welcomePanel.classList.add("hidden");chatPanel.classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}
   function showHome(){chatPanel.classList.add("hidden");welcomePanel.classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}
-  function scrollChatToBottom(){chatStream.scrollTop=chatStream.scrollHeight;}
+  function scrollChatToBottom(){window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});}
   function addMessage(role,text){
     const row=document.createElement("div");
     row.className=`flex items-start gap-2 ${role==="user"?"justify-end":""}`;
     const bubble=document.createElement("div");
     bubble.className=role==="user"?"max-w-[88%] rounded-2xl border border-islamic-gold/40 bg-islamic-gold/15 p-3 text-sm text-islamic-lightgold":"max-w-[92%] rounded-2xl border border-islamic-gold/25 bg-islamic-card p-4 text-sm text-gray-100 shadow";
     const content=document.createElement("div");content.className="message-content";content.textContent=text;bubble.appendChild(content);
-    if(role==="assistant" && !text.startsWith("рдЬрд╡рд╛рдм рдирд╣реАрдВ рдорд┐рд▓ рд╕рдХрд╛")){
-      const speak=document.createElement("button");speak.type="button";speak.className="mt-3 rounded-lg border border-islamic-gold/25 px-2.5 py-1.5 text-[11px] text-islamic-lightgold";speak.textContent="ЁЯФК рдЬрд╡рд╛рдм рд╕реБрдиреЗрдВ";speak.onclick=()=>speakText(content.textContent);bubble.appendChild(speak);
+    if(role==="assistant" && !text.startsWith("जवाब नहीं मिल सका")){
+      const speak=document.createElement("button");speak.type="button";speak.className="mt-3 rounded-lg border border-islamic-gold/25 px-2.5 py-1.5 text-[11px] text-islamic-lightgold";speak.textContent="🔊 जवाब सुनें";speak.onclick=()=>speakText(content.textContent);bubble.appendChild(speak);
     }
-    if(role==="user"){const avatar=document.createElement("span");avatar.textContent="ЁЯСд";row.append(bubble,avatar);}else{const avatar=document.createElement("span");avatar.textContent="тШкя╕П";row.append(avatar,bubble);}
+    if(role==="user"){const avatar=document.createElement("span");avatar.textContent="🧑";row.append(bubble,avatar);}else{const avatar=document.createElement("span");avatar.textContent="☪️";row.append(avatar,bubble);}
     chatStream.appendChild(row);return content;
   }
   async function submitQuery(customText){
     const query=(typeof customText==="string"?customText:input.value).trim();
     if(!query||busy)return;
-    if(API_BASE_URL.includes("YOUR-RENDER-SERVICE")){statusText.textContent="рдкрд╣рд▓реЗ рдХреЛрдб рдореЗрдВ рдЕрдкрдирд╛ Render URL рдбрд╛рд▓реЗрдВ";alert("index.html рдореЗрдВ YOUR-RENDER-SERVICE рдХреА рдЬрдЧрд╣ рдЕрдкрдиреЗ Render service рдХрд╛ URL рдбрд╛рд▓реЗрдВред");return;}
+    if(API_BASE_URL.includes("YOUR-RENDER-SERVICE")){statusText.textContent="पहले Render URL सेट करें";alert("index.html में YOUR-RENDER-SERVICE की जगह अपने Render service का असली URL डालें।");return;}
     busy=true;sendBtn.disabled=true;input.value="";input.style.height="auto";showChat();
-    addMessage("user",query);const answer=addMessage("assistant","рдЬрд╡рд╛рдм рддреИрдпрд╛рд░ рд╣реЛ рд░рд╣рд╛ рд╣реИтАж");statusText.textContent="AI рдЬрд╡рд╛рдм рддреИрдпрд╛рд░ рдХрд░ рд░рд╣рд╛ рд╣реИтАж";scrollChatToBottom();
+    addMessage("user",query);const answer=addMessage("assistant","जवाब तैयार हो रहा है…");statusText.textContent="AI जवाब तैयार कर रहा है…";scrollChatToBottom();
     const language=languageInstructions[langSelector.value]||languageInstructions.Hindi;
     const message=`You are an Islamic study assistant. Answer in ${language}. Distinguish Quran text, hadith quotations, scholarly interpretations, and uncertainty. Do not invent citations. User question: ${query}`;
     try{
       const response=await fetch(CHAT_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message})});
       let data={};try{data=await response.json();}catch(_){}
       if(!response.ok)throw new Error(data.error||`Server error (HTTP ${response.status})`);
-      if(typeof data.reply!=="string"||!data.reply.trim())throw new Error("рд╕рд░реНрд╡рд░ рд╕реЗ рдЬрд╡рд╛рдм рдирд╣реАрдВ рдорд┐рд▓рд╛ред");
-      answer.textContent=data.reply;statusText.textContent="рдЬрд╡рд╛рдм рдорд┐рд▓ рдЧрдпрд╛";
+      if(typeof data.reply!=="string"||!data.reply.trim())throw new Error("सर्वर से जवाब नहीं मिला।");
+      answer.textContent=data.reply;statusText.textContent="जवाब मिल गया";
     }catch(error){
-      answer.textContent=`рдЬрд╡рд╛рдм рдирд╣реАрдВ рдорд┐рд▓ рд╕рдХрд╛: ${error.message}\n\nRender service URL, рд╕рд░реНрд╡рд░ рдХреА рд╕реНрдерд┐рддрд┐ рдФрд░ CORS рд╕реЗрдЯрд┐рдВрдЧ рдЬрд╛рдБрдЪреЗрдВред`;
-      statusText.textContent="рдХрдиреЗрдХреНрд╢рди рдореЗрдВ рд╕рдорд╕реНрдпрд╛";
+      answer.textContent=`जवाब नहीं मिल सका: ${error.message}\n\nRender URL, सर्वर की स्थिति और CORS सेटिंग जाँचें।`;
+      statusText.textContent="कनेक्शन में समस्या";
     }finally{busy=false;sendBtn.disabled=false;scrollChatToBottom();}
   }
   function speakText(text){
-    if(!("speechSynthesis" in window)){statusText.textContent="рдЗрд╕ рдмреНрд░рд╛рдЙрдЬрд╝рд░ рдореЗрдВ рдЖрд╡рд╛рдЬрд╝ рдХреА рд╕реБрд╡рд┐рдзрд╛ рдЙрдкрд▓рдмреНрдз рдирд╣реАрдВ рд╣реИред";return;}
+    if(!("speechSynthesis" in window)){statusText.textContent="इस ब्राउज़र में आवाज़ की सुविधा उपलब्ध नहीं है।";return;}
     window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);
-    const lang=langSelector.value;utterance.lang=lang==="Hindi"?"hi-IN":lang==="Urdu"?"ur-PK":lang==="English"?"en-US":"hi-IN";
+    const lang=langSelector.value;utterance.lang=lang==="Hindi"||lang==="Roman Hindi"?"hi-IN":lang==="Urdu"||lang==="Roman Urdu"?"ur-PK":"en-US";
     window.speechSynthesis.speak(utterance);
   }
   document.getElementById("chatForm").addEventListener("submit",e=>{e.preventDefault();submitQuery();});
   document.getElementById("homeBtn").addEventListener("click",showHome);
   document.getElementById("backHomeBtn").addEventListener("click",showHome);
-  document.getElementById("newChatBtn").addEventListener("click",()=>{chatStream.replaceChildren();showHome();statusText.textContent="рдирдИ рдмрд╛рддрдЪреАрдд рд╢реБрд░реВ рдХрд░реЗрдВ";});
+  document.getElementById("newChatBtn").addEventListener("click",()=>{chatStream.replaceChildren();showHome();statusText.textContent="नई बातचीत शुरू करें";});
   document.querySelectorAll("[data-prompt]").forEach(button=>button.addEventListener("click",()=>submitQuery(button.dataset.prompt)));
   input.addEventListener("input",()=>{input.style.height="auto";input.style.height=Math.min(input.scrollHeight,128)+"px";});
   document.getElementById("voiceInputBtn").addEventListener("click",()=>{
     const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-    if(!SpeechRecognition){statusText.textContent="рдЗрд╕ рдмреНрд░рд╛рдЙрдЬрд╝рд░ рдореЗрдВ рдЖрд╡рд╛рдЬрд╝ рд╕реЗ рд▓рд┐рдЦрдиреЗ рдХреА рд╕реБрд╡рд┐рдзрд╛ рдирд╣реАрдВ рд╣реИред";return;}
+    if(!SpeechRecognition){statusText.textContent="इस ब्राउज़र में बोलकर लिखने की सुविधा उपलब्ध नहीं है।";return;}
     if(recognition){recognition.stop();recognition=null;return;}
-    recognition=new SpeechRecognition();recognition.lang=langSelector.value==="English"?"en-US":langSelector.value==="Urdu"?"ur-PK":"hi-IN";recognition.interimResults=false;
-    recognition.onstart=()=>statusText.textContent="рд╕реБрди рд░рд╣рд╛ рд╣реВрдБтАж";
-    recognition.onresult=e=>{input.value=e.results[0][0].transcript;input.dispatchEvent(new Event("input"));input.focus();statusText.textContent="рд╕рд╡рд╛рд▓ рддреИрдпрд╛рд░ рд╣реИ";};
-    recognition.onerror=()=>statusText.textContent="рдЖрд╡рд╛рдЬрд╝ рдкрд╣рдЪрд╛рдирдиреЗ рдореЗрдВ рд╕рдорд╕реНрдпрд╛ рд╣реБрдИред";
+    recognition=new SpeechRecognition();recognition.lang=langSelector.value==="English"?"en-US":langSelector.value==="Urdu"||langSelector.value==="Roman Urdu"?"ur-PK":"hi-IN";recognition.interimResults=false;
+    recognition.onstart=()=>statusText.textContent="सुन रहा हूँ…";
+    recognition.onresult=e=>{input.value=e.results[0][0].transcript;input.dispatchEvent(new Event("input"));input.focus();statusText.textContent="सवाल तैयार है";};
+    recognition.onerror=()=>statusText.textContent="आवाज़ पहचानने में समस्या हुई।";
     recognition.onend=()=>recognition=null;recognition.start();
   });
 </script>
 </body>
-</html>
+  </html>
+  
