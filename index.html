@@ -1,12 +1,10 @@
-```html
 <!DOCTYPE html>
 <html lang="hi" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Islamic AI Master Engine</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -14,80 +12,36 @@
                 extend: {
                     colors: {
                         islamic: {
-                            dark: '#04120e',
-                            card: '#08241c',
+                            dark: '#061a14',
+                            card: '#0b2e23',
                             gold: '#d4af37',
-                            lightgold: '#f3e5ab',
-                            accent: '#10b981'
+                            lightgold: '#f3e5ab'
                         }
                     }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="[https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap)" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #04120e; 
-            color: #f3f4f6; 
-            margin: 0; 
-            padding: 0;
-            height: 100dvh;
-            overflow: hidden;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #061a14; color: #f3f4f6; margin: 0; padding: 0; overflow: hidden; }
         .arabic-font { font-family: 'Amiri', serif; }
         .chat-scroll::-webkit-scrollbar { width: 4px; }
         .chat-scroll::-webkit-scrollbar-thumb { background-color: #d4af3744; border-radius: 9999px; }
-
-        /* Animated Soundwaves for Live AI Voice */
-        .wave-bar {
-            display: inline-block;
-            width: 3px;
-            height: 12px;
-            background-color: #10b981;
-            border-radius: 2px;
-            animation: sound-wave 1s ease-in-out infinite;
-        }
-        .wave-bar:nth-child(2) { animation-delay: 0.2s; }
-        .wave-bar:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes sound-wave {
-            0%, 100% { height: 6px; }
-            50% { height: 16px; }
-        }
     </style>
 </head>
-<body class="flex flex-col h-[100dvh] w-screen justify-between overflow-hidden">
+<body class="bg-islamic-dark flex flex-col h-[100vh] justify-between">
 
-    <!-- Top Header -->
-    <header class="bg-islamic-card border-b border-islamic-gold/30 px-3 py-2.5 flex justify-between items-center shrink-0 z-30 shadow-lg">
-        <div class="flex items-center gap-2">
-            <span class="text-islamic-gold font-bold text-sm tracking-wide">Islamic AI Bot</span>
-            <span id="api-status-dot" class="w-2.5 h-2.5 rounded-full bg-red-500" title="API Key Required"></span>
-            <button onclick="startNewChat()" class="bg-islamic-gold/20 hover:bg-islamic-gold/30 text-islamic-lightgold border border-islamic-gold/40 px-2 py-0.5 rounded-lg text-[10px] font-semibold transition">
-                ➕ New
-            </button>
-        </div>
-
+    <!-- Top Header & Live Controls -->
+    <header class="bg-islamic-card border-b border-islamic-gold/30 px-3 py-2 flex justify-between items-center shrink-0 z-20 shadow-md">
         <div class="flex items-center gap-1.5">
-            <!-- Gemini Live Voice Mode Trigger Button -->
-            <button id="liveVoiceBtn" onclick="toggleLiveVoiceMode()" class="bg-emerald-950 text-emerald-300 border border-emerald-500/50 px-2.5 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1.5 transition shadow">
-                <span id="wave-icon" class="hidden flex items-center gap-0.5">
-                    <span class="wave-bar"></span>
-                    <span class="wave-bar"></span>
-                    <span class="wave-bar"></span>
-                </span>
-                <span id="voice-btn-label">🎙️ Talk with AI</span>
-            </button>
-
-            <!-- API Key Button -->
-            <button onclick="toggleApiKeyModal()" class="bg-islamic-dark text-islamic-gold border border-islamic-gold/40 px-2 py-1 rounded-xl text-xs font-semibold">
-                🔑 Key
-            </button>
-
-            <!-- 4-Language Selector Dropdown -->
-            <select id="langSelector" onchange="changeLanguage()" class="bg-islamic-dark border border-islamic-gold/40 text-islamic-lightgold text-xs rounded-xl px-2 py-1 font-bold focus:outline-none">
-                <option value="Hindi">हिंदी (Hindi)</option>
+            <span class="text-islamic-gold font-bold text-xs">AI Mustapha</span>
+            <button onclick="toggleApiKeyModal()" class="bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/40 px-2 py-1 rounded text-[10px] font-semibold">🔑 Key</button>
+        </div>
+        <div class="flex items-center gap-1.5">
+            <button id="talkAiBtn" onclick="toggleTalkWithAI()" class="bg-emerald-800 text-emerald-100 border border-emerald-500 px-2 py-1 rounded text-[10px] font-bold shadow animate-pulse">🎙️ Talk with AI</button>
+            <select id="langSelector" class="bg-islamic-dark border border-islamic-gold/40 text-islamic-lightgold text-xs rounded px-1.5 py-1 focus:outline-none">
+                <option value="Hindi">हिंदी</option>
                 <option value="English">English</option>
                 <option value="Roman Urdu">Roman Urdu</option>
                 <option value="Roman Hindi">Roman Hindi</option>
@@ -95,425 +49,196 @@
         </div>
     </header>
 
-    <!-- Scrollable Chat Stream -->
-    <main id="chat-stream" class="flex-1 overflow-y-auto p-3.5 space-y-4 chat-scroll pb-24">
-        <div class="text-center bg-islamic-card/80 border border-islamic-gold/30 p-3 rounded-2xl shadow-md backdrop-blur">
-            <h2 class="arabic-font text-2xl text-islamic-gold mb-0.5">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
-            <p class="text-[10px] text-islamic-lightgold/80" id="welcome-subtext">Authentic Quran & Sahih Hadith AI Assistant • Live Internet Connected</p>
+    <!-- Chat Stream (Scrollable Area) -->
+    <main id="chat-stream" class="flex-1 overflow-y-auto p-3 space-y-3 chat-scroll pb-24">
+        <div class="text-center bg-islamic-card/60 border border-islamic-gold/20 p-2 rounded-xl mb-2">
+            <h2 class="arabic-font text-lg text-islamic-gold">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
+            <p class="text-[9px] text-islamic-lightgold/70">Authentic Islamic Scholarly Engine • Live Internet Connected</p>
         </div>
-
-        <div class="flex items-start gap-2.5">
-            <div class="w-8 h-8 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-xs shrink-0 shadow">AI</div>
-            <div class="bg-islamic-card border border-islamic-gold/30 p-3.5 rounded-2xl rounded-tl-none max-w-[88%] text-xs md:text-sm text-gray-200 space-y-2 shadow-md">
-                <p class="font-bold text-islamic-gold">अस्सलामुआलैकुम व रहमतुल्लाह!</p>
-                <p class="leading-relaxed">
-                    मैं आपका **Islamic AI Assistant** हूँ। आप नीचे प्रश्न टाइप कर सकते हैं या ऊपर <b>"🎙️ Talk with AI"</b> दबाकर मुझसे सीधे बोलकर लाइव बातचीत कर सकते हैं।
-                </p>
+        <div class="flex items-start gap-2">
+            <div class="w-6 h-6 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-[10px] shrink-0 shadow">AI</div>
+            <div class="bg-islamic-card border border-islamic-gold/30 p-3 rounded-2xl rounded-tl-none max-w-[88%] text-xs text-gray-200 shadow">
+                अस्सलामुआलैकुम मुस्तफा! आपका इस्लामिक एआई बोट तैयार है। ऊपर <b>🔑 Key</b> बटन पर अपनी Gemini API Key डालें, और नीचे दिए गए माइक या सर्च बॉक्स से बात करें।
             </div>
         </div>
     </main>
 
-    <!-- Fixed Bottom Control Bar (Guaranteed visible above phone buttons) -->
-    <footer class="bg-islamic-dark border-t border-islamic-gold/30 p-2.5 shrink-0 z-30 pb-4">
-        <div class="max-w-4xl mx-auto flex items-center gap-2 bg-islamic-card border border-islamic-gold/40 p-1.5 rounded-2xl shadow-2xl">
-            <input type="text" id="userQueryInput" onkeypress="if(event.key==='Enter') submitUserQuery()" 
-                   placeholder="अपना सवाल लिखें या माइक दबाएं..." 
-                   class="flex-1 bg-islamic-dark border border-islamic-gold/20 rounded-xl px-3 py-2 text-xs md:text-sm text-gray-100 focus:outline-none focus:ring-1 focus:ring-islamic-gold">
+    <!-- Fixed Bottom Input Bar -->
+    <div class="shrink-0 bg-islamic-dark border-t border-islamic-gold/30 p-2.5 z-30 shadow-2xl mb-2">
+        <div class="max-w-4xl mx-auto flex items-center gap-2 bg-islamic-card border border-islamic-gold/40 p-1.5 rounded-xl shadow-lg">
+            <input type="text" id="userQueryInput" onkeypress="if(event.key==='Enter') submitQuery()" placeholder="अपना प्रश्न यहाँ लिखें..." 
+                   class="flex-1 bg-islamic-dark border border-islamic-gold/20 rounded-lg px-3 py-2 text-xs text-gray-100 focus:outline-none focus:ring-1 focus:ring-islamic-gold">
             
-            <button id="singleMicBtn" onclick="triggerSingleMic()" title="बोलकर लिखें" 
-                    class="bg-islamic-dark hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/40 p-2 rounded-xl text-sm shrink-0 transition flex items-center justify-center">
+            <button onclick="triggerVoiceInput()" class="bg-islamic-dark hover:bg-islamic-gold/20 text-islamic-lightgold border border-islamic-gold/40 p-2 rounded-lg text-xs shrink-0">
                 🎙️
             </button>
 
-            <button onclick="submitUserQuery()" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-4 py-2 rounded-xl text-xs md:text-sm shrink-0 transition shadow-md">
+            <button onclick="submitQuery()" class="bg-islamic-gold hover:bg-islamic-lightgold text-islamic-dark font-bold px-3.5 py-2 rounded-lg text-xs shrink-0">
                 भेजें
             </button>
         </div>
-        <div id="live-indicator" class="hidden text-center text-[11px] text-emerald-400 font-bold mt-1.5 animate-pulse">
-            ● Live AI Voice Chat Mode Active — AI आपकी आवाज सुन रहा है...
-        </div>
-    </footer>
+    </div>
 
-    <!-- API Key Settings Modal -->
-    <div id="apiKeyModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-        <div class="bg-islamic-card border border-islamic-gold/50 p-5 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center border-b border-islamic-gold/20 pb-2">
-                <h3 class="text-xs md:text-sm font-bold text-islamic-gold flex items-center gap-1.5">
-                    🔑 Gemini API Key दर्ज करें
-                </h3>
-                <button onclick="toggleApiKeyModal()" class="text-gray-400 hover:text-white text-xs">✕</button>
-            </div>
-            <div class="space-y-2 text-xs text-gray-300">
-                <p>लाइव AI और इंटरनेट कनेक्ट करने के लिए अपनी Gemini API Key यहाँ डालें:</p>
-                <input type="password" id="apiKeyInput" placeholder="AQ.Ab8RN..." 
-                       class="w-full bg-islamic-dark border border-islamic-gold/40 rounded-xl px-3 py-2 text-xs text-gray-100 focus:outline-none">
-                <p class="text-[10px] text-emerald-400">
-                    🔒 चाबी आपके ब्राउज़र में सुरक्षित रहेगी और गिटहब इसे ब्लॉक नहीं करेगा।
-                </p>
-            </div>
-            <div class="flex justify-end gap-2 pt-1">
-                <button onclick="toggleApiKeyModal()" class="text-xs text-gray-400 px-3 py-1.5">रद्द करें</button>
-                <button onclick="saveApiKey()" class="bg-islamic-gold text-islamic-dark font-bold text-xs px-4 py-1.5 rounded-xl">
-                    सेव करें
-                </button>
+    <!-- API Key Modal -->
+    <div id="apiKeyModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+        <div class="bg-islamic-card border border-islamic-gold/50 p-4 rounded-2xl max-w-sm w-full space-y-3 shadow-2xl">
+            <h3 class="text-islamic-gold font-bold text-xs">Gemini API Key सेट करें</h3>
+            <p class="text-[11px] text-gray-300">अपनी API Key यहाँ पेस्ट करें:</p>
+            <input type="password" id="apiKeyInput" placeholder="AQ..." class="w-full bg-islamic-dark border border-islamic-gold/30 rounded-lg p-2 text-xs text-white focus:outline-none">
+            <div class="flex justify-end gap-2">
+                <button onclick="toggleApiKeyModal()" class="text-xs text-gray-400 px-3 py-1">रद्द करें</button>
+                <button onclick="saveApiKey()" class="bg-islamic-gold text-islamic-dark font-bold text-xs px-4 py-1.5 rounded-lg">सेव करें</button>
             </div>
         </div>
     </div>
 
-    <!-- Core App Logic -->
     <script>
-        let chatHistory = JSON.parse(localStorage.getItem('islamic_ai_chat_history') || '[]');
-        let currentLang = 'Hindi';
-        let isLiveVoiceActive = false;
+        let isTalkActive = false;
         let recognition = null;
-
-        const langPrompts = {
-            'Hindi': 'उत्तर केवल शुद्ध हिंदी (Hindi in Devanagari script) में दें।',
-            'English': 'Provide response strictly in clear English.',
-            'Roman Urdu': 'Give response strictly in Roman Urdu (e.g. "Aapka sawal yeh hai...").',
-            'Roman Hindi': 'Give response strictly in Roman Hindi (e.g. "Aapka prasna yeh hai...").'
-        };
-
-        window.addEventListener('DOMContentLoaded', () => {
-            checkApiKeyStatus();
-            restoreSavedHistory();
-        });
-
-        function getStoredApiKey() {
-            return localStorage.getItem('gemini_api_key') || '';
-        }
-
-        function checkApiKeyStatus() {
-            const key = getStoredApiKey();
-            const dot = document.getElementById('api-status-dot');
-            if (key) {
-                dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
-                dot.title = "Gemini API Active";
-            } else {
-                dot.className = "w-2.5 h-2.5 rounded-full bg-red-500";
-                dot.title = "API Key Missing";
-            }
-        }
 
         function toggleApiKeyModal() {
             const modal = document.getElementById('apiKeyModal');
             modal.classList.toggle('hidden');
-            if (!modal.classList.contains('hidden')) {
-                document.getElementById('apiKeyInput').value = getStoredApiKey();
-            }
+            document.getElementById('apiKeyInput').value = localStorage.getItem('gemini_api_key'] || '';
         }
 
         function saveApiKey() {
             const key = document.getElementById('apiKeyInput').value.trim();
-            if (key) {
-                localStorage.setItem('gemini_api_key', key);
-                alert('Gemini API Key सुरक्षित रूप से सेव हो गई है!');
-            } else {
-                localStorage.removeItem('gemini_api_key');
-            }
-            checkApiKeyStatus();
+            if(!key) { alert('कृपया सही की दर्ज करें'); return; }
+            localStorage.setItem('gemini_api_key', key);
             toggleApiKeyModal();
+            alert('API Key सुरक्षित हो गई है!');
         }
 
-        function startNewChat() {
-            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-            chatHistory = [];
-            localStorage.removeItem('islamic_ai_chat_history');
-            
-            const chatStream = document.getElementById('chat-stream');
-            chatStream.innerHTML = `
-                <div class="text-center bg-islamic-card/80 border border-islamic-gold/30 p-3 rounded-2xl shadow-md backdrop-blur">
-                    <h2 class="arabic-font text-2xl text-islamic-gold mb-0.5">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
-                    <p class="text-[10px] text-islamic-lightgold/80">Authentic Quran & Sahih Hadith AI Assistant</p>
-                </div>
-                <div class="flex items-start gap-2.5">
-                    <div class="w-8 h-8 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-xs shrink-0 shadow">AI</div>
-                    <div class="bg-islamic-card border border-islamic-gold/30 p-3.5 rounded-2xl rounded-tl-none max-w-[88%] text-xs md:text-sm text-gray-200 shadow">
-                        नया सत्र शुरू हुआ! आप अपना नया प्रश्न पूछ सकते हैं।
-                    </div>
-                </div>
-            `;
-        }
-
-        function restoreSavedHistory() {
-            if (chatHistory.length === 0) return;
-            const chatStream = document.getElementById('chat-stream');
-            chatHistory.forEach(item => {
-                if (item.role === 'user') {
-                    renderUserBubble(item.text);
-                } else {
-                    renderAIBubble(item.text);
-                }
-            });
-            chatStream.scrollTop = chatStream.scrollHeight;
-        }
-
-        async function changeLanguage() {
-            currentLang = document.getElementById('langSelector').value;
-            const apiKey = getStoredApiKey();
-
-            if (chatHistory.length === 0) return;
-
-            const chatStream = document.getElementById('chat-stream');
-            chatStream.innerHTML = `<div class="text-center text-xs text-islamic-gold animate-pulse py-4">चैट की भाषा ${currentLang} में बदली जा रही है...</div>`;
-
-            let updatedHtml = `
-                <div class="text-center bg-islamic-card/80 border border-islamic-gold/30 p-3 rounded-2xl shadow-md mb-2">
-                    <h2 class="arabic-font text-2xl text-islamic-gold mb-0.5">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
-                    <p class="text-[10px] text-islamic-lightgold/80">Language: ${currentLang}</p>
-                </div>
-            `;
-
-            for (let msg of chatHistory) {
-                if (msg.role === 'user') {
-                    updatedHtml += `
-                        <div class="flex items-start gap-2.5 justify-end">
-                            <div class="bg-islamic-gold/20 border border-islamic-gold/40 p-3.5 rounded-2xl rounded-tr-none max-w-[85%] text-xs md:text-sm text-islamic-lightgold shadow">
-                                <p>${escapeHtml(msg.text)}</p>
-                            </div>
-                            <div class="w-8 h-8 rounded-full bg-emerald-800 text-emerald-200 flex items-center justify-center font-bold text-xs shrink-0">👤</div>
-                        </div>
-                    `;
-                } else {
-                    let translatedText = msg.text;
-                    if (apiKey) {
-                        translatedText = await translateContent(msg.text, currentLang, apiKey);
-                    }
-                    msg.text = translatedText;
-                    const bubbleId = 'trans-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4);
-                    updatedHtml += `
-                        <div class="flex items-start gap-2.5">
-                            <div class="w-8 h-8 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-xs shrink-0 shadow">AI</div>
-                            <div class="bg-islamic-card border border-islamic-gold/30 p-3.5 rounded-2xl rounded-tl-none max-w-[88%] text-xs md:text-sm text-gray-200 space-y-2 shadow-md">
-                                <div id="${bubbleId}" class="leading-relaxed">${formatTextToHtml(translatedText)}</div>
-                                <div class="pt-1 border-t border-islamic-gold/20 flex gap-2">
-                                    <button onclick="speakText('${bubbleId}')" class="bg-islamic-dark text-islamic-lightgold border border-islamic-gold/30 px-2 py-0.5 rounded text-[10px]">🔊 सुनें</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-
-            localStorage.setItem('islamic_ai_chat_history', JSON.stringify(chatHistory));
-            chatStream.innerHTML = updatedHtml;
-            chatStream.scrollTop = chatStream.scrollHeight;
-        }
-
-        async function translateContent(text, lang, key) {
-            try {
-                const prompt = `Translate the following Islamic response into ${langPrompts[lang]}. Do NOT alter Arabic Quranic verses or Hadith citations. Text: ${text}`;
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-                const data = await res.json();
-                return data.candidates?.[0]?.content?.parts?.[0]?.text || text;
-            } catch(e) { return text; }
-        }
-
-        async function submitUserQuery(customQuery = null) {
+        async function submitQuery(customText = null) {
             const input = document.getElementById('userQueryInput');
-            const query = customQuery || input.value.trim();
+            const query = customText || input.value.trim();
             if (!query) return;
 
-            if(!customQuery) input.value = '';
+            if(!customText) input.value = '';
 
-            const apiKey = getStoredApiKey();
-            if (!apiKey) {
-                toggleApiKeyModal();
+            const selectedLang = document.getElementById('langSelector').value;
+            const chatStream = document.getElementById('chat-stream');
+
+            chatStream.insertAdjacentHTML('beforeend', `
+                <div class="flex items-start gap-2 justify-end">
+                    <div class="bg-islamic-gold/20 border border-islamic-gold/40 p-2.5 rounded-2xl rounded-tr-none max-w-[85%] text-xs text-islamic-lightgold shadow">
+                        ${query}
+                    </div>
+                    <div class="w-6 h-6 rounded-full bg-emerald-800 text-emerald-200 flex items-center justify-center font-bold text-[10px] shrink-0">👤</div>
+                </div>
+            `);
+
+            const aiId = 'ai-msg-' + Date.now();
+            chatStream.insertAdjacentHTML('beforeend', `
+                <div class="flex items-start gap-2">
+                    <div class="w-6 h-6 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-[10px] shrink-0 shadow">AI</div>
+                    <div id="${aiId}" class="bg-islamic-card border border-islamic-gold/30 p-3 rounded-2xl rounded-tl-none max-w-[88%] text-xs text-gray-200 shadow">
+                        <span class="animate-pulse text-islamic-gold">इंटरनेट से खोजा जा रहा है...</span>
+                    </div>
+                </div>
+            `);
+            chatStream.scrollTop = chatStream.scrollHeight;
+
+            const apiKey = localStorage.getItem('gemini_api_key');
+            if(!apiKey) {
+                document.getElementById(aiId).innerHTML = `<span class="text-red-400">कृपया पहले ऊपर 🔑 Key बटन पर क्लिक करके अपनी Gemini API Key दर्ज करें।</span>`;
                 return;
             }
 
-            renderUserBubble(query);
-            chatHistory.push({ role: 'user', text: query });
-
-            const loadingId = 'ai-loading-' + Date.now();
-            renderLoadingBubble(loadingId);
-            scrollToBottom();
-
-            let aiResponseText = '';
             try {
-                const systemPrompt = `You are an authentic, scholarly Islamic AI assistant with live Google Search access. Answer accurately with Quran (Surah:Ayah) and Sahih Hadith evidence. ${langPrompts[currentLang]} User Question: ${query}`;
+                const promptText = `You are an authentic Islamic AI assistant with live internet access. Answer accurately with Quran and Sahih Hadith evidence. Reply strictly in ${selectedLang}. User Question: ${query}`;
 
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                const response = await fetch(`[https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$](https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$){apiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: query }] }],
-                        tools: [{ "google_search": {} }],
-                        systemInstruction: { parts: [{ text: systemPrompt }] }
-                    })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
                 });
 
-                if (res.ok) {
-                    const data = await res.json();
-                    aiResponseText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                } else {
-                    aiResponseText = "Gemini API से कनेक्ट करने में समस्या आई। कृपया अपनी API Key जांचें।";
+                const data = await response.json();
+                const aiAnswer = data.candidates[0].content.parts[0].text;
+
+                document.getElementById(aiId).innerHTML = `
+                    <div class="space-y-2">
+                        <p class="leading-relaxed">${aiAnswer.replace(/\n/g, '<br>')}</p>
+                        <button onclick="speakText(this)" class="bg-islamic-gold/20 hover:bg-islamic-gold/30 text-islamic-lightgold border border-islamic-gold/30 px-2 py-0.5 rounded text-[10px]">🔊 सुनें</button>
+                    </div>
+                `;
+                chatStream.scrollTop = chatStream.scrollHeight;
+
+                if(isTalkActive) {
+                    speakTextDirect(aiAnswer);
                 }
             } catch (err) {
-                aiResponseText = "नेटवर्क त्रुटि: कृपया अपना इंटरनेट कनेक्शन जांचें।";
-            }
-
-            removeElement(loadingId);
-            renderAIBubble(aiResponseText);
-
-            chatHistory.push({ role: 'ai', text: aiResponseText });
-            localStorage.setItem('islamic_ai_chat_history', JSON.stringify(chatHistory));
-            scrollToBottom();
-
-            // If Live AI Voice Chat mode is ON, read out the response automatically
-            if (isLiveVoiceActive) {
-                speakTextDirect(aiResponseText);
+                document.getElementById(aiId).innerHTML = `<span class="text-red-400">कनेक्शन त्रुटि। अपनी API Key जांचें।</span>`;
             }
         }
 
-        function renderUserBubble(text) {
-            const chatStream = document.getElementById('chat-stream');
-            const div = document.createElement('div');
-            div.className = "flex items-start gap-2.5 justify-end";
-            div.innerHTML = `
-                <div class="bg-islamic-gold/20 border border-islamic-gold/40 p-3.5 rounded-2xl rounded-tr-none max-w-[85%] text-xs md:text-sm text-islamic-lightgold shadow">
-                    <p class="leading-relaxed">${escapeHtml(text)}</p>
-                </div>
-                <div class="w-8 h-8 rounded-full bg-emerald-800 text-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 shadow">👤</div>
-            `;
-            chatStream.appendChild(div);
-        }
-
-        function renderAIBubble(text) {
-            const chatStream = document.getElementById('chat-stream');
-            const div = document.createElement('div');
-            const bubbleId = 'ai-msg-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4);
-            div.className = "flex items-start gap-2.5";
-            div.innerHTML = `
-                <div class="w-8 h-8 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-xs shrink-0 shadow">AI</div>
-                <div class="bg-islamic-card border border-islamic-gold/30 p-3.5 rounded-2xl rounded-tl-none max-w-[88%] text-xs md:text-sm text-gray-200 space-y-2 shadow-md">
-                    <div id="${bubbleId}" class="leading-relaxed space-y-1">${formatTextToHtml(text)}</div>
-                    <div class="pt-1.5 border-t border-islamic-gold/20 flex gap-2">
-                        <button onclick="speakText('${bubbleId}')" class="bg-islamic-dark text-islamic-lightgold border border-islamic-gold/30 px-2.5 py-1 rounded-lg text-[10px]">🔊 सुनें</button>
-                    </div>
-                </div>
-            `;
-            chatStream.appendChild(div);
-        }
-
-        function renderLoadingBubble(id) {
-            const chatStream = document.getElementById('chat-stream');
-            const div = document.createElement('div');
-            div.id = id;
-            div.className = "flex items-start gap-2.5";
-            div.innerHTML = `
-                <div class="w-8 h-8 rounded-full bg-islamic-gold text-islamic-dark flex items-center justify-center font-bold text-xs shrink-0 shadow">AI</div>
-                <div class="bg-islamic-card border border-islamic-gold/30 p-3 rounded-2xl rounded-tl-none text-xs text-islamic-gold shadow flex items-center gap-2">
-                    <div class="w-3 h-3 border-2 border-islamic-gold border-t-transparent rounded-full animate-spin"></div>
-                    <span class="animate-pulse">खोजा जा रहा है...</span>
-                </div>
-            `;
-            chatStream.appendChild(div);
-        }
-
-        function triggerSingleMic() {
+        function triggerVoiceInput() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) { alert('आपका ब्राउज़र माइक सपोर्ट नहीं करता।'); return; }
+            if (!SpeechRecognition) { alert('आपका ब्राउज़र वॉइस सपोर्ट नहीं करता।'); return; }
             const rec = new SpeechRecognition();
-            rec.lang = (currentLang === 'English') ? 'en-US' : 'hi-IN';
+            rec.lang = 'hi-IN';
             rec.onresult = (e) => {
                 document.getElementById('userQueryInput').value = e.results[0][0].transcript;
-                submitUserQuery();
+                submitQuery();
             };
             rec.start();
         }
 
-        function toggleLiveVoiceMode() {
+        function toggleTalkWithAI() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) { alert('आपका ब्राउज़र माइक सपोर्ट नहीं करता।'); return; }
+            if (!SpeechRecognition) { alert('आपका ब्राउज़र वॉइस सपोर्ट नहीं करता।'); return; }
+            const btn = document.getElementById('talkAiBtn');
 
-            const btnLabel = document.getElementById('voice-btn-label');
-            const waveIcon = document.getElementById('wave-icon');
-            const liveIndicator = document.getElementById('live-indicator');
-
-            if (isLiveVoiceActive) {
-                isLiveVoiceActive = false;
-                if (recognition) recognition.stop();
-                btnLabel.innerText = "🎙️ Talk with AI";
-                waveIcon.classList.add('hidden');
-                liveIndicator.classList.add('hidden');
+            if(isTalkActive) {
+                isTalkActive = false;
+                if(recognition) recognition.stop();
+                btn.innerText = "🎙️ Talk with AI";
+                btn.className = "bg-emerald-800 text-emerald-100 border border-emerald-500 px-2 py-1 rounded text-[10px] font-bold shadow animate-pulse";
             } else {
-                isLiveVoiceActive = true;
-                btnLabel.innerText = "Listening...";
-                waveIcon.classList.remove('hidden');
-                liveIndicator.classList.remove('hidden');
-                startContinuousLiveVoice();
+                isTalkActive = true;
+                btn.innerText = "🔴 Listening...";
+                btn.className = "bg-red-700 text-white border border-red-400 px-2 py-1 rounded text-[10px] font-bold shadow animate-pulse";
+                startTalkLoop();
             }
         }
 
-        function startContinuousLiveVoice() {
-            if (!isLiveVoiceActive) return;
+        function startTalkLoop() {
+            if(!isTalkActive) return;
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
-            recognition.lang = (currentLang === 'English') ? 'en-US' : 'hi-IN';
+            recognition.lang = 'hi-IN';
             recognition.continuous = false;
             recognition.interimResults = false;
-
             recognition.onresult = (e) => {
-                const spokenText = e.results[0][0].transcript;
-                submitUserQuery(spokenText);
+                const text = e.results[0][0].transcript;
+                submitQuery(text);
             };
-
             recognition.onend = () => {
-                if (isLiveVoiceActive) {
-                    setTimeout(() => { 
-                        try { recognition.start(); } catch(e){} 
-                    }, 800);
+                if(isTalkActive) {
+                    setTimeout(() => { recognition.start(); }, 800);
                 }
             };
-
-            try { recognition.start(); } catch(e){}
+            try { recognition.start(); } catch(e) {}
         }
 
-        function speakText(bubbleId) {
-            if (!('speechSynthesis' in window)) return;
+        function speakText(btn) {
             window.speechSynthesis.cancel();
-            const el = document.getElementById(bubbleId);
-            if (!el) return;
-            const speech = new SpeechSynthesisUtterance(el.innerText);
-            speech.lang = (currentLang === 'English') ? 'en-US' : 'hi-IN';
+            const text = btn.previousElementSibling.innerText;
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.lang = 'hi-IN';
             window.speechSynthesis.speak(speech);
         }
 
-        function speakTextDirect(rawText) {
-            if (!('speechSynthesis' in window)) return;
+        function speakTextDirect(text) {
             window.speechSynthesis.cancel();
-            const cleanText = rawText.replace(/<[^>]*>?/gm, '').replace(/\*/g, '');
+            const cleanText = text.replace(/<[^>]*>?/gm, '');
             const speech = new SpeechSynthesisUtterance(cleanText);
-            speech.lang = (currentLang === 'English') ? 'en-US' : 'hi-IN';
+            speech.lang = 'hi-IN';
             window.speechSynthesis.speak(speech);
-        }
-
-        function formatTextToHtml(text) {
-            return text
-                .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-                .replace(/\n\n/g, '<br><br>')
-                .replace(/\n/g, '<br>');
-        }
-
-        function scrollToBottom() {
-            const chatStream = document.getElementById('chat-stream');
-            chatStream.scrollTop = chatStream.scrollHeight;
-        }
-
-        function removeElement(id) {
-            const el = document.getElementById(id);
-            if (el) el.remove();
-        }
-
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
     </script>
 </body>
-</html>
-```
+    </html>
+    
